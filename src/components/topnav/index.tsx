@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Layout, Image, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import logo from "../../logo.svg";
-import { ItemType } from "antd/es/menu/hooks/useItems";
+import type { MenuProps } from "antd";
 const { Header } = Layout;
 
 export const TopNav = () => {
-  const menu: ItemType[] = [
+  const menu: MenuProps["items"] = [
     {
       label: "Sign Out",
       key: "sign-out",

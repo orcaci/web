@@ -18,11 +18,7 @@ const menuItems: ItemType[] = [
   }
 ];
 
-interface Props {
-  children?: any;
-}
-
-export function AppLayout(props: Props) {
+export function AppLayout() {
   const navigate = useNavigate();
   return (
     <Layout>
