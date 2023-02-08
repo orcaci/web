@@ -3,7 +3,7 @@ import { Layout } from "antd";
 import { TopNav } from "./components/topnav";
 import { LeftNav } from "./components/leftnav";
 import { ItemType } from "antd/es/menu/hooks/useItems";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const { Content } = Layout;
 
@@ -38,11 +38,10 @@ export function AppLayout(props: Props) {
               minHeight: "calc(100vh - 64px)"
             }}
           >
-            {props.children}
+            <Outlet />
           </Content>
         </Layout>
       </Layout>
     </Layout>
   );
 }
-
