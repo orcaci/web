@@ -110,7 +110,7 @@ interface MatrixProps {
 }
 
 interface RowData {
-  key: number;
+  key: string;
   [key: string]: any;
 }
 
@@ -121,13 +121,7 @@ export const Matrix = (props: MatrixProps) => {
   const [columnConfig, setColumnConfig] = useState<boolean>(false);
 
   const handleAddRows = () => {
-    let newRowData: RowData = {
-      key: dataSource.length + 1
-    };
-    defaultColumns.forEach(
-      (column) => (newRowData[column.dataIndex] = `Value`)
-    );
-    onAddRow(newRowData);
+    onAddRow();
   };
 
   const handleAddColumns = () => {
