@@ -47,7 +47,7 @@ export const ROUTES = [
         },
         nestedRoute: [
             {
-                path: "auth/login",
+                path: "login",
                 component: () => {
                     const { UserManagement } = lazily(() => import("../pages/admin/user"));
                     return UserManagement;
