@@ -104,54 +104,40 @@ interface MatrixProps {
     dataIndex: string;
   })[];
   dataSource: RowData[];
+  onAddRow: Function;
+  onAddColumn: Function;
+  onRowEdit: Function;
 }
 
 interface RowData {
-  key: number;
+  key: string;
   [key: string]: any;
 }
 
 export const Matrix = (props: MatrixProps) => {
-  const [dataSource, setDataSource] = useState<RowData[]>(
-    props.dataSource || []
-  );
-  const [defaultColumns, setDefaultColumns] = useState<
-    MatrixProps["defaultColumns"]
-  >(props.defaultColumns || []);
+  const { onAddColumn, onAddRow, dataSource, defaultColumns, onRowEdit } =
+    props;
 
   const [columnConfig, setColumnConfig] = useState<boolean>(false);
 
-  const [count, setCount] = useState(1);
-
   const handleAddRows = () => {
-    let newData: RowData = {
-      key: count
-    };
-    defaultColumns.forEach(
-      (column) => (newData[column.dataIndex] = `Value ${count}`)
-    );
-
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
+    onAddRow();
   };
 
   const handleAddColumns = () => {
     setColumnConfig(true);
   };
 
-  const onAddColumn = (columnConfig: MatrixProps["defaultColumns"][0]) => {
-    setDefaultColumns([...defaultColumns, columnConfig]);
-  };
-
   const handleSave = (row: RowData) => {
-    const newData = [...dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
+    const item = dataSource.find((item) => row.key === item.key);
+    const newRowValue: RowData = {
       ...item,
       ...row
+    };
+    onRowEdit({
+      affectedRow: row.key,
+      newValue: newRowValue
     });
-    setDataSource(newData);
   };
 
   const components = {
@@ -181,13 +167,10 @@ export const Matrix = (props: MatrixProps) => {
     <div>
       <div className="buttonContainer">
         <div className="buttonGroup">
-          <Button onClick={handleAddRows}>Add Row</Button>
-          <Button onClick={handleAddColumns}>Add Column</Button>
-        </div>
-        <div className="buttonGroup">
-          <Button onClick={() => console.log(dataSource)} type="primary">
-            Save
-          </Button>
+          {onAddRow && <Button onClick={handleAddRows}>Add Row</Button>}
+          {onAddColumn && (
+            <Button onClick={handleAddColumns}>Add Column</Button>
+          )}
         </div>
       </div>
       <Table
