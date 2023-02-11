@@ -1,0 +1,10 @@
+.layout-content {
+  margin: 0;
+  padding: 1rem;
+  min-height: calc(100vh - 64px);
+}
+
+.layout-content:has(.ant-layout) {
+  padding: 0;
+  min-height: auto;
+}

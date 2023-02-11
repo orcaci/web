@@ -1,15 +1,19 @@
 import { Outlet } from "react-router-dom";
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { TopFrame } from "../../components/topframe";
+import "../layout.css";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export function HomeLayout() {
   return (
     <Layout>
       <TopFrame></TopFrame>
-
-      <Outlet />
+      <Content>
+        <div className="layout-content">
+          <Outlet />
+        </div>
+      </Content>
     </Layout>
   );
 }
