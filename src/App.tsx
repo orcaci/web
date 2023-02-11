@@ -1,17 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
-import { Skeleton } from "antd";
+import { ConfigProvider, Skeleton } from "antd";
 import { ROUTES } from "./utils/route";
-import { ConfigProvider, theme } from "antd";
 
 function App() {
   return (
     <ConfigProvider
       theme={{
-        "token": {
-          "colorPrimary": "#5b23a9",
-          "borderRadius": 8,
-          "wireframe": false
+        token: {
+          colorPrimary: "#5b23a9",
+          borderRadius: 8,
+          wireframe: false
         }
       }}
     >
@@ -37,8 +36,10 @@ function App() {
                               element={<Element />}
                             >
                               {subRoute?.nestedRoute
-                                  ? subRoute.nestedRoute.map((grandChildRoute: any) => {
-                                      const Element = grandChildRoute.component();
+                                ? subRoute.nestedRoute.map(
+                                    (grandChildRoute: any) => {
+                                      const Element =
+                                        grandChildRoute.component();
                                       return (
                                         <Route
                                           path={grandChildRoute.path}
@@ -46,8 +47,9 @@ function App() {
                                           element={<Element />}
                                         />
                                       );
-                                    })
-                                  : null}
+                                    }
+                                  )
+                                : null}
                             </Route>
                           );
                         })
