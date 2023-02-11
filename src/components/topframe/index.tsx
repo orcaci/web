@@ -1,17 +1,53 @@
 import { SettingOutlined, UserOutlined } from "@ant-design/icons";
-import { Layout, Avatar, Button } from "antd";
+import { Layout, Avatar, Button, Dropdown, MenuProps } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Header } = Layout;
 
 export function TopFrame(props: any) {
+  const navigate = useNavigate();
+
+  const menu: MenuProps["items"] = [
+    {
+      label: "Sign Out",
+      key: "sign-out",
+      onClick: async () => {
+        navigate("/signin");
+      }
+    }
+  ];
+
   return (
-    <Header style={{display: "flex", alignItems: "center", justifyContent: "flex-end"}}>
-      <div className="logo" />
-      <div style={{float:"right", display:"flex", gap:"1rem", alignItems: "center"}}>
-        <Button type="primary" shape="circle" icon={<SettingOutlined />} size={"middle"} />
-        <Avatar size="large" icon={<UserOutlined />}>
-            "Vasanth Kumar"
-        </Avatar>
+    <Header
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}
+    >
+      <div className="leftRenderer">
+        <h2 className="logo" style={{ color: "white" }}>
+          Orca
+        </h2>
+      </div>
+      <div
+        className="rightRenderer"
+        style={{
+          display: "flex",
+          gap: "1rem",
+          alignItems: "center"
+        }}
+      >
+        <Button
+          type="link"
+          shape="circle"
+          icon={<SettingOutlined />}
+          size={"large"}
+        />
+
+        <Dropdown menu={{ items: menu }} placement="bottomLeft">
+          <Avatar size="large" icon={<UserOutlined />} />
+        </Dropdown>
       </div>
     </Header>
   );
