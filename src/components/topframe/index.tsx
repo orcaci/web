@@ -26,7 +26,11 @@ export function TopFrame(props: any) {
       }}
     >
       <div className="leftRenderer">
-        <h2 className="logo" style={{ color: "white" }}>
+        <h2
+          className="logo"
+          style={{ color: "white" }}
+          onClick={() => navigate("/")}
+        >
           Orca
         </h2>
       </div>

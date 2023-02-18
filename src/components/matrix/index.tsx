@@ -99,14 +99,15 @@ type EditableTableProps = Parameters<typeof Table>[0];
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
 interface MatrixProps {
-  defaultColumns: (ColumnTypes[number] & {
-    editable?: boolean;
-    dataIndex: string;
-  })[];
+  // defaultColumns: (ColumnTypes[number] & {
+  //   editable?: boolean;
+  //   dataIndex: string;
+  // })[];
+  defaultColumns?: any;
   dataSource: RowData[];
-  onAddRow: Function;
-  onAddColumn: Function;
-  onRowEdit: Function;
+  onAddRow?: any;
+  onAddColumn?: any;
+  onRowEdit?: any;
 }
 
 interface RowData {
@@ -147,7 +148,7 @@ export const Matrix = (props: MatrixProps) => {
     }
   };
 
-  const columns = defaultColumns.map((col) => {
+  const columns = defaultColumns.map((col: any) => {
     if (!col.editable) {
       return col;
     }
