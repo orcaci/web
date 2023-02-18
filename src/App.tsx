@@ -5,15 +5,7 @@ import { ROUTES } from "./utils/route";
 
 function App() {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: "#5b23a9",
-          borderRadius: 8,
-          wireframe: false
-        }
-      }}
-    >
+    <ConfigProvider>
       <BrowserRouter>
         <main className="flex w-full">
           <Suspense fallback={<Skeleton active={true} />}>
