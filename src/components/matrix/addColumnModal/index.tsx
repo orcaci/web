@@ -43,8 +43,8 @@ export const AddColumnModal = (props: ModalProps) => {
           />
           <Switch
             style={{width:"fit-content"}}
-            checkedChildren="Editable"
-            unCheckedChildren="Fixed"
+            checkedChildren="Edit"
+            unCheckedChildren="Edit"
             onChange={(value) =>
               setColumnConfig({ ...columnConfig, editable: value })
             }
