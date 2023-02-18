@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Empty } from "antd";
 import { useEffect, useState } from "react";
 import { ApplicationCard } from "../../components/applicationCard";
 import { CreateApplicationModal } from "../../components/CreateApplicationModal";
@@ -37,6 +37,11 @@ export function Home() {
           Create
         </Button>
       </div>
+      {!applications.length && (
+        <div className="emptyState">
+          <Empty description="No applications found. Please create a new one" />
+        </div>
+      )}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
         {applications.map((app) => (
           <ApplicationCard key={app.id} appDetails={app} />
