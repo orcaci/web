@@ -63,12 +63,10 @@ export const ActionGroup: React.FC = () => {
     }
   ];
 
-  const { id } = useParams();
+  const { id = "" } = useParams();
 
   const fetchApplications = async () => {
-    await Service.get(
-      `${Endpoint.v1.application.createApplication}/${id}/group/`
-    )
+    await Service.get(`${Endpoint.v1.group.getList(id)}`)
       .then((appList) => {
         setDataSource(appList);
       })
@@ -89,22 +87,17 @@ export const ActionGroup: React.FC = () => {
   };
 
   const onAddApplication = async (data: any) => {
-    await Service.post(
-      `${Endpoint.v1.application.createApplication}/${id}/group/`,
-      {
-        body: data
-      }
-    )
+    await Service.post(`${Endpoint.v1.group.create(id)}`, {
+      body: data
+    })
       .then(() => {
         fetchApplications();
       })
       .finally(() => {});
   };
 
-  const onDeleteAction = async (deleteId: any) => {
-    await Service.delete(
-      `${Endpoint.v1.application.createApplication}${id}/group/${deleteId}/`
-    )
+  const onDeleteAction = async (groupId: any) => {
+    await Service.delete(`${Endpoint.v1.group.delete(id, groupId)}`)
       .then(() => {
         fetchApplications();
       })

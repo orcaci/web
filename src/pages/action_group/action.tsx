@@ -7,10 +7,10 @@ import { Service } from "../../service";
 import { Endpoint } from "../../service/endpoint";
 import { useParams } from "react-router-dom";
 
-export const SubGroup: React.FC = () => {
-  const [dataSource1, setDataSource] = useState([] as any);
+export const Action: React.FC = () => {
+  const [dataSource, setDataSource] = useState([] as any);
   const [savedData, setSavedData] = useState({ data_kind: "Static" } as object);
-  const { id = "", subid = "" } = useParams();
+  const { id = "", action = "" } = useParams();
 
   interface DataType {
     key: string;
@@ -80,7 +80,7 @@ export const SubGroup: React.FC = () => {
 
   const handleAddRows = () => {
     setDataSource([
-      ...dataSource1,
+      ...dataSource,
       {
         key: "1",
         command: "click",
@@ -95,7 +95,7 @@ export const SubGroup: React.FC = () => {
   };
 
   const onAddAction = async () => {
-    await Service.post(`${Endpoint.v1.action.create(id, subid)}`, {
+    await Service.post(`${Endpoint.v1.action.create(id, action)}`, {
       body: savedData
     })
       .then(() => {})
@@ -106,7 +106,7 @@ export const SubGroup: React.FC = () => {
     <div>
       <Button onClick={handleAddRows}>Add Row</Button>
       <Matrix
-        dataSource={dataSource1}
+        dataSource={dataSource}
         defaultColumns={columns}
         onAddColumn={null}
         onAddRow={null}

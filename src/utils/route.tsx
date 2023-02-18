@@ -38,12 +38,12 @@ export const ROUTES = [
             }
           },
           {
-            path: ":id/actiongroup/:subid",
+            path: ":id/actiongroup/:action",
             component: () => {
-              const { SubGroup } = lazily(
-                () => import("../pages/action_group/subgroup")
+              const { Action } = lazily(
+                () => import("../pages/action_group/action")
               );
-              return SubGroup;
+              return Action;
             }
           }
         ]
