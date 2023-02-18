@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Empty, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { ApplicationCard } from "../../components/applicationCard";
 import { CreateApplicationModal } from "../../components/CreateApplicationModal";
@@ -10,10 +10,13 @@ export function Home() {
   const [applications, setApplications] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isListLoading, setIsListLoading] = useState(false);
 
   const fetchApplications = async () => {
+    setIsListLoading(true);
     let appList = await Service.get(Endpoint.v1.application.getApplications);
     setApplications(appList);
+    setIsListLoading(false);
   };
 
   const onAddApplication = async (data) => {
@@ -32,25 +35,41 @@ export function Home() {
   return (
     <>
       <div className="appHeader">
-        <h1>My Applications</h1>
-        <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+        <p>My Applications</p>
+        <Button
+          size="large"
+          type="primary"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
           Create
         </Button>
       </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-        {applications.map((app) => (
-          <ApplicationCard key={app.id} appDetails={app} />
-        ))}
+      {!applications.length && !isListLoading && (
+        <div className="emptyState">
+          <Empty description="No applications found. Please create a new one" />
+        </div>
+      )}
+      {isListLoading && (
+        <div className="loader">
+          <Spin size="large" />
+        </div>
+      )}
+      {!isListLoading && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+          {applications.map((app) => (
+            <ApplicationCard key={app.id} appDetails={app} />
+          ))}
 
-        {isCreateModalOpen && (
-          <CreateApplicationModal
-            isModalOpen={isCreateModalOpen}
-            onClose={() => setIsCreateModalOpen(false)}
-            onOk={onAddApplication}
-            isLoading={isLoading}
-          />
-        )}
-      </div>
+          {isCreateModalOpen && (
+            <CreateApplicationModal
+              isModalOpen={isCreateModalOpen}
+              onClose={() => setIsCreateModalOpen(false)}
+              onOk={onAddApplication}
+              isLoading={isLoading}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 }

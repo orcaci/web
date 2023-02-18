@@ -2,9 +2,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 0.25rem;
+  padding-bottom: 1rem;
 }
 
-.appHeader > h1 {
-  margin-top: 0;
+.appHeader > p {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.emptyState {
+  padding: 5rem;
+}
+
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5rem;
 }
