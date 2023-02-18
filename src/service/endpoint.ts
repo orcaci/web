@@ -15,6 +15,24 @@ export const Endpoint = {
     application: {
       getApplications: "/api/v1/app/",
       createApplication: "/api/v1/app/"
+    },
+    group: {
+      getList: (appId: string) => `/api/v1/app/${appId}/group/`,
+      create: (appId: string) => `/api/v1/app/${appId}/group/`,
+      update: (appId: string, groupId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}`,
+      delete: (appId: string, groupId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}`
+    },
+    action: {
+      list: (appId: string, groupId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}/action/`,
+      create: (appId: string, groupId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}/action/`,
+      update: (appId: string, groupId: string, actionId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}/action/${actionId}/`,
+      delete: (appId: string, groupId: string, actionId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}/action/${actionId}/`
     }
   }
 };

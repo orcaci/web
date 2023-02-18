@@ -9,16 +9,20 @@ import {
   DatabaseOutlined
 } from "@ant-design/icons";
 import "../layout.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { Content, Sider } = Layout;
 
 export function AppLayout() {
+  const navigate = useNavigate();
+
   const menuItems: MenuProps["items"] = [
-    { key: "test-suite", label: "Test Suite", icon: <PlayCircleOutlined /> },
-    { key: "test-case", label: "Test Case", icon: <ExperimentOutlined /> },
-    { key: "action-group", label: "Action Group", icon: <GroupOutlined /> },
-    { key: "data-table", label: "Data table", icon: <DatabaseOutlined /> }
+    { key: "testsuite", label: "Test Suite", icon: <PlayCircleOutlined /> },
+    { key: "testcase", label: "Test Case", icon: <ExperimentOutlined /> },
+    { key: "actiongroup", label: "Action Group", icon: <GroupOutlined /> },
+    { key: "datatable", label: "Data table", icon: <DatabaseOutlined /> }
   ];
+  const { id } = useParams();
 
   return (
     <Layout>
@@ -28,7 +32,9 @@ export function AppLayout() {
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["sub1"]}
           style={{ height: "100%", borderRight: 0 }}
-          items={menuItems}
+          items={menuItems.map((menu: any) => {
+            return { ...menu, onClick: () => navigate(`${id}/${menu.key}`) };
+          })}
         />
       </Sider>
       <Content>

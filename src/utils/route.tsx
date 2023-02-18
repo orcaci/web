@@ -27,6 +27,24 @@ export const ROUTES = [
               );
               return AppDashboard;
             }
+          },
+          {
+            path: ":id/actiongroup",
+            component: () => {
+              const { ActionGroup } = lazily(
+                () => import("../pages/action_group/index")
+              );
+              return ActionGroup;
+            }
+          },
+          {
+            path: ":id/actiongroup/:subid",
+            component: () => {
+              const { SubGroup } = lazily(
+                () => import("../pages/action_group/subgroup")
+              );
+              return SubGroup;
+            }
           }
         ]
       },
