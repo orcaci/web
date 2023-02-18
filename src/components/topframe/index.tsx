@@ -12,7 +12,7 @@ export function TopFrame(props: any) {
       label: "Sign Out",
       key: "sign-out",
       onClick: async () => {
-        navigate("/signin");
+        navigate("/auth/login");
       }
     }
   ];
