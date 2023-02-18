@@ -14,18 +14,26 @@ export function Home() {
 
   const fetchApplications = async () => {
     setIsListLoading(true);
-    let appList = await Service.get(Endpoint.v1.application.getApplications);
-    setApplications(appList);
-    setIsListLoading(false);
+    await Service.get(Endpoint.v1.application.getApplications)
+      .then((appList) => {
+        setApplications(appList);
+      })
+      .finally(() => {
+        setIsListLoading(false);
+      });
   };
 
   const onAddApplication = async (data) => {
     setIsLoading(true);
     await Service.post(Endpoint.v1.application.createApplication, {
       body: data
-    });
-    await fetchApplications();
-    setIsLoading(false);
+    })
+      .then(() => {
+        fetchApplications();
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
