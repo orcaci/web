@@ -8,3 +8,8 @@
   padding: 0;
   min-height: auto;
 }
+
+.auth-layout {
+  min-height: 100vh;
+  padding: 0;
+}
