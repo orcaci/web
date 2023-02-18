@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Empty, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { ApplicationCard } from "../../components/applicationCard";
@@ -47,10 +48,9 @@ export function Home() {
         <Button
           size="large"
           type="primary"
+          icon={<PlusOutlined />}
           onClick={() => setIsCreateModalOpen(true)}
-        >
-          Create
-        </Button>
+        />
       </div>
       {!applications.length && !isListLoading && (
         <div className="emptyState">
