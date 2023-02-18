@@ -1,0 +1,10 @@
+.appHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.25rem;
+}
+
+.appHeader > h1 {
+  margin-top: 0;
+}

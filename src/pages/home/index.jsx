@@ -1,19 +1,55 @@
-import React from "react";
+import { Button } from "antd";
+import { useEffect, useState } from "react";
 import { ApplicationCard } from "../../components/applicationCard";
-
-let mockAppList = [
-  { name: "Application1", id: "1" },
-  { name: "Application2", id: "2" }
-];
+import { CreateApplicationModal } from "../../components/CreateApplicationModal";
+import { Service } from "../../service";
+import { Endpoint } from "../../service/endpoint";
+import "./style.css";
 
 export function Home() {
+  const [applications, setApplications] = useState([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchApplications = async () => {
+    let appList = await Service.get(Endpoint.v1.application.getApplications);
+    setApplications(appList);
+  };
+
+  const onAddApplication = async (data) => {
+    setIsLoading(true);
+    await Service.post(Endpoint.v1.application.createApplication, {
+      body: data
+    });
+    await fetchApplications();
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchApplications();
+  }, []);
+
   return (
     <>
-      <h1 style={{marginBottom:"1.5"}}>My Applications</h1>
+      <div className="appHeader">
+        <h1>My Applications</h1>
+        <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+          Create
+        </Button>
+      </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-        {mockAppList.map((app) => (
-          <ApplicationCard appDetails={app} />
+        {applications.map((app) => (
+          <ApplicationCard key={app.id} appDetails={app} />
         ))}
+
+        {isCreateModalOpen && (
+          <CreateApplicationModal
+            isModalOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+            onOk={onAddApplication}
+            isLoading={isLoading}
+          />
+        )}
       </div>
     </>
   );

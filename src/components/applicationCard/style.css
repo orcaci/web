@@ -4,3 +4,20 @@
 .appCard:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
+.appDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.appDetails p {
+  text-align: center;
+  word-break: break-all;
+}
+.appName {
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+.appDescription {
+  margin-bottom: 0;
+}
