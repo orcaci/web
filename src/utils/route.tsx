@@ -74,5 +74,33 @@ export const ROUTES = [
         }
       }
     ]
+  },
+  {
+    key: "admin",
+    path: "/admin",
+    component: () => {
+      const { AdminLayout } = lazily(() => import("../layouts/admin"));
+      return AdminLayout;
+    },
+    nestedRoute: [
+      {
+        path: "usermanagement",
+        component: () => {
+          const { UserManagement } = lazily(
+            () => import("../pages/admin/user")
+          );
+          return UserManagement;
+        }
+      },
+      {
+        path: "rolemanagement",
+        component: () => {
+          const { RoleManagement } = lazily(
+            () => import("../pages/admin/role")
+          );
+          return RoleManagement;
+        }
+      }
+    ]
   }
 ];

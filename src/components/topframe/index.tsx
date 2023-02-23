@@ -47,6 +47,7 @@ export function TopFrame(props: any) {
           shape="circle"
           icon={<SettingOutlined />}
           size={"large"}
+          onClick={() => navigate("/admin/usermanagement")}
         />
 
         <Dropdown menu={{ items: menu }} placement="bottomLeft">
