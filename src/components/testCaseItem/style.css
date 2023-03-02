@@ -1,0 +1,8 @@
+.assertContainer {
+  display: flex;
+  gap: 1rem;
+}
+.ant-collapse {
+  position: relative;
+  z-index: 2;
+}

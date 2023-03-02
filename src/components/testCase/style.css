@@ -1,0 +1,14 @@
+.testCaseContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.connectingLine {
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  background: black;
+}
