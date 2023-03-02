@@ -45,6 +45,15 @@ export const ROUTES = [
               );
               return Action;
             }
+          },
+          {
+            path: ":id/testcase",
+            component: () => {
+              const { TestCasePage } = lazily(
+                () => import("../pages/test_case/index")
+              );
+              return TestCasePage;
+            }
           }
         ]
       },
