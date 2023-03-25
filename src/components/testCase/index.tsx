@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  ActionItem,
-  AddBlock,
-  AssertItem,
-  TestCaseItem,
-  TEST_CASE_ITEMS
-} from "../testCaseItem";
+import { TestCaseItem, TEST_CASE_ITEMS } from "../testCaseItem";
 import "./style.css";
 
 let MOCK_DATA = [
@@ -15,6 +9,10 @@ let MOCK_DATA = [
   },
   {
     type: TEST_CASE_ITEMS.ASSERT,
+    value: {}
+  },
+  {
+    type: TEST_CASE_ITEMS.IF,
     value: {}
   }
 ];
@@ -33,7 +31,7 @@ export function TestCase() {
       <div className="connectingLine"></div>
       {testcaseData.map((data: any, index: any) => (
         <>
-          <TestCaseItem type={data.type} />
+          <TestCaseItem  type={data.type} />
           <TestCaseItem
             handleMenuClick={(val: any) =>
               setTestCaseData(
