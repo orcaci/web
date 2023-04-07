@@ -4,13 +4,13 @@ import type { ColumnsType } from "antd/es/table";
 import { Select, Input, Button } from "antd";
 import "./style.css";
 import { Service } from "../../service";
-import { Endpoint } from "../../service/endpoint";
+import { Endpoint } from "service/endpoint";
 import { useParams } from "react-router-dom";
 
 export const Action: React.FC = () => {
   const [dataSource, setDataSource] = useState([] as any);
   const [savedData, setSavedData] = useState({ data_kind: "Static" } as object);
-  const { id = "", action = "" } = useParams();
+  const { appId = "", actionGroupId = "" } = useParams();
 
   interface DataType {
     key: string;
@@ -18,6 +18,24 @@ export const Action: React.FC = () => {
     target: string;
     value: string;
   }
+
+  /**
+   * fetchActions - will get all the Action for specific action group
+   */
+  const fetchActions = async () => {
+    console.log(appId, "    - ", actionGroupId);
+    await Service.get(`${Endpoint.v1.action.list(appId, actionGroupId)}`)
+      .then((actions) => {
+        setDataSource(actions);
+      })
+      .finally(() => {
+        // all the fallback code will come here
+      });
+  };
+
+  useEffect(() => {
+    fetchActions();
+  }, []);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -95,7 +113,7 @@ export const Action: React.FC = () => {
   };
 
   const onAddAction = async () => {
-    await Service.post(`${Endpoint.v1.action.create(id, action)}`, {
+    await Service.post(`${Endpoint.v1.action.create(appId, actionGroupId)}`, {
       body: savedData
     })
       .then(() => {})
@@ -115,3 +133,7 @@ export const Action: React.FC = () => {
     </div>
   );
 };
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
+}
+
