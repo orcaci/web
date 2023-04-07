@@ -16,13 +16,37 @@ export const Endpoint = {
       getApplications: "/api/v1/app/",
       createApplication: "/api/v1/app/"
     },
+    suite: {
+      list: (appId: string) => `/api/v1/app/${appId}/suite/`,
+      create: (appId: string) => `/api/v1/app/${appId}/suite/`,
+      update: (appId: string, suiteId: string) =>
+        `/api/v1/app/${appId}/suite/${suiteId}/`,
+      delete: (appId: string, suiteId: string) =>
+        `/api/v1/app/${appId}/suite/${suiteId}/`,
+      itemList: (appId: string, suiteId: string) =>
+      `/api/v1/app/${appId}/suite/${suiteId}/item/`,
+      itemCreate: (appId: string, suiteId: string) =>
+      `/api/v1/app/${appId}/suite/${suiteId}/item/`,
+    },
+    case: {
+      list: (appId: string) => `/api/v1/app/${appId}/case/`,
+      create: (appId: string) => `/api/v1/app/${appId}/case/`,
+      update: (appId: string, caseId: string) =>
+        `/api/v1/app/${appId}/case/${caseId}/`,
+      delete: (appId: string, caseId: string) =>
+        `/api/v1/app/${appId}/case/${caseId}/`,
+      itemList: (appId: string, caseId: string) =>
+      `/api/v1/app/${appId}/case/${caseId}/item/`,
+      itemCreate: (appId: string, caseId: string) =>
+      `/api/v1/app/${appId}/case/${caseId}/item/`,
+    },
     group: {
       getList: (appId: string) => `/api/v1/app/${appId}/group/`,
       create: (appId: string) => `/api/v1/app/${appId}/group/`,
       update: (appId: string, groupId: string) =>
-        `/api/v1/app/${appId}/group/${groupId}`,
+        `/api/v1/app/${appId}/group/${groupId}/`,
       delete: (appId: string, groupId: string) =>
-        `/api/v1/app/${appId}/group/${groupId}`
+        `/api/v1/app/${appId}/group/${groupId}/`
     },
     action: {
       list: (appId: string, groupId: string) =>

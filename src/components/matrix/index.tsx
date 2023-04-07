@@ -108,6 +108,7 @@ interface MatrixProps {
   onAddRow?: any;
   onAddColumn?: any;
   onRowEdit?: any;
+  rowKey?: string;
 }
 
 interface RowData {
@@ -116,7 +117,7 @@ interface RowData {
 }
 
 export const Matrix = (props: MatrixProps) => {
-  const { onAddColumn, onAddRow, dataSource, defaultColumns, onRowEdit } =
+  const { onAddColumn, onAddRow, dataSource, defaultColumns, onRowEdit, rowKey } =
     props;
 
   const [columnConfig, setColumnConfig] = useState<boolean>(false);
@@ -179,6 +180,7 @@ export const Matrix = (props: MatrixProps) => {
         rowClassName={() => "editable-row"}
         bordered
         dataSource={dataSource}
+        rowKey={rowKey}
         columns={columns as ColumnTypes}
       />
       {columnConfig && (

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Matrix } from "../../components/matrix";
+import React, { useEffect, useState } from "react";
+import { Matrix } from "components/matrix";
 import type { ColumnsType } from "antd/es/table";
 import { Select, Input, Button } from "antd";
-import "./style.css";
-import { Service } from "../../service";
+import { Service } from "service";
 import { Endpoint } from "service/endpoint";
 import { useParams } from "react-router-dom";
+import { ActionKind } from "constant/action_kind";
+import { Targets } from "constant/target";
 
 export const Action: React.FC = () => {
   const [dataSource, setDataSource] = useState([] as any);
@@ -14,9 +15,14 @@ export const Action: React.FC = () => {
 
   interface DataType {
     key: string;
-    command: string;
-    target: string;
-    value: string;
+    id: string;
+    description: string;
+    execution_order: string;
+    kind: string;
+    target_value: string;
+    target_kind: string;
+    data_value: string;
+    data_kind: string;
   }
 
   /**
@@ -32,6 +38,7 @@ export const Action: React.FC = () => {
         // all the fallback code will come here
       });
   };
+  
 
   useEffect(() => {
     fetchActions();
@@ -41,17 +48,15 @@ export const Action: React.FC = () => {
     {
       title: "Command",
       dataIndex: "command",
-      key: "command",
-      render: () => (
+      key: "kind",
+      render: (text, record) => (
         <Select
-          defaultValue="enter"
+          showSearch
+          defaultValue={record.kind}
           onChange={handleChange}
           id="command"
-          options={[
-            { value: "Enter", label: "enter", id: "kind" },
-            { value: "Click", label: "click", id: "kind" },
-            { value: "Open", label: "open", id: "kind" }
-          ]}
+          key="command"
+          options={ActionKind.map((x)=>{ return { key: x.value, label: x.value }})}
         />
       )
     },
@@ -59,21 +64,18 @@ export const Action: React.FC = () => {
       title: "Target",
       dataIndex: "target",
       key: "target",
-      render: () => (
+      render: (text, record) => (
         <div className="targetContainer">
           <Select
-            defaultValue="relative"
             onChange={handleChange}
-            options={[
-              { value: "Id", label: "relative", id: "target_kind" },
-              { value: "Xpath", label: "xpath", id: "target_kind" },
-              { value: "Css", label: "index", id: "target_kind" }
-            ]}
+            options={Targets}
+            defaultValue={record.target_kind}
           />
           <Input
             placeholder="Please enter target"
             onChange={onHandleInputChange}
             id="target_value"
+            defaultValue={record.target_value}
           />
         </div>
       )
@@ -81,12 +83,13 @@ export const Action: React.FC = () => {
     {
       title: "Value",
       dataIndex: "value",
-      key: "value",
-      render: () => (
+      key: "data_value",
+      render: (text, record) => (
         <Input
           placeholder="Please enter value"
           onChange={onHandleInputChange}
           id="data_value"
+          defaultValue={record.data_value}
         />
       )
     }
@@ -128,12 +131,10 @@ export const Action: React.FC = () => {
         defaultColumns={columns}
         onAddColumn={null}
         onAddRow={null}
+        rowKey="id"
       />
       <Button onClick={onAddAction}>Save</Button>
     </div>
   );
 };
-function useEffect(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}
 
