@@ -65,7 +65,7 @@ export const ActionGroupDashboard: React.FC = () => {
     }
   ];
 
-  const { id = "" } = useParams();
+  const { appId = "" } = useParams();
 
   useEffect(() => {
     fetchActionGroups();
@@ -83,7 +83,7 @@ export const ActionGroupDashboard: React.FC = () => {
    * fetchActionGroups - fetch all Action group from the specify Application
    */
   const fetchActionGroups = async () => {
-    await Service.get(`${Endpoint.v1.group.getList(id)}`)
+    await Service.get(`${Endpoint.v1.group.getList(appId)}`)
       .then((actionGroups) => {
         setDataSource(actionGroups);
       })
@@ -96,8 +96,8 @@ export const ActionGroupDashboard: React.FC = () => {
    * @param data 
    */
   const onAddNewActionGroup = async (data: any) => {
-    let payload = {...data, type_field: "ActionGroup", app_id: id}
-    await Service.post(`${Endpoint.v1.group.create(id)}`, {
+    let payload = {...data, type_field: "ActionGroup", app_id: appId}
+    await Service.post(`${Endpoint.v1.group.create(appId)}`, {
       body: payload
     })
       .then(() => {
@@ -111,7 +111,7 @@ export const ActionGroupDashboard: React.FC = () => {
    * @param groupId 
    */
   const onDeleteActionGroup = async (groupId: any) => {
-    await Service.delete(`${Endpoint.v1.group.delete(id, groupId)}`)
+    await Service.delete(`${Endpoint.v1.group.delete(appId, groupId)}`)
       .then(() => {
         fetchActionGroups();
       })

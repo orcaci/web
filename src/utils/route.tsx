@@ -20,7 +20,7 @@ export const ROUTES = [
         },
         nestedRoute: [
           {
-            path: ":id",
+            path: ":appId",
             component: () => {
               const { AppDashboard } = lazily(
                 () => import("pages/app/dashboard")
@@ -29,7 +29,7 @@ export const ROUTES = [
             }
           },
           {
-            path: ":id/dashboard",
+            path: ":appId/dashboard",
             component: () => {
               const { AppDashboard } = lazily(
                 () => import("pages/app/dashboard")
@@ -38,7 +38,7 @@ export const ROUTES = [
             }
           },
           {
-            path: ":id/testsuite",
+            path: ":appId/testsuite",
             component: () => {
               const { TestSuiteDashboard } = lazily(
                 () => import("pages/app/suite/list")
@@ -47,7 +47,7 @@ export const ROUTES = [
             }
           },
           {
-            path: ":id/testsuite/:testSuiteId",
+            path: ":appId/testsuite/:testSuiteId",
             component: () => {
               const { TestSuiteDashboard } = lazily(
                 () => import("pages/app/suite/list")
@@ -56,7 +56,7 @@ export const ROUTES = [
             }
           },
           {
-            path: ":id/actiongroup",
+            path: ":appId/actiongroup",
             component: () => {
               const { ActionGroupDashboard } = lazily(
                 () => import("pages/app/action_group/list")

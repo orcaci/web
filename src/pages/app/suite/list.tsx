@@ -53,7 +53,7 @@ export const TestSuiteDashboard: React.FC = () => {
     }
   ];
 
-  const { id = "" } = useParams();
+  const { appId = "" } = useParams();
 
   useEffect(() => {
     fetchTestSuites();
@@ -71,7 +71,7 @@ export const TestSuiteDashboard: React.FC = () => {
    * fetchTestSuites - fetch all Action group from the specify Application
    */
   const fetchTestSuites = async () => {
-    await Service.get(`${Endpoint.v1.suite.list(id)}`)
+    await Service.get(`${Endpoint.v1.suite.list(appId)}`)
       .then((testSuits) => {
         setDataSource(testSuits);
       })
@@ -84,8 +84,8 @@ export const TestSuiteDashboard: React.FC = () => {
    * @param data 
    */
   const onAddNewSuite = async (data: any) => {
-    let payload = {...data, app_id: id}
-    await Service.post(`${Endpoint.v1.suite.create(id)}`, {
+    let payload = {...data, app_id: appId}
+    await Service.post(`${Endpoint.v1.suite.create(appId)}`, {
       body: payload
     })
       .then(() => {
@@ -99,7 +99,7 @@ export const TestSuiteDashboard: React.FC = () => {
    * @param suiteId 
    */
   const onDeleteTestSuite = async (suiteId: any) => {
-    await Service.delete(`${Endpoint.v1.suite.delete(id, suiteId)}`)
+    await Service.delete(`${Endpoint.v1.suite.delete(appId, suiteId)}`)
       .then(() => {
         fetchTestSuites();
       })
