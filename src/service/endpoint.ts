@@ -49,6 +49,8 @@ export const Endpoint = {
         `/api/v1/app/${appId}/group/${groupId}/`
     },
     action: {
+      batch: (appId: string, groupId: string) =>
+        `/api/v1/app/${appId}/group/${groupId}/action/batch/`,
       list: (appId: string, groupId: string) =>
         `/api/v1/app/${appId}/group/${groupId}/action/`,
       create: (appId: string, groupId: string) =>

@@ -7,9 +7,11 @@ import { Endpoint } from "service/endpoint";
 import { useParams } from "react-router-dom";
 import { ActionKind } from "constant/action_kind";
 import { Targets } from "constant/target";
+import { v4 as uuidv4 } from 'uuid';
 
 export const Action: React.FC = () => {
   const [dataSource, setDataSource] = useState([] as any);
+  const [updateData, setupdateData] = useState({} as any);
   const [savedData, setSavedData] = useState({ data_kind: "Static" } as object);
   const { appId = "", actionGroupId = "" } = useParams();
 
@@ -38,6 +40,23 @@ export const Action: React.FC = () => {
         // all the fallback code will come here
       });
   };
+
+  const addNewRow = async () => {
+    let _uuid = uuidv4();
+    let dataSourceLength = dataSource.length + 1;
+    let action = {
+      "id": _uuid,
+      "execution_order": dataSourceLength,
+      "description": "",
+      "data_kind": null,
+      "data_value": null,
+      "target_kind": null,
+      "target_value": null,
+      "action_group_id": actionGroupId
+    }
+    setDataSource([ ...dataSource, action]);
+    console.log(dataSource);
+  }
   
 
   useEffect(() => {
@@ -51,12 +70,11 @@ export const Action: React.FC = () => {
       key: "kind",
       render: (text, record) => (
         <Select
-          showSearch
           defaultValue={record.kind}
-          onChange={handleChange}
-          id="command"
-          key="command"
-          options={ActionKind.map((x)=>{ return { key: x.value, label: x.value }})}
+          onChange={(value: any, o: any) => handleRowUpdate(record, "kind", value)}
+          id="command_select"
+          key="command_select"
+          options={ActionKind.map((x)=>{ return { key: x.value,  value: x.value, label: x.value }})}
         />
       )
     },
@@ -67,13 +85,13 @@ export const Action: React.FC = () => {
       render: (text, record) => (
         <div className="targetContainer">
           <Select
-            onChange={handleChange}
+            onChange={(value: any, o: any) => handleRowUpdate(record, "target_kind", value)}
             options={Targets}
             defaultValue={record.target_kind}
           />
           <Input
             placeholder="Please enter target"
-            onChange={onHandleInputChange}
+            onChange={(e: any) => handleRowUpdate(record, "target_value", e.target.value)}
             id="target_value"
             defaultValue={record.target_value}
           />
@@ -87,7 +105,7 @@ export const Action: React.FC = () => {
       render: (text, record) => (
         <Input
           placeholder="Please enter value"
-          onChange={onHandleInputChange}
+          onChange={(e: any) => handleRowUpdate(record, "data_value", e.target.value)}
           id="data_value"
           defaultValue={record.data_value}
         />
@@ -95,8 +113,17 @@ export const Action: React.FC = () => {
     }
   ];
 
-  const handleChange = (value: string, valueobj: any) => {
-    setSavedData({ ...savedData, [valueobj.id]: value, execution_order: 1 });
+  
+  const handleRowUpdate = (row: any, field: string, value: string) => {
+    console.log( row, value, field)
+    if(updateData[row.id]!==undefined){
+      row = updateData[row.id]
+    }
+    row[field] = value;
+    let up: any = {};
+    up[row.id] = row;
+
+    setupdateData(up);
   };
 
   const handleAddRows = () => {
@@ -116,16 +143,19 @@ export const Action: React.FC = () => {
   };
 
   const onAddAction = async () => {
-    await Service.post(`${Endpoint.v1.action.create(appId, actionGroupId)}`, {
-      body: savedData
-    })
-      .then(() => {})
-      .finally(() => {});
+    console.log(dataSource);
+    console.log(updateData)
+
+    // await Service.post(`${Endpoint.v1.action.batch(appId, actionGroupId)}`, {
+    //   body: savedData
+    // })
+    //   .then(() => {})
+    //   .finally(() => {});
   };
 
   return (
     <div>
-      <Button onClick={handleAddRows}>Add Row</Button>
+      <Button onClick={addNewRow}>Add Row</Button>
       <Matrix
         dataSource={dataSource}
         defaultColumns={columns}

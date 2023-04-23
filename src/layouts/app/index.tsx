@@ -7,7 +7,10 @@ import {
   ExperimentOutlined,
   GroupOutlined,
   DatabaseOutlined,
-  DashboardOutlined
+  DashboardOutlined,
+  ReconciliationOutlined,
+  TransactionOutlined,
+  InteractionOutlined
 } from "@ant-design/icons";
 import "../layout.css";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,9 +25,16 @@ export function AppLayout() {
     { key: "actiongroup", label: "Action Group", icon: <GroupOutlined /> },
     { key: "testsuite", label: "Test Suite", icon: <PlayCircleOutlined /> },
     { key: "testcase", label: "Test Case", icon: <ExperimentOutlined /> },
-    { key: "datatable", label: "Data table", icon: <DatabaseOutlined /> }
+    { key: "datatable", label: "Data table", icon: <DatabaseOutlined /> },
+    { 
+      key: "log", label: "Log", icon: <ReconciliationOutlined /> ,
+      children: [
+        { key: "execution", label: "Exectution log", icon: <TransactionOutlined /> },
+        { key: "activity", label: "Activity log", icon: <InteractionOutlined /> },
+      ],
+    }
   ];
-  const { id } = useParams();
+  const { appId } = useParams();
 
   return (
     <Layout>
@@ -34,9 +44,17 @@ export function AppLayout() {
           defaultSelectedKeys={["dashboard"]}
           defaultOpenKeys={["dashboard"]}
           style={{ height: "100%", borderRight: 0 }}
-          items={menuItems.map((menu: any) => {
-            return { ...menu, onClick: () => navigate(`${id}/${menu.key}`) };
-          })}
+          items={
+            menuItems.map((menu: any) => {
+              if(menu?.children){
+                menu.children = menu.children.map((sub_menu: any) => {
+                  return { ...sub_menu, onClick: () => navigate(`${appId}/${menu.key}/${sub_menu.key}`) };
+                });
+                return menu;
+              }
+              return { ...menu, onClick: () => navigate(`${appId}/${menu.key}`) };
+            })
+          }
         />
       </Sider>
       <Content>
