@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { TestCaseItem } from "..";
-import { AddBlock } from "../addBlock";
+import { TestCaseItem } from "../index";
+import { AddBlock } from "../addBlock/index";
 
 export function IterationBlock() {
   const [components, setComponents] = useState<any[]>([]);

@@ -1,47 +1,64 @@
 import { useEffect, useState } from "react";
 import { TestCaseItem, TEST_CASE_ITEMS } from "../testCaseItem";
 import "./style.css";
-
-let MOCK_DATA = [
-  {
-    type: TEST_CASE_ITEMS.ACTION,
-    value: {}
-  },
-  {
-    type: TEST_CASE_ITEMS.ASSERT,
-    value: {}
-  },
-  {
-    type: TEST_CASE_ITEMS.IF,
-    value: {}
-  }
-];
+import { TestCaseexecutionItem } from "../../pages/test_case";
 
 function insert(i: number, arr: any, ...rest: any) {
   arr.splice(i, 0, ...rest);
   return arr;
 }
-export function TestCase() {
-  const [testcaseData, setTestCaseData] = useState([] as any);
+
+interface TestCaseProp {
+  data: TestCaseexecutionItem[];
+}
+
+export function TestCase(prop: TestCaseProp) {
+  const [testcaseData, setTestCaseData] = useState(
+    [] as TestCaseexecutionItem[]
+  );
+
   useEffect(() => {
-    setTestCaseData(MOCK_DATA);
-  }, []);
+    setTestCaseData(prop.data);
+  }, [prop.data]);
+
+  if (!testcaseData?.length) {
+    return (
+      <div className="testCaseContainer">
+        No data found
+        <TestCaseItem
+          handleMenuClick={(val: any) => {
+            setTestCaseData(
+              insert(0 + 1, [...testcaseData], { type_field: val.key })
+            );
+          }}
+          type={TEST_CASE_ITEMS.ADD}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="testCaseContainer">
       <div className="connectingLine"></div>
-      {testcaseData.map((data: any, index: any) => (
-        <>
-          <TestCaseItem  type={data.type} />
-          <TestCaseItem
-            handleMenuClick={(val: any) =>
-              setTestCaseData(
-                insert(index + 1, [...testcaseData], { type: val.key })
-              )
-            }
-            type={TEST_CASE_ITEMS.ADD}
-          />
-        </>
-      ))}
+      {testcaseData &&
+        testcaseData.map((data: TestCaseexecutionItem, index: number) => (
+          <>
+            <TestCaseItem
+              key={data.case_id}
+              selected={data.reference}
+              type={data.type_field}
+            />
+            <TestCaseItem
+              key={`${data.case_id}-add`}
+              handleMenuClick={(val: any) => {
+                setTestCaseData(
+                  insert(index + 1, [...testcaseData], { type_field: val.key })
+                );
+              }}
+              type={TEST_CASE_ITEMS.ADD}
+            />
+          </>
+        ))}
     </div>
   );
 }

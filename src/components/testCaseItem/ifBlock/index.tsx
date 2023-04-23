@@ -1,12 +1,12 @@
 import { Collapse, Select } from "antd";
-import { useState } from "react";
+import  { useState } from "react";
 import { v4 as generateUniqueString } from "uuid";
 // import { useParams } from "react-router-dom";
 import { useResizerObserver } from "../../../hooks/resizeobserver";
 // import { Service } from "../../../service";
 // import { Endpoint } from "../../../service/endpoint";
-import { TestCaseItem } from "..";
-import { AddBlock } from "../addBlock";
+import { TestCaseItem } from "../index";
+import { AddBlock } from "../addBlock/index";
 import "../style.css";
 
 const { Panel } = Collapse;

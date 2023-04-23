@@ -1,7 +1,8 @@
+import React from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Dropdown, MenuProps } from "antd";
 import "../style.css";
-import { TEST_CASE_ITEMS } from "..";
+import { TEST_CASE_ITEMS } from "../index";
 
 interface AddBlockProps {
   handleMenuClick: any;
@@ -18,14 +19,14 @@ export function AddBlock(props: AddBlockProps) {
       label: "Assert",
       key: TEST_CASE_ITEMS.ASSERT
     },
-    {
-      label: "If Block",
-      key: TEST_CASE_ITEMS.IF
-    },
-    {
-      label: "Iteration",
-      key: TEST_CASE_ITEMS.FOR_LOOP
-    }
+    // {
+    //   label: "If Block",
+    //   key: TEST_CASE_ITEMS.IF
+    // },
+    // {
+    //   label: "Iteration",
+    //   key: TEST_CASE_ITEMS.FOR_LOOP
+    // }
   ];
 
   const menuProps = {
