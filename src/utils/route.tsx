@@ -8,14 +8,14 @@ export const ROUTES = [
     key: "authenticated",
     path: "",
     component: () => {
-      const { HomeLayout } = lazily(() => import("layouts/home"));
+      const { HomeLayout } = lazily(() => import("../layouts/home"));
       return HomeLayout;
     },
     nestedRoute: [
       {
         path: "/app",
         component: () => {
-          const { AppLayout } = lazily(() => import("layouts/app"));
+          const { AppLayout } = lazily(() => import("../layouts/app"));
           return AppLayout;
         },
         nestedRoute: [
@@ -23,7 +23,7 @@ export const ROUTES = [
             path: ":appId",
             component: () => {
               const { AppDashboard } = lazily(
-                () => import("pages/app/dashboard")
+                () => import("../pages/app/dashboard")
               );
               return AppDashboard;
             }
@@ -32,7 +32,7 @@ export const ROUTES = [
             path: ":appId/dashboard",
             component: () => {
               const { AppDashboard } = lazily(
-                () => import("pages/app/dashboard")
+                () => import("../pages/app/dashboard")
               );
               return AppDashboard;
             }
@@ -41,7 +41,7 @@ export const ROUTES = [
             path: ":appId/testsuite",
             component: () => {
               const { TestSuiteDashboard } = lazily(
-                () => import("pages/app/suite/list")
+                () => import("../pages/app/suite/list")
               );
               return TestSuiteDashboard;
             }
@@ -50,7 +50,7 @@ export const ROUTES = [
             path: ":appId/testsuite/:testSuiteId",
             component: () => {
               const { TestSuiteDashboard } = lazily(
-                () => import("pages/app/suite/list")
+                () => import("../pages/app/suite/list")
               );
               return TestSuiteDashboard;
             }
@@ -59,7 +59,7 @@ export const ROUTES = [
             path: ":appId/actiongroup",
             component: () => {
               const { ActionGroupDashboard } = lazily(
-                () => import("pages/app/action_group/list")
+                () => import("../pages/app/action_group/list")
               );
               return ActionGroupDashboard;
             }
@@ -68,7 +68,7 @@ export const ROUTES = [
             path: ":appId/actiongroup/:actionGroupId",
             component: () => {
               const { Action } = lazily(
-                () => import("pages/app/action_group")
+                () => import("../pages/app/action_group")
               );
               return Action;
             }
@@ -77,22 +77,13 @@ export const ROUTES = [
             path: ":appId/testcase",
             component: () => {
               const { TestCaseDashboard } = lazily(
-                () => import("pages/app/case/list")
+                () => import("../pages/app/case/list")
               );
               return TestCaseDashboard;
             }
           },
           {
             path: ":appId/testcase/:testCaseId",
-            component: () => {
-              const { Action } = lazily(
-                () => import("pages/app/action_group")
-              );
-              return Action;
-            }
-          },
-          {
-            path: ":id/testcase",
             component: () => {
               const { TestCasePage } = lazily(
                 () => import("../pages/test_case/index")
@@ -105,7 +96,7 @@ export const ROUTES = [
       {
         path: "/",
         component: () => {
-          const { Home } = lazily(() => import("pages/home"));
+          const { Home } = lazily(() => import("../pages/home"));
           return Home;
         },
         nestedRoute: []
@@ -116,14 +107,14 @@ export const ROUTES = [
     key: "public",
     path: "/auth",
     component: () => {
-      const { AuthLayout } = lazily(() => import("layouts/auth"));
+      const { AuthLayout } = lazily(() => import("../layouts/auth"));
       return AuthLayout;
     },
     nestedRoute: [
       {
         path: "login",
         component: () => {
-          const { Login } = lazily(() => import("pages/auth/login/login"));
+          const { Login } = lazily(() => import("../pages/auth/login/login"));
           return Login;
         }
       }
