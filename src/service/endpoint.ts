@@ -24,9 +24,9 @@ export const Endpoint = {
       delete: (appId: string, suiteId: string) =>
         `/api/v1/app/${appId}/suite/${suiteId}/`,
       itemList: (appId: string, suiteId: string) =>
-      `/api/v1/app/${appId}/suite/${suiteId}/item/`,
+        `/api/v1/app/${appId}/suite/${suiteId}/item/`,
       itemCreate: (appId: string, suiteId: string) =>
-      `/api/v1/app/${appId}/suite/${suiteId}/item/`,
+        `/api/v1/app/${appId}/suite/${suiteId}/item/`
     },
     case: {
       list: (appId: string) => `/api/v1/app/${appId}/case/`,
@@ -36,9 +36,9 @@ export const Endpoint = {
       delete: (appId: string, caseId: string) =>
         `/api/v1/app/${appId}/case/${caseId}/`,
       itemList: (appId: string, caseId: string) =>
-      `/api/v1/app/${appId}/case/${caseId}/item/`,
+        `/api/v1/app/${appId}/case/${caseId}/item/`,
       itemCreate: (appId: string, caseId: string) =>
-      `/api/v1/app/${appId}/case/${caseId}/item/`,
+        `/api/v1/app/${appId}/case/${caseId}/item/`
     },
     group: {
       getList: (appId: string) => `/api/v1/app/${appId}/group/`,
