@@ -90,6 +90,15 @@ export const ROUTES = [
               );
               return Action;
             }
+          },
+          {
+            path: ":id/testcase",
+            component: () => {
+              const { TestCasePage } = lazily(
+                () => import("../pages/test_case/index")
+              );
+              return TestCasePage;
+            }
           }
         ]
       },
@@ -116,6 +125,34 @@ export const ROUTES = [
         component: () => {
           const { Login } = lazily(() => import("pages/auth/login/login"));
           return Login;
+        }
+      }
+    ]
+  },
+  {
+    key: "admin",
+    path: "/admin",
+    component: () => {
+      const { AdminLayout } = lazily(() => import("../layouts/admin"));
+      return AdminLayout;
+    },
+    nestedRoute: [
+      {
+        path: "usermanagement",
+        component: () => {
+          const { UserManagement } = lazily(
+            () => import("../pages/admin/user")
+          );
+          return UserManagement;
+        }
+      },
+      {
+        path: "rolemanagement",
+        component: () => {
+          const { RoleManagement } = lazily(
+            () => import("../pages/admin/role")
+          );
+          return RoleManagement;
         }
       }
     ]
