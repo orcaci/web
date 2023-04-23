@@ -3,6 +3,7 @@ import { AssertBlock } from "./assertBlock";
 import { AddBlock } from "./addBlock";
 import { IFBlock } from "./ifBlock";
 import "./style.css";
+import { IterationBlock } from "./iterationBlock";
 
 interface TestCaseItemProp {
   type: string;
@@ -28,5 +29,6 @@ export const TEST_CASE_ITEM_COMPONENT_MAPPING = {
   [TEST_CASE_ITEMS.ACTION]: ActionBlock,
   [TEST_CASE_ITEMS.ASSERT]: AssertBlock,
   [TEST_CASE_ITEMS.ADD]: AddBlock,
-  [TEST_CASE_ITEMS.IF]: IFBlock
+  [TEST_CASE_ITEMS.IF]: IFBlock,
+  [TEST_CASE_ITEMS.FOR_LOOP]: IterationBlock
 };

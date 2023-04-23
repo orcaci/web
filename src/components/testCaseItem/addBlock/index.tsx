@@ -5,6 +5,7 @@ import { TEST_CASE_ITEMS } from "..";
 
 interface AddBlockProps {
   handleMenuClick: any;
+  style?: React.CSSProperties;
 }
 
 export function AddBlock(props: AddBlockProps) {
@@ -20,11 +21,11 @@ export function AddBlock(props: AddBlockProps) {
     {
       label: "If Block",
       key: TEST_CASE_ITEMS.IF
+    },
+    {
+      label: "Iteration",
+      key: TEST_CASE_ITEMS.FOR_LOOP
     }
-    // {
-    //   label: "For Loop",
-    //   key: TEST_CASE_ITEMS.FOR_LOOP
-    // }
   ];
 
   const menuProps = {
@@ -33,7 +34,7 @@ export function AddBlock(props: AddBlockProps) {
   };
   return (
     <Dropdown menu={menuProps}>
-      <Button style={{ width: "fit-content" }} shape="circle">
+      <Button style={props.style} shape="circle">
         <PlusOutlined />
       </Button>
     </Dropdown>
