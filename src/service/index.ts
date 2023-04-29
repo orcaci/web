@@ -32,7 +32,7 @@ export const Service = {
     options.method = "POST";
     return sendRequest(url, options);
   },
-  update: (url: string, options: any) => {
+  update: (url: string, options: any = {}) => {
     options.method = "PUT";
     return sendRequest(url, options);
   },
