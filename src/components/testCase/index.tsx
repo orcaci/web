@@ -47,6 +47,8 @@ export function TestCase(prop: TestCaseProp) {
               key={data.case_id}
               selected={data.reference}
               type={data.type_field}
+              id={data.id}
+              handleMenuClick={()=>{}}
             />
             <TestCaseItem
               key={`${data.case_id}-add`}

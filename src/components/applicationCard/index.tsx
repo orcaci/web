@@ -1,8 +1,13 @@
 import { Card } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import { Application } from "pages/home";
 
-export function ApplicationCard(prop: any) {
+interface ApplicationCardProps {
+  appDetails: Application;
+}
+
+export function ApplicationCard(prop: ApplicationCardProps) {
   const { appDetails } = prop;
   const navigate = useNavigate();
   return (

@@ -1,5 +1,5 @@
 import { Collapse, Select } from "antd";
-import  { useState } from "react";
+import { useState } from "react";
 import { v4 as generateUniqueString } from "uuid";
 // import { useParams } from "react-router-dom";
 import { useResizerObserver } from "../../../hooks/resizeobserver";
@@ -140,7 +140,11 @@ function IFBlockSubMenu(props: IfBlockSubmenuProps) {
             }}
           >
             {falseBlockComponents.map((item: any, index: number) => (
-              <TestCaseItem type={item.type} key={`${index}-${item.type}`} />
+              <TestCaseItem
+                type={item.type}
+                key={`${index}-${item.type}`}
+                handleMenuClick={() => {}}
+              />
             ))}
           </div>
           <AddBlock
@@ -222,7 +226,11 @@ function IFBlockSubMenu(props: IfBlockSubmenuProps) {
             }}
           >
             {trueBlockComponents.map((item: any, index: number) => (
-              <TestCaseItem type={item.type} key={`${index}-${item.type}`} />
+              <TestCaseItem
+                type={item.type}
+                key={`${index}-${item.type}`}
+                handleMenuClick={() => {}}
+              />
             ))}
           </div>
           <AddBlock

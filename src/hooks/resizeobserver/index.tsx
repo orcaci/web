@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useResizerObserver = (elementSelector: any) => {
+export const useResizerObserver = (elementSelector: string) => {
   const [clientHeight, setClientHeight] = useState(0);
   const [clientWidth, setClientWidth] = useState(0);
 

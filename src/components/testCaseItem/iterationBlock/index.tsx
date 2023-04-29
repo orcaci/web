@@ -50,7 +50,11 @@ export function IterationBlock() {
         }}
       />
       {components.map((item: any, index: number) => (
-        <TestCaseItem type={item.type} key={`${index}-${item.type}`} />
+        <TestCaseItem
+          type={item.type}
+          key={`${index}-${item.type}`}
+          handleMenuClick={() => {}}
+        />
       ))}
     </div>
   );

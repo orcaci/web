@@ -7,6 +7,12 @@ import { Service } from "../../service";
 import { Endpoint } from "../../service/endpoint";
 import "./style.css";
 
+export interface Application {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export function Home() {
   const [applications, setApplications] = useState([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -64,7 +70,7 @@ export function Home() {
       )}
       {!isListLoading && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-          {applications.map((app: any) => (
+          {applications.map((app: Application) => (
             <ApplicationCard key={app.id} appDetails={app} />
           ))}
 

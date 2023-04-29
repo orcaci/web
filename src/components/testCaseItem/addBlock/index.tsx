@@ -3,9 +3,10 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Dropdown, MenuProps } from "antd";
 import "../style.css";
 import { TEST_CASE_ITEMS } from "../index";
+import { MenuClickEventHandler } from 'rc-menu/lib/interface'
 
 interface AddBlockProps {
-  handleMenuClick: any;
+  handleMenuClick: MenuClickEventHandler;
   style?: React.CSSProperties;
 }
 
