@@ -30,11 +30,10 @@ export function AssertBlock(prop: AssertBlockProp) {
   const [assertData, setAssertData] = useState({} as ActionItem);
 
   const fetchAssertData = async () => {
-    await Service.get(Endpoint.v1.action.list(appId, prop.selected))
+    prop.selected && await Service.get(Endpoint.v1.action.list(appId, prop.selected))
       .then((data) => {
         setAssertData(data[0]);
       })
-      .finally(() => {});
   };
 
   const updateBlock = async (data: any) => {
@@ -57,7 +56,7 @@ export function AssertBlock(prop: AssertBlockProp) {
   const handleChange = (value: string, valueobj: any) => {
     setAssertData({ ...assertData, [valueobj.id]: value });
   };
-  
+
   const onHandleInputChange = (event: any) => {
     setAssertData({ ...assertData, [event.target.id]: event.target.value });
   };
