@@ -37,13 +37,27 @@ export function AssertBlock(prop: AssertBlockProp) {
       .finally(() => {});
   };
 
+  const updateBlock = async (data: any) => {
+    await Service.update(
+      Endpoint.v1.action.update(appId, data.action_group_id, data.id),
+      {
+        body: data
+      }
+    );
+  };
+
   useEffect(() => {
     fetchAssertData();
   }, []);
 
+  useEffect(() => {
+    Object.keys(assertData).length && updateBlock(assertData);
+  }, [assertData]);
+
   const handleChange = (value: string, valueobj: any) => {
     setAssertData({ ...assertData, [valueobj.id]: value });
   };
+  
   const onHandleInputChange = (event: any) => {
     setAssertData({ ...assertData, [event.target.id]: event.target.value });
   };
