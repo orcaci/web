@@ -1,25 +1,17 @@
-import { useEffect, useState } from "react";
+import { shallow } from "zustand/shallow";
 import { TestCaseItem, TEST_CASE_ITEMS } from "../testCaseItem";
 import "./style.css";
-import { TestCaseexecutionItem } from "../../pages/test_case";
+import { TestCaseData, TestCaseexecutionItem } from "../../pages/test_case";
+import { useTestCaseStore } from "store/testCaseStore";
 
-function insert(i: number, arr: any, ...rest: any) {
-  arr.splice(i, 0, ...rest);
-  return arr;
-}
+export function TestCase() {
 
-interface TestCaseProp {
-  data: TestCaseexecutionItem[];
-}
-
-export function TestCase(prop: TestCaseProp) {
-  const [testcaseData, setTestCaseData] = useState(
-    [] as TestCaseexecutionItem[]
+  const { case_execution: testcaseData } = useTestCaseStore(
+    (state: TestCaseData) => ({
+      case_execution: state.case_execution
+    }),
+    shallow
   );
-
-  useEffect(() => {
-    setTestCaseData(prop.data);
-  }, [prop.data]);
 
   if (!testcaseData?.length) {
     return (
@@ -27,9 +19,7 @@ export function TestCase(prop: TestCaseProp) {
         No data found
         <TestCaseItem
           handleMenuClick={(val: any) => {
-            setTestCaseData(
-              insert(0 + 1, [...testcaseData], { type_field: val.key })
-            );
+            useTestCaseStore.getState().addBlock(1, val.key);
           }}
           type={TEST_CASE_ITEMS.ADD}
         />
@@ -48,14 +38,12 @@ export function TestCase(prop: TestCaseProp) {
               selected={data.reference}
               type={data.type_field}
               id={data.id}
-              handleMenuClick={()=>{}}
+              handleMenuClick={() => {}}
             />
             <TestCaseItem
               key={`${data.case_id}-add`}
               handleMenuClick={(val: any) => {
-                setTestCaseData(
-                  insert(index + 1, [...testcaseData], { type_field: val.key })
-                );
+                useTestCaseStore.getState().addBlock(index + 1, val.key);
               }}
               type={TEST_CASE_ITEMS.ADD}
             />

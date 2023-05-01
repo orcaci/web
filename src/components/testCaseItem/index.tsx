@@ -1,14 +1,14 @@
 import { ActionBlock } from "./actionBlock";
 import { AssertBlock } from "./assertBlock";
 import { AddBlock } from "./addBlock";
-import { IFBlock } from "./ifBlock";
+//import { IFBlock } from "./ifBlock";
 import "./style.css";
-import { IterationBlock } from "./iterationBlock";
+//import { IterationBlock } from "./iterationBlock";
 import { MenuClickEventHandler } from 'rc-menu/lib/interface'
 
 interface TestCaseItemProp {
   type: string;
-  handleMenuClick: MenuClickEventHandler;
+  handleMenuClick?: MenuClickEventHandler;
   selected?: string;
   id?: string;
 }

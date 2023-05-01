@@ -30,10 +30,13 @@ export function AssertBlock(prop: AssertBlockProp) {
   const [assertData, setAssertData] = useState({} as ActionItem);
 
   const fetchAssertData = async () => {
-    prop.selected && await Service.get(Endpoint.v1.action.list(appId, prop.selected))
-      .then((data) => {
-        setAssertData(data[0]);
-      })
+    if (prop.selected) {
+      await Service.get(Endpoint.v1.action.list(appId, prop.selected)).then(
+        (data) => {
+          setAssertData(data[0] || {});
+        }
+      );
+    }
   };
 
   const updateBlock = async (data: any) => {
@@ -47,17 +50,15 @@ export function AssertBlock(prop: AssertBlockProp) {
 
   useEffect(() => {
     fetchAssertData();
-  }, []);
-
-  useEffect(() => {
-    Object.keys(assertData).length && updateBlock(assertData);
-  }, [assertData]);
+  }, [prop.selected]);
 
   const handleChange = (value: string, valueobj: any) => {
+    updateBlock({ ...assertData, [valueobj.id]: value });
     setAssertData({ ...assertData, [valueobj.id]: value });
   };
 
   const onHandleInputChange = (event: any) => {
+    updateBlock({ ...assertData, [event.target.id]: event.target.value });
     setAssertData({ ...assertData, [event.target.id]: event.target.value });
   };
 

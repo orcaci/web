@@ -38,7 +38,15 @@ export const Endpoint = {
       itemList: (appId: string, caseId: string) =>
         `/api/v1/app/${appId}/case/${caseId}/item/`,
       itemCreate: (appId: string, caseId: string) =>
-        `/api/v1/app/${appId}/case/${caseId}/item/`
+        `/api/v1/app/${appId}/case/${caseId}/item/`,
+      batchUpdate: (appId: string, caseId: string) =>
+        `/api/v1/app/${appId}/case/${caseId}/batch/`,
+      updateCaseBlock: (appId: string, caseId: string, blockId: string) =>
+        `/api/v1/app/${appId}/case/${caseId}/block/${blockId}/`,
+      insertBlock: (appId: string, caseId: string, index?: number) =>
+        index
+          ? `/api/v1/app/${appId}/case/${caseId}/insert/?index=${index}`
+          : `/api/v1/app/${appId}/case/${caseId}/insert/`
     },
     group: {
       getList: (appId: string) => `/api/v1/app/${appId}/group/`,

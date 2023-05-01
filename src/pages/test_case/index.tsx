@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TestCase } from "../../components/testCase";
 import { useParams } from "react-router-dom";
-import { Service } from "../../service";
-import { Endpoint } from "../../service/endpoint";
+import { useTestCaseStore } from "store/testCaseStore";
 
 export interface TestCaseexecutionItem {
   case_id: string;
@@ -14,7 +13,7 @@ export interface TestCaseexecutionItem {
   type_field: string;
 }
 
-interface TestCaseData {
+export interface TestCaseData {
   id: string;
   name: string;
   description: string;
@@ -24,19 +23,10 @@ interface TestCaseData {
 
 export function TestCasePage() {
   const { appId = "", testCaseId = "" } = useParams();
-  const [testcaseData, setTestCaseData] = useState({} as TestCaseData);
-
-  const fetchTestCase = async () => {
-    await Service.get(Endpoint.v1.case.itemList(appId, testCaseId))
-      .then((data) => {
-        setTestCaseData(data);
-      })
-      .finally(() => {});
-  };
 
   useEffect(() => {
-    fetchTestCase();
-  }, []);
+    useTestCaseStore.getState().loadData(appId, testCaseId);
+  }, [appId, testCaseId]);
 
-  return <TestCase data={testcaseData.case_execution} />;
+  return <TestCase />;
 }
