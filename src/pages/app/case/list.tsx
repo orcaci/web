@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
 import { CreateModal } from "components/createmodel";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { PageHeader } from "components/pageHeader";
 
 interface DataType {
   key: string;
@@ -25,7 +26,11 @@ export const TestCaseDashboard: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (text, record) => <Button type="link" onClick={() => onHandleClick(record)}>{text}</Button>
+      render: (text, record) => (
+        <Button type="link" onClick={() => onHandleClick(record)}>
+          {text}
+        </Button>
+      )
     },
     {
       title: "Description",
@@ -51,16 +56,27 @@ export const TestCaseDashboard: React.FC = () => {
           // </Space>
 
           <Space size="middle">
-            <Button type="primary" onClick={() => onHandleClick(record)} 
-                shape="round" icon={<EditOutlined />}  size="small"/>
+            <Button
+              type="primary"
+              onClick={() => onHandleClick(record)}
+              shape="round"
+              icon={<EditOutlined />}
+              size="small"
+            />
             <Popconfirm
-                title="Delete the Action Group"
-                description="Are you sure to delete this Action Group?"
-                onConfirm={() => onDeleteTestCase(record.id)}
-                okText="Yes"
-                cancelText="No"
+              title="Delete the Action Group"
+              description="Are you sure to delete this Action Group?"
+              onConfirm={() => onDeleteTestCase(record.id)}
+              okText="Yes"
+              cancelText="No"
             >
-                <Button danger type="primary" shape="round" icon={<DeleteOutlined />} size="small" />
+              <Button
+                danger
+                type="primary"
+                shape="round"
+                icon={<DeleteOutlined />}
+                size="small"
+              />
             </Popconfirm>
           </Space>
         );
@@ -75,8 +91,8 @@ export const TestCaseDashboard: React.FC = () => {
   }, []);
 
   /**
-   * onHandleClick - Handle the Action redirect 
-   * @param record 
+   * onHandleClick - Handle the Action redirect
+   * @param record
    */
   const onHandleClick = (record: any) => {
     navigate(record.id);
@@ -94,12 +110,12 @@ export const TestCaseDashboard: React.FC = () => {
   };
 
   /**
-   * onAddNewCase - will create new Test Case and 
+   * onAddNewCase - will create new Test Case and
    * Update the existing grid of all the Test Case
-   * @param data 
+   * @param data
    */
   const onAddNewCase = async (data: any) => {
-    let payload = {...data, app_id: appId}
+    let payload = { ...data, app_id: appId };
     await Service.post(`${Endpoint.v1.case.create(appId)}`, {
       body: payload
     })
@@ -111,7 +127,7 @@ export const TestCaseDashboard: React.FC = () => {
 
   /**
    * onDeleteTestCase - Delete the Action Group with a confirmation
-   * @param caseId 
+   * @param caseId
    */
   const onDeleteTestCase = async (caseId: any) => {
     await Service.delete(`${Endpoint.v1.case.delete(appId, caseId)}`)
@@ -123,26 +139,24 @@ export const TestCaseDashboard: React.FC = () => {
 
   return (
     <>
-      <Button
-        size="large"
-        type="primary"
-        onClick={() => setIsCreateModalOpen(true)}
-      >
-        Add
-      </Button>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        rowKey="name"
+      <PageHeader
+        title="Test Case"
+        extra={
+          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+            <PlusOutlined />
+          </Button>
+        }
       />
+      <Table columns={columns} dataSource={dataSource} rowKey="name" />
       <div>
         {isCreateModalOpen && (
           <CreateModal
             isModalOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
             onOk={onAddNewCase}
-            isLoading={false} 
-            modelFor={"Test Case"} />
+            isLoading={false}
+            modelFor={"Test Case"}
+          />
         )}
       </div>
     </>

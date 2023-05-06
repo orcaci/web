@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
 import { CreateModal } from "components/createmodel";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { PageHeader } from "components/pageHeader";
 
 interface DataType {
   key: string;
@@ -25,7 +26,11 @@ export const ActionGroupDashboard: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (text, record) => <Button type="link" onClick={() => onHandleClick(record)}>{text}</Button>
+      render: (text, record) => (
+        <Button type="link" onClick={() => onHandleClick(record)}>
+          {text}
+        </Button>
+      )
     },
     {
       title: "Description",
@@ -48,16 +53,27 @@ export const ActionGroupDashboard: React.FC = () => {
       render: (record) => {
         return (
           <Space size="middle">
-            <Button type="primary" onClick={() => onHandleClick(record)} 
-                shape="round" icon={<EditOutlined />}  size="small"/>
+            <Button
+              type="primary"
+              onClick={() => onHandleClick(record)}
+              shape="round"
+              icon={<EditOutlined />}
+              size="small"
+            />
             <Popconfirm
-                title="Delete the Action Group"
-                description="Are you sure to delete this Action Group?"
-                onConfirm={() => onDeleteActionGroup(record.id)}
-                okText="Yes"
-                cancelText="No"
+              title="Delete the Action Group"
+              description="Are you sure to delete this Action Group?"
+              onConfirm={() => onDeleteActionGroup(record.id)}
+              okText="Yes"
+              cancelText="No"
             >
-                <Button danger type="primary" shape="round" icon={<DeleteOutlined />} size="small" />
+              <Button
+                danger
+                type="primary"
+                shape="round"
+                icon={<DeleteOutlined />}
+                size="small"
+              />
             </Popconfirm>
           </Space>
         );
@@ -72,8 +88,8 @@ export const ActionGroupDashboard: React.FC = () => {
   }, []);
 
   /**
-   * onHandleClick - Handle the Action redirect 
-   * @param record 
+   * onHandleClick - Handle the Action redirect
+   * @param record
    */
   const onHandleClick = (record: any) => {
     navigate(record.id);
@@ -91,12 +107,12 @@ export const ActionGroupDashboard: React.FC = () => {
   };
 
   /**
-   * onAddNewActionGroup - will create new Action Group and 
+   * onAddNewActionGroup - will create new Action Group and
    * Update the existing grid of all the action group
-   * @param data 
+   * @param data
    */
   const onAddNewActionGroup = async (data: any) => {
-    let payload = {...data, type_field: "ActionGroup", app_id: appId}
+    let payload = { ...data, type_field: "ActionGroup", app_id: appId };
     await Service.post(`${Endpoint.v1.group.create(appId)}`, {
       body: payload
     })
@@ -108,7 +124,7 @@ export const ActionGroupDashboard: React.FC = () => {
 
   /**
    * onDeleteActionGroup - Delete the Action Group with a confirmation
-   * @param groupId 
+   * @param groupId
    */
   const onDeleteActionGroup = async (groupId: any) => {
     await Service.delete(`${Endpoint.v1.group.delete(appId, groupId)}`)
@@ -120,26 +136,24 @@ export const ActionGroupDashboard: React.FC = () => {
 
   return (
     <>
-      <Button
-        size="large"
-        type="primary"
-        onClick={() => setIsCreateModalOpen(true)}
-      >
-        Add
-      </Button>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        rowKey="name"
+      <PageHeader
+        title="Action Group"
+        extra={
+          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+            <PlusOutlined />
+          </Button>
+        }
       />
+      <Table columns={columns} dataSource={dataSource} rowKey="name" />
       <div>
         {isCreateModalOpen && (
           <CreateModal
             isModalOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
             onOk={onAddNewActionGroup}
-            isLoading={false} 
-            modelFor={"Action Group"} />
+            isLoading={false}
+            modelFor={"Action Group"}
+          />
         )}
       </div>
     </>

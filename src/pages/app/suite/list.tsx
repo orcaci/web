@@ -5,6 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
 import { CreateModal } from "components/createmodel";
+import { PlusOutlined } from "@ant-design/icons";
+import { PageHeader } from "components/pageHeader";
 
 interface DataType {
   key: string;
@@ -24,7 +26,11 @@ export const TestSuiteDashboard: React.FC = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (text, record) => <Button type="link" onClick={() => onHandleClick(record)}>{text}</Button>
+      render: (text, record) => (
+        <Button type="link" onClick={() => onHandleClick(record)}>
+          {text}
+        </Button>
+      )
     },
     {
       title: "Description",
@@ -37,15 +43,19 @@ export const TestSuiteDashboard: React.FC = () => {
       render: (record) => {
         return (
           <Space size="middle">
-            <Button type="primary" onClick={() => onHandleClick(record)}>Edit</Button>
+            <Button type="primary" onClick={() => onHandleClick(record)}>
+              Edit
+            </Button>
             <Popconfirm
-                title="Delete the Test Suite"
-                description="Are you sure to delete this Test Suite?"
-                onConfirm={() => onDeleteTestSuite(record.id)}
-                okText="Yes"
-                cancelText="No"
+              title="Delete the Test Suite"
+              description="Are you sure to delete this Test Suite?"
+              onConfirm={() => onDeleteTestSuite(record.id)}
+              okText="Yes"
+              cancelText="No"
             >
-                <Button danger type="primary">Delete</Button>
+              <Button danger type="primary">
+                Delete
+              </Button>
             </Popconfirm>
           </Space>
         );
@@ -60,8 +70,8 @@ export const TestSuiteDashboard: React.FC = () => {
   }, []);
 
   /**
-   * onHandleClick - Handle the Action redirect 
-   * @param record 
+   * onHandleClick - Handle the Action redirect
+   * @param record
    */
   const onHandleClick = (record: any) => {
     navigate(record.id);
@@ -79,12 +89,12 @@ export const TestSuiteDashboard: React.FC = () => {
   };
 
   /**
-   * onAddNewSuite - will create new Test Suite and 
+   * onAddNewSuite - will create new Test Suite and
    * Update the existing grid of all the Test Suite
-   * @param data 
+   * @param data
    */
   const onAddNewSuite = async (data: any) => {
-    let payload = {...data, app_id: appId}
+    let payload = { ...data, app_id: appId };
     await Service.post(`${Endpoint.v1.suite.create(appId)}`, {
       body: payload
     })
@@ -96,7 +106,7 @@ export const TestSuiteDashboard: React.FC = () => {
 
   /**
    * onDeleteTestSuit - Delete the Action Group with a confirmation
-   * @param suiteId 
+   * @param suiteId
    */
   const onDeleteTestSuite = async (suiteId: any) => {
     await Service.delete(`${Endpoint.v1.suite.delete(appId, suiteId)}`)
@@ -108,26 +118,24 @@ export const TestSuiteDashboard: React.FC = () => {
 
   return (
     <>
-      <Button
-        size="large"
-        type="primary"
-        onClick={() => setIsCreateModalOpen(true)}
-      >
-        Add
-      </Button>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        rowKey="name"
+      <PageHeader
+        title="Test Suite"
+        extra={
+          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+            <PlusOutlined />
+          </Button>
+        }
       />
+      <Table columns={columns} dataSource={dataSource} rowKey="name" />
       <div>
         {isCreateModalOpen && (
           <CreateModal
             isModalOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
             onOk={onAddNewSuite}
-            isLoading={false} 
-            modelFor={"Test Suite"} />
+            isLoading={false}
+            modelFor={"Test Suite"}
+          />
         )}
       </div>
     </>
