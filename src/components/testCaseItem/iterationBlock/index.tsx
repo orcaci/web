@@ -51,6 +51,7 @@ export function IterationBlock() {
       />
       {components.map((item: any, index: number) => (
         <TestCaseItem
+          id={item.id}
           type={item.type}
           key={`${index}-${item.type}`}
           handleMenuClick={() => {}}

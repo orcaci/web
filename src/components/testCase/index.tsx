@@ -18,6 +18,7 @@ export function TestCase() {
       <div className="testCaseContainer">
         No data found
         <TestCaseItem
+          id="empty"
           handleMenuClick={(val: any) => {
             useTestCaseStore.getState().addBlock(1, val.key);
           }}
@@ -42,6 +43,7 @@ export function TestCase() {
             />
             <TestCaseItem
               key={`${data.case_id}-add`}
+              id={`${data.id}-add`}
               handleMenuClick={(val: any) => {
                 useTestCaseStore.getState().addBlock(index + 1, val.key);
               }}

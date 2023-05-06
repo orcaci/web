@@ -141,6 +141,7 @@ function IFBlockSubMenu(props: IfBlockSubmenuProps) {
           >
             {falseBlockComponents.map((item: any, index: number) => (
               <TestCaseItem
+                id={item.id}
                 type={item.type}
                 key={`${index}-${item.type}`}
                 handleMenuClick={() => {}}
@@ -227,6 +228,7 @@ function IFBlockSubMenu(props: IfBlockSubmenuProps) {
           >
             {trueBlockComponents.map((item: any, index: number) => (
               <TestCaseItem
+                id={item.id}
                 type={item.type}
                 key={`${index}-${item.type}`}
                 handleMenuClick={() => {}}
