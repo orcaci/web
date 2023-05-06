@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
 import { Layout, Menu } from "antd";
 import type { MenuProps } from "antd";
 import {
@@ -13,7 +13,6 @@ import {
   InteractionOutlined
 } from "@ant-design/icons";
 import "../layout.css";
-import { useNavigate, useParams } from "react-router-dom";
 
 const { Content, Sider } = Layout;
 
@@ -26,35 +25,49 @@ export function AppLayout() {
     { key: "testsuite", label: "Test Suite", icon: <PlayCircleOutlined /> },
     { key: "testcase", label: "Test Case", icon: <ExperimentOutlined /> },
     { key: "datatable", label: "Data table", icon: <DatabaseOutlined /> },
-    { 
-      key: "log", label: "Log", icon: <ReconciliationOutlined /> ,
+    {
+      key: "log",
+      label: "Log",
+      icon: <ReconciliationOutlined />,
       children: [
-        { key: "execution", label: "Exectution log", icon: <TransactionOutlined /> },
-        { key: "activity", label: "Activity log", icon: <InteractionOutlined /> },
-      ],
+        {
+          key: "execution",
+          label: "Exectution log",
+          icon: <TransactionOutlined />
+        },
+        {
+          key: "activity",
+          label: "Activity log",
+          icon: <InteractionOutlined />
+        }
+      ]
     }
   ];
   const { appId } = useParams();
+  const match = useMatch({ path: "/app/:appId/*" });
+  const selectedRoute = match?.params["*"]?.split("/")[0] || "dashboard";
 
   return (
     <Layout>
       <Sider width={200}>
         <Menu
           mode="inline"
-          defaultSelectedKeys={["dashboard"]}
-          defaultOpenKeys={["dashboard"]}
+          defaultSelectedKeys={[selectedRoute]}
+          defaultOpenKeys={[selectedRoute]}
           style={{ height: "100%", borderRight: 0 }}
-          items={
-            menuItems.map((menu: any) => {
-              if(menu?.children){
-                menu.children = menu.children.map((sub_menu: any) => {
-                  return { ...sub_menu, onClick: () => navigate(`${appId}/${menu.key}/${sub_menu.key}`) };
-                });
-                return menu;
-              }
-              return { ...menu, onClick: () => navigate(`${appId}/${menu.key}`) };
-            })
-          }
+          items={menuItems.map((menu: any) => {
+            if (menu?.children) {
+              menu.children = menu.children.map((sub_menu: any) => {
+                return {
+                  ...sub_menu,
+                  onClick: () =>
+                    navigate(`${appId}/${menu.key}/${sub_menu.key}`)
+                };
+              });
+              return menu;
+            }
+            return { ...menu, onClick: () => navigate(`${appId}/${menu.key}`) };
+          })}
         />
       </Sider>
       <Content>
