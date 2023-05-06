@@ -28,7 +28,7 @@ export function TopFrame() {
       <div className="leftRenderer">
         <h2
           className="logo"
-          style={{ color: "white" }}
+          style={{ color: "white", cursor: "pointer" }}
           onClick={() => navigate("/")}
         >
           Orca
