@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { TestCase } from "../../components/testCase";
 import { useParams } from "react-router-dom";
 import { useTestCaseStore } from "store/testCaseStore";
+import { PageHeader } from "components/pageHeader";
+import { shallow } from "zustand/shallow";
 
 export interface TestCaseexecutionItem {
   case_id: string;
@@ -24,9 +26,16 @@ export interface TestCaseData {
 export function TestCasePage() {
   const { appId = "", testCaseId = "" } = useParams();
 
+  const name = useTestCaseStore((state) => state.name, shallow);
+
   useEffect(() => {
     useTestCaseStore.getState().loadData(appId, testCaseId);
   }, [appId, testCaseId]);
 
-  return <TestCase />;
+  return (
+    <>
+      <PageHeader backIcon title={name} />
+      <TestCase />
+    </>
+  );
 }

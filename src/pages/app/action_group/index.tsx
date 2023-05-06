@@ -7,7 +7,10 @@ import { Endpoint } from "service/endpoint";
 import { useParams } from "react-router-dom";
 import { ActionKind } from "constant/action_kind";
 import { Targets } from "constant/target";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { PageHeader } from "components/pageHeader";
+import { PlusOutlined } from "@ant-design/icons";
+import "./style.css";
 
 export const Action: React.FC = () => {
   const [dataSource, setDataSource] = useState([] as any);
@@ -45,19 +48,18 @@ export const Action: React.FC = () => {
     let _uuid = uuidv4();
     let dataSourceLength = dataSource.length + 1;
     let action = {
-      "id": _uuid,
-      "execution_order": dataSourceLength,
-      "description": "",
-      "data_kind": null,
-      "data_value": null,
-      "target_kind": null,
-      "target_value": null,
-      "action_group_id": actionGroupId
-    }
-    setDataSource([ ...dataSource, action]);
+      id: _uuid,
+      execution_order: dataSourceLength,
+      description: "",
+      data_kind: null,
+      data_value: null,
+      target_kind: null,
+      target_value: null,
+      action_group_id: actionGroupId
+    };
+    setDataSource([...dataSource, action]);
     console.log(dataSource);
-  }
-  
+  };
 
   useEffect(() => {
     fetchActions();
@@ -71,10 +73,14 @@ export const Action: React.FC = () => {
       render: (text, record) => (
         <Select
           defaultValue={record.kind}
-          onChange={(value: any, o: any) => handleRowUpdate(record, "kind", value)}
+          onChange={(value: any, o: any) =>
+            handleRowUpdate(record, "kind", value)
+          }
           id="command_select"
           key="command_select"
-          options={ActionKind.map((x)=>{ return { key: x.value,  value: x.value, label: x.value }})}
+          options={ActionKind.map((x) => {
+            return { key: x.value, value: x.value, label: x.value };
+          })}
         />
       )
     },
@@ -85,13 +91,17 @@ export const Action: React.FC = () => {
       render: (text, record) => (
         <div className="targetContainer">
           <Select
-            onChange={(value: any, o: any) => handleRowUpdate(record, "target_kind", value)}
+            onChange={(value: any, o: any) =>
+              handleRowUpdate(record, "target_kind", value)
+            }
             options={Targets}
             defaultValue={record.target_kind}
           />
           <Input
             placeholder="Please enter target"
-            onChange={(e: any) => handleRowUpdate(record, "target_value", e.target.value)}
+            onChange={(e: any) =>
+              handleRowUpdate(record, "target_value", e.target.value)
+            }
             id="target_value"
             defaultValue={record.target_value}
           />
@@ -105,7 +115,9 @@ export const Action: React.FC = () => {
       render: (text, record) => (
         <Input
           placeholder="Please enter value"
-          onChange={(e: any) => handleRowUpdate(record, "data_value", e.target.value)}
+          onChange={(e: any) =>
+            handleRowUpdate(record, "data_value", e.target.value)
+          }
           id="data_value"
           defaultValue={record.data_value}
         />
@@ -113,11 +125,10 @@ export const Action: React.FC = () => {
     }
   ];
 
-  
   const handleRowUpdate = (row: any, field: string, value: string) => {
-    console.log( row, value, field)
-    if(updateData[row.id]!==undefined){
-      row = updateData[row.id]
+    console.log(row, value, field);
+    if (updateData[row.id] !== undefined) {
+      row = updateData[row.id];
     }
     row[field] = value;
     let up: any = {};
@@ -144,7 +155,7 @@ export const Action: React.FC = () => {
 
   const onAddAction = async () => {
     console.log(dataSource);
-    console.log(updateData)
+    console.log(updateData);
 
     // await Service.post(`${Endpoint.v1.action.batch(appId, actionGroupId)}`, {
     //   body: savedData
@@ -155,7 +166,20 @@ export const Action: React.FC = () => {
 
   return (
     <div>
-      <Button onClick={addNewRow}>Add Row</Button>
+      <PageHeader
+        backIcon
+        title={""}
+        extra={
+          <div className="btn-footer">
+            <Button type="primary" onClick={addNewRow}>
+              <PlusOutlined /> Row
+            </Button>
+            <Button type="primary" onClick={onAddAction}>
+              Save
+            </Button>
+          </div>
+        }
+      />
       <Matrix
         dataSource={dataSource}
         defaultColumns={columns}
@@ -163,8 +187,6 @@ export const Action: React.FC = () => {
         onAddRow={null}
         rowKey="id"
       />
-      <Button onClick={onAddAction}>Save</Button>
     </div>
   );
 };
-
