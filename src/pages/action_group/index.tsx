@@ -4,7 +4,7 @@ import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "../../service";
 import { Endpoint } from "../../service/endpoint";
-import { CreateApplicationModal } from "../../components/CreateApplicationModal";
+import { CreateApplicationModal } from "../../components/createApplicationModal";
 
 interface DataType {
   key: string;

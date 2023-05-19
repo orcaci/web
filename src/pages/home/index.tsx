@@ -2,10 +2,16 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Button, Empty, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { ApplicationCard } from "../../components/applicationCard";
-import { CreateApplicationModal } from "../../components/CreateApplicationModal";
+import { CreateApplicationModal } from "../../components/createApplicationModal/index";
 import { Service } from "../../service";
 import { Endpoint } from "../../service/endpoint";
 import "./style.css";
+
+export interface Application {
+  id: string;
+  name: string;
+  description: string;
+}
 
 export function Home() {
   const [applications, setApplications] = useState([]);
@@ -24,7 +30,7 @@ export function Home() {
       });
   };
 
-  const onAddApplication = async (data) => {
+  const onAddApplication = async (data: any) => {
     setIsLoading(true);
     await Service.post(Endpoint.v1.application.createApplication, {
       body: data
@@ -64,7 +70,7 @@ export function Home() {
       )}
       {!isListLoading && (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
-          {applications.map((app) => (
+          {applications.map((app: Application) => (
             <ApplicationCard key={app.id} appDetails={app} />
           ))}
 

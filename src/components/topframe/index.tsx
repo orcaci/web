@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const { Header } = Layout;
 
-export function TopFrame(props: any) {
+export function TopFrame() {
   const navigate = useNavigate();
 
   const menu: MenuProps["items"] = [
@@ -28,7 +28,7 @@ export function TopFrame(props: any) {
       <div className="leftRenderer">
         <h2
           className="logo"
-          style={{ color: "white" }}
+          style={{ color: "white", cursor: "pointer" }}
           onClick={() => navigate("/")}
         >
           Orca

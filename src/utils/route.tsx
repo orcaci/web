@@ -20,7 +20,7 @@ export const ROUTES = [
         },
         nestedRoute: [
           {
-            path: ":id/",
+            path: ":appId",
             component: () => {
               const { AppDashboard } = lazily(
                 () => import("../pages/app/dashboard")
@@ -29,25 +29,61 @@ export const ROUTES = [
             }
           },
           {
-            path: ":id/actiongroup",
+            path: ":appId/dashboard",
             component: () => {
-              const { ActionGroup } = lazily(
-                () => import("../pages/action_group/index")
+              const { AppDashboard } = lazily(
+                () => import("../pages/app/dashboard")
               );
-              return ActionGroup;
+              return AppDashboard;
             }
           },
           {
-            path: ":id/actiongroup/:action",
+            path: ":appId/testsuite",
+            component: () => {
+              const { TestSuiteDashboard } = lazily(
+                () => import("../pages/app/suite/list")
+              );
+              return TestSuiteDashboard;
+            }
+          },
+          {
+            path: ":appId/testsuite/:testSuiteId",
+            component: () => {
+              const { TestSuiteDashboard } = lazily(
+                () => import("../pages/app/suite/list")
+              );
+              return TestSuiteDashboard;
+            }
+          },
+          {
+            path: ":appId/actiongroup",
+            component: () => {
+              const { ActionGroupDashboard } = lazily(
+                () => import("../pages/app/action_group/list")
+              );
+              return ActionGroupDashboard;
+            }
+          },
+          {
+            path: ":appId/actiongroup/:actionGroupId",
             component: () => {
               const { Action } = lazily(
-                () => import("../pages/action_group/action")
+                () => import("../pages/app/action_group")
               );
               return Action;
             }
           },
           {
-            path: ":id/testcase",
+            path: ":appId/testcase",
+            component: () => {
+              const { TestCaseDashboard } = lazily(
+                () => import("../pages/app/case/list")
+              );
+              return TestCaseDashboard;
+            }
+          },
+          {
+            path: ":appId/testcase/:testCaseId",
             component: () => {
               const { TestCasePage } = lazily(
                 () => import("../pages/test_case/index")
