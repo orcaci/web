@@ -4,7 +4,7 @@
   align-items: center;
   gap: 1rem;
   position: relative;
-  overflow:auto
+  overflow: auto;
 }
 
 .connectingLine {

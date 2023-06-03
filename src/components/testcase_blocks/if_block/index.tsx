@@ -5,8 +5,8 @@ import { v4 as generateUniqueString } from "uuid";
 import { useResizerObserver } from "../../../hooks/resizeobserver";
 // import { Service } from "../../../service";
 // import { Endpoint } from "../../../service/endpoint";
-import { TestCaseItem } from "../index";
-import { AddBlock } from "../addBlock/index";
+import { TestCaseBlock } from "../index";
+import { AddBlock } from "../add_block/index";
 import "../style.css";
 
 const { Panel } = Collapse;
@@ -140,7 +140,7 @@ function IFBlockSubMenu(props: IfBlockSubmenuProps) {
             }}
           >
             {falseBlockComponents.map((item: any, index: number) => (
-              <TestCaseItem
+              <TestCaseBlock
                 id={item.id}
                 type={item.type}
                 key={`${index}-${item.type}`}
@@ -227,7 +227,7 @@ function IFBlockSubMenu(props: IfBlockSubmenuProps) {
             }}
           >
             {trueBlockComponents.map((item: any, index: number) => (
-              <TestCaseItem
+              <TestCaseBlock
                 id={item.id}
                 type={item.type}
                 key={`${index}-${item.type}`}

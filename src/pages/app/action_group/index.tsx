@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { ActionKind } from "constant/action_kind";
 import { Targets } from "constant/target";
 import { v4 as uuidv4 } from "uuid";
-import { PageHeader } from "components/pageHeader";
+import { PageHeader } from "components/page_header";
 import { PlusOutlined } from "@ant-design/icons";
 import "./style.css";
 
@@ -157,11 +157,11 @@ export const Action: React.FC = () => {
     console.log(dataSource);
     console.log(updateData);
 
-    // await Service.post(`${Endpoint.v1.action.batch(appId, actionGroupId)}`, {
-    //   body: savedData
-    // })
-    //   .then(() => {})
-    //   .finally(() => {});
+    await Service.post(`${Endpoint.v1.action.create(appId, actionGroupId)}`, {
+      body: dataSource
+    })
+      .then(() => {})
+      .finally(() => {});
   };
 
   return (

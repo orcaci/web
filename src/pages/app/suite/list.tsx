@@ -4,9 +4,9 @@ import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { CreateModal } from "components/createmodel";
+import { CreateModal } from "components/create_modal";
 import { PlusOutlined } from "@ant-design/icons";
-import { PageHeader } from "components/pageHeader";
+import { PageHeader } from "components/page_header";
 
 interface DataType {
   key: string;

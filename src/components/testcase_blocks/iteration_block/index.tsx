@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { TestCaseItem } from "../index";
-import { AddBlock } from "../addBlock/index";
+import { TestCaseBlock } from "../index";
+import { AddBlock } from "../add_block/index";
 
 export function IterationBlock() {
   const [components, setComponents] = useState<any[]>([]);
@@ -50,7 +50,7 @@ export function IterationBlock() {
         }}
       />
       {components.map((item: any, index: number) => (
-        <TestCaseItem
+        <TestCaseBlock
           id={item.id}
           type={item.type}
           key={`${index}-${item.type}`}

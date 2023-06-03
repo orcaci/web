@@ -86,7 +86,7 @@ export const ROUTES = [
             path: ":appId/testcase/:testCaseId",
             component: () => {
               const { TestCasePage } = lazily(
-                () => import("../pages/test_case/index")
+                () => import("../pages/app/test_case/index")
               );
               return TestCasePage;
             }
