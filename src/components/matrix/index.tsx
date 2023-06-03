@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import type { InputRef } from "antd";
 import { Button, Form, Input, Table } from "antd";
 import type { FormInstance } from "antd/es/form";
-import "./index.css";
-import { AddColumnModal } from "./addColumnModal";
+import { AddColumnModal } from "./add_column_modal";
+import "./style.css";
 
 const EditableContext = React.createContext<FormInstance<any> | null>(null);
 

@@ -1,7 +1,7 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import { Link } from "react-router-dom";
-import "./login.css";
+import "./style.css";
 
 export function Login() {
   const onFinish = (values: any) => {

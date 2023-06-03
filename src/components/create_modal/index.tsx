@@ -1,5 +1,5 @@
 import { Button, Form, Input, Modal } from "antd";
-import "./index.css";
+import "./style.css";
 
 interface ModalProps {
   isModalOpen: boolean;

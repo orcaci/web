@@ -41,7 +41,7 @@ export const ROUTES = [
             path: ":appId/testsuite",
             component: () => {
               const { TestSuiteDashboard } = lazily(
-                () => import("../pages/app/suite/list")
+                () => import("../pages/app/test_suite")
               );
               return TestSuiteDashboard;
             }
@@ -50,7 +50,7 @@ export const ROUTES = [
             path: ":appId/testsuite/:testSuiteId",
             component: () => {
               const { TestSuiteDashboard } = lazily(
-                () => import("../pages/app/suite/list")
+                () => import("../pages/app/test_suite")
               );
               return TestSuiteDashboard;
             }
@@ -59,7 +59,7 @@ export const ROUTES = [
             path: ":appId/actiongroup",
             component: () => {
               const { ActionGroupDashboard } = lazily(
-                () => import("../pages/app/action_group/list")
+                () => import("../pages/app/action_group")
               );
               return ActionGroupDashboard;
             }
@@ -67,17 +67,17 @@ export const ROUTES = [
           {
             path: ":appId/actiongroup/:actionGroupId",
             component: () => {
-              const { Action } = lazily(
-                () => import("../pages/app/action_group")
+              const { ActionGroup } = lazily(
+                () => import("../pages/app/action_group/actiongroup")
               );
-              return Action;
+              return ActionGroup;
             }
           },
           {
             path: ":appId/testcase",
             component: () => {
               const { TestCaseDashboard } = lazily(
-                () => import("../pages/app/case/list")
+                () => import("../pages/app/test_case")
               );
               return TestCaseDashboard;
             }
@@ -86,7 +86,7 @@ export const ROUTES = [
             path: ":appId/testcase/:testCaseId",
             component: () => {
               const { TestCasePage } = lazily(
-                () => import("../pages/app/test_case/index")
+                () => import("../pages/app/test_case/testcase")
               );
               return TestCasePage;
             }

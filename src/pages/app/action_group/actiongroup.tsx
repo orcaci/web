@@ -7,11 +7,16 @@ import { Endpoint } from "service/endpoint";
 import { useParams } from "react-router-dom";
 import { ActionKind } from "constant/action_kind";
 import { Targets } from "constant/target";
+import { v4 as uuidv4 } from "uuid";
+import { PageHeader } from "components/page_header";
+import { PlusOutlined } from "@ant-design/icons";
+import "./style.css";
 
-export const TestSuite: React.FC = () => {
+export const ActionGroup: React.FC = () => {
   const [dataSource, setDataSource] = useState([] as any);
+  const [updateData, setupdateData] = useState({} as any);
   const [savedData, setSavedData] = useState({ data_kind: "Static" } as object);
-  const { appId = "", testSuiteId = "" } = useParams();
+  const { appId = "", actionGroupId = "" } = useParams();
 
   interface DataType {
     key: string;
@@ -26,11 +31,11 @@ export const TestSuite: React.FC = () => {
   }
 
   /**
-   * fetchTestSuiteItemList - will get all the Action for specific action group
+   * fetchActions - will get all the Action for specific action group
    */
-  const fetchTestSuiteItemList = async () => {
-    console.log(appId, "    - ", testSuiteId);
-    await Service.get(`${Endpoint.v1.suite.itemList(appId, testSuiteId)}`)
+  const fetchActions = async () => {
+    console.log(appId, "    - ", actionGroupId);
+    await Service.get(`${Endpoint.v1.action.list(appId, actionGroupId)}`)
       .then((actions) => {
         setDataSource(actions);
       })
@@ -38,10 +43,26 @@ export const TestSuite: React.FC = () => {
         // all the fallback code will come here
       });
   };
-  
+
+  const addNewRow = async () => {
+    let _uuid = uuidv4();
+    let dataSourceLength = dataSource.length + 1;
+    let action = {
+      id: _uuid,
+      execution_order: dataSourceLength,
+      description: "",
+      data_kind: null,
+      data_value: null,
+      target_kind: null,
+      target_value: null,
+      action_group_id: actionGroupId
+    };
+    setDataSource([...dataSource, action]);
+    console.log(dataSource);
+  };
 
   useEffect(() => {
-    fetchTestSuiteItemList();
+    fetchActions();
   }, []);
 
   const columns: ColumnsType<DataType> = [
@@ -51,12 +72,15 @@ export const TestSuite: React.FC = () => {
       key: "kind",
       render: (text, record) => (
         <Select
-          showSearch
           defaultValue={record.kind}
-          onChange={handleChange}
-          id="command"
-          key="command"
-          options={ActionKind.map((x)=>{ return { key: x.value, label: x.value }})}
+          onChange={(value: any, o: any) =>
+            handleRowUpdate(record, "kind", value)
+          }
+          id="command_select"
+          key="command_select"
+          options={ActionKind.map((x) => {
+            return { key: x.value, value: x.value, label: x.value };
+          })}
         />
       )
     },
@@ -67,13 +91,17 @@ export const TestSuite: React.FC = () => {
       render: (text, record) => (
         <div className="targetContainer">
           <Select
-            onChange={handleChange}
+            onChange={(value: any, o: any) =>
+              handleRowUpdate(record, "target_kind", value)
+            }
             options={Targets}
             defaultValue={record.target_kind}
           />
           <Input
             placeholder="Please enter target"
-            onChange={onHandleInputChange}
+            onChange={(e: any) =>
+              handleRowUpdate(record, "target_value", e.target.value)
+            }
             id="target_value"
             defaultValue={record.target_value}
           />
@@ -87,7 +115,9 @@ export const TestSuite: React.FC = () => {
       render: (text, record) => (
         <Input
           placeholder="Please enter value"
-          onChange={onHandleInputChange}
+          onChange={(e: any) =>
+            handleRowUpdate(record, "data_value", e.target.value)
+          }
           id="data_value"
           defaultValue={record.data_value}
         />
@@ -95,8 +125,16 @@ export const TestSuite: React.FC = () => {
     }
   ];
 
-  const handleChange = (value: string, valueobj: any) => {
-    setSavedData({ ...savedData, [valueobj.id]: value, execution_order: 1 });
+  const handleRowUpdate = (row: any, field: string, value: string) => {
+    console.log(row, value, field);
+    if (updateData[row.id] !== undefined) {
+      row = updateData[row.id];
+    }
+    row[field] = value;
+    let up: any = {};
+    up[row.id] = row;
+
+    setupdateData(up);
   };
 
   const handleAddRows = () => {
@@ -115,9 +153,12 @@ export const TestSuite: React.FC = () => {
     setSavedData({ ...savedData, [event.target.id]: event.target.value });
   };
 
-  const onBatchSave = async () => {
-    await Service.post(`${Endpoint.v1.suite.itemCreate(appId, testSuiteId)}`, {
-      body: savedData
+  const onAddAction = async () => {
+    console.log(dataSource);
+    console.log(updateData);
+
+    await Service.post(`${Endpoint.v1.action.create(appId, actionGroupId)}`, {
+      body: dataSource
     })
       .then(() => {})
       .finally(() => {});
@@ -125,7 +166,20 @@ export const TestSuite: React.FC = () => {
 
   return (
     <div>
-      <Button onClick={handleAddRows}>Add Row</Button>
+      <PageHeader
+        backIcon
+        title={""}
+        extra={
+          <div className="btn-footer">
+            <Button type="primary" onClick={addNewRow}>
+              <PlusOutlined /> Row
+            </Button>
+            <Button type="primary" onClick={onAddAction}>
+              Save
+            </Button>
+          </div>
+        }
+      />
       <Matrix
         dataSource={dataSource}
         defaultColumns={columns}
@@ -133,8 +187,6 @@ export const TestSuite: React.FC = () => {
         onAddRow={null}
         rowKey="id"
       />
-      <Button onClick={onBatchSave}>Save</Button>
     </div>
   );
 };
-

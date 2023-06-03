@@ -1,91 +1,164 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useTestCaseStore } from "stores/testcase.store";
+import React, { useEffect, useState } from "react";
+import { Space, Table, Button, Popconfirm } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { useNavigate, useParams } from "react-router-dom";
+import { Service } from "service";
+import { Endpoint } from "service/endpoint";
+import { CreateModal } from "components/create_modal";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { PageHeader } from "components/page_header";
-import { shallow } from "zustand/shallow";
-import { TEST_CASE_BLOCKS, TestCaseBlock } from "components/testcase_blocks";
-import "./styles.css";
 
-export interface TestCaseexecutionItem {
-  case_id: string;
-  execution_order: number;
-  id: string;
-  kind: string;
-  parent_id?: string;
-  reference: string;
-  type_field: string;
-}
-
-export interface TestCaseData {
-  id: string;
+interface DataType {
+  key: string;
   name: string;
   description: string;
-  app_id: string;
-  case_execution: TestCaseexecutionItem[];
+  createdAt: string;
+  createdBy: string;
 }
 
-export function TestCasePage() {
-  const { appId = "", testCaseId = "" } = useParams();
+export const TestCaseDashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const [dataSource, setDataSource] = useState([] as any);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const name = useTestCaseStore((state) => state.name, shallow);
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => (
+        <Button type="link" onClick={() => onHandleClick(record)}>
+          {text}
+        </Button>
+      )
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description"
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (record) => {
+        return (
+          // <Space size="middle">
+          //   <Button type="primary" onClick={() => onHandleClick(record)}>Edit</Button>
+          //   <Popconfirm
+          //       title="Delete the Test Case"
+          //       description="Are you sure to delete this Test Case?"
+          //       onConfirm={() => onDeleteTestCase(record.id)}
+          //       okText="Yes"
+          //       cancelText="No"
+          //   >
+          //       <Button danger type="primary">Delete</Button>
+          //   </Popconfirm>
+          // </Space>
+
+          <Space size="middle">
+            <Button
+              type="primary"
+              onClick={() => onHandleClick(record)}
+              shape="round"
+              icon={<EditOutlined />}
+              size="small"
+            />
+            <Popconfirm
+              title="Delete the Action Group"
+              description="Are you sure to delete this Action Group?"
+              onConfirm={() => onDeleteTestCase(record.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                danger
+                type="primary"
+                shape="round"
+                icon={<DeleteOutlined />}
+                size="small"
+              />
+            </Popconfirm>
+          </Space>
+        );
+      }
+    }
+  ];
+
+  const { appId = "" } = useParams();
 
   useEffect(() => {
-    useTestCaseStore.getState().loadData(appId, testCaseId);
-  }, [appId, testCaseId]);
+    fetchTestCases();
+  }, []);
+
+  /**
+   * onHandleClick - Handle the Action redirect
+   * @param record
+   */
+  const onHandleClick = (record: any) => {
+    navigate(record.id);
+  };
+
+  /**
+   * fetchTestCases - fetch all Action group from the specify Application
+   */
+  const fetchTestCases = async () => {
+    await Service.get(`${Endpoint.v1.case.list(appId)}`)
+      .then((testCases) => {
+        setDataSource(testCases);
+      })
+      .finally(() => {});
+  };
+
+  /**
+   * onAddNewCase - will create new Test Case and
+   * Update the existing grid of all the Test Case
+   * @param data
+   */
+  const onAddNewCase = async (data: any) => {
+    let payload = { ...data, app_id: appId };
+    await Service.post(`${Endpoint.v1.case.create(appId)}`, {
+      body: payload
+    })
+      .then(() => {
+        fetchTestCases();
+      })
+      .finally(() => {});
+  };
+
+  /**
+   * onDeleteTestCase - Delete the Action Group with a confirmation
+   * @param caseId
+   */
+  const onDeleteTestCase = async (caseId: any) => {
+    await Service.delete(`${Endpoint.v1.case.delete(appId, caseId)}`)
+      .then(() => {
+        fetchTestCases();
+      })
+      .finally(() => {});
+  };
 
   return (
     <>
-      <PageHeader backIcon title={name} />
-      <TestCase />
+      <PageHeader
+        title="Test Case"
+        extra={
+          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
+            <PlusOutlined />
+          </Button>
+        }
+      />
+      <Table columns={columns} dataSource={dataSource} rowKey="name" />
+      <div>
+        {isCreateModalOpen && (
+          <CreateModal
+            isModalOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+            onOk={onAddNewCase}
+            isLoading={false}
+            modelFor={"Test Case"}
+          />
+        )}
+      </div>
     </>
   );
-}
-
-export function TestCase() {
-  const { case_execution: testcaseData } = useTestCaseStore(
-    (state: TestCaseData) => ({
-      case_execution: state.case_execution
-    }),
-    shallow
-  );
-
-  if (!testcaseData?.length) {
-    return (
-      <div className="testCaseContainer">
-        No data found
-        <TestCaseBlock
-          id="empty"
-          handleMenuClick={(val: any) => {
-            useTestCaseStore.getState().addBlock(1, val.key);
-          }}
-          type={TEST_CASE_BLOCKS.ADD}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className="testCaseContainer">
-      <div className="connectingLine"></div>
-      {testcaseData.map((data: TestCaseexecutionItem, index: number) => (
-        <>
-          <TestCaseBlock
-            key={data.case_id}
-            selected={data.reference}
-            type={data.type_field}
-            id={data.id}
-            handleMenuClick={() => {}}
-          />
-          <TestCaseBlock
-            key={`${data.case_id}-add`}
-            id={`${data.id}-add`}
-            handleMenuClick={(val: any) => {
-              useTestCaseStore.getState().addBlock(index + 1, val.key);
-            }}
-            type={TEST_CASE_BLOCKS.ADD}
-          />
-        </>
-      ))}
-    </div>
-  );
-}
+};
