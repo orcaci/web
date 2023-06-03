@@ -1,6 +1,6 @@
-import { ActionBlock } from "./actionBlock";
-import { AssertBlock } from "./assertBlock";
-import { AddBlock } from "./addBlock";
+import { ActionBlock } from "./action_block";
+import { AssertBlock } from "./assert_block";
+import { AddBlock } from "./add_block";
 //import { IFBlock } from "./ifBlock";
 import "./style.css";
 //import { IterationBlock } from "./iterationBlock";
@@ -8,17 +8,17 @@ import { MenuClickEventHandler } from "rc-menu/lib/interface";
 import { Collapse } from "antd";
 const { Panel } = Collapse;
 
-interface TestCaseItemProp {
+interface TestCaseBlockProp {
   type: string;
   handleMenuClick?: MenuClickEventHandler;
   selected?: string;
   id: string;
 }
 
-export function TestCaseItem(props: TestCaseItemProp) {
-  let Component = TEST_CASE_ITEM_COMPONENT_MAPPING[props.type];
+export function TestCaseBlock(props: TestCaseBlockProp) {
+  let Component = TEST_CASE_BLOCK_COMPONENT_MAPPING[props.type];
 
-  if (props.type === TEST_CASE_ITEMS.ADD) {
+  if (props.type === TEST_CASE_BLOCKS.ADD) {
     return (
       <Component
         id={props.id || ""}
@@ -28,7 +28,7 @@ export function TestCaseItem(props: TestCaseItemProp) {
     );
   }
 
-  const { header, color } = TEST_CASE_ITEM_VISUAL_MAPPING[props.type];
+  const { header, color } = TEST_CASE_BLOCK_VISUAL_MAPPING[props.type];
 
   return (
     <Collapse style={{ backgroundColor: color }}>
@@ -43,7 +43,7 @@ export function TestCaseItem(props: TestCaseItemProp) {
   );
 }
 
-export const TEST_CASE_ITEMS = {
+export const TEST_CASE_BLOCKS = {
   ACTION: "ActionGroup",
   ASSERT: "Assertion",
   IF: "If Block",
@@ -51,28 +51,28 @@ export const TEST_CASE_ITEMS = {
   ADD: "Add Block"
 };
 
-export const TEST_CASE_ITEM_COMPONENT_MAPPING = {
-  [TEST_CASE_ITEMS.ACTION]: ActionBlock,
-  [TEST_CASE_ITEMS.ASSERT]: AssertBlock,
-  [TEST_CASE_ITEMS.ADD]: AddBlock
-  // [TEST_CASE_ITEMS.IF]: IFBlock,
-  // [TEST_CASE_ITEMS.FOR_LOOP]: IterationBlock
+export const TEST_CASE_BLOCK_COMPONENT_MAPPING = {
+  [TEST_CASE_BLOCKS.ACTION]: ActionBlock,
+  [TEST_CASE_BLOCKS.ASSERT]: AssertBlock,
+  [TEST_CASE_BLOCKS.ADD]: AddBlock
+  // [TEST_CASE_BLOCKS.IF]: IFBlock,
+  // [TEST_CASE_BLOCKS.FOR_LOOP]: IterationBlock
 };
 
-export const TEST_CASE_ITEM_VISUAL_MAPPING = {
-  [TEST_CASE_ITEMS.ACTION]: {
+export const TEST_CASE_BLOCK_VISUAL_MAPPING = {
+  [TEST_CASE_BLOCKS.ACTION]: {
     header: "Action",
     color: "#CAD5E2"
   },
-  [TEST_CASE_ITEMS.ASSERT]: {
+  [TEST_CASE_BLOCKS.ASSERT]: {
     header: "Assert",
     color: "rgb(228 244 198)"
   }
-  // [TEST_CASE_ITEMS.IF]: {
+  // [TEST_CASE_BLOCKS.IF]: {
   //   header: "Assert",
   //   color: "rgb(228 244 198)"
   // },
-  // [TEST_CASE_ITEMS.FOR_LOOP]: {
+  // [TEST_CASE_BLOCKS.FOR_LOOP]: {
   //   header: "Assert",
   //   color: "rgb(228 244 198)"
   // }

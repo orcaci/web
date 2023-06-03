@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
-import { TopFrame } from "../../components/topframe";
+import { TopNav } from "../../components/topnav";
 import "../layout.css";
 
 const { Content } = Layout;
@@ -8,7 +8,7 @@ const { Content } = Layout;
 export function HomeLayout() {
   return (
     <Layout>
-      <TopFrame></TopFrame>
+      <TopNav />
       <Content>
         <div className="layout-content">
           <Outlet />

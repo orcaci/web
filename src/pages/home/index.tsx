@@ -1,8 +1,8 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Empty, Spin } from "antd";
 import { useEffect, useState } from "react";
-import { ApplicationCard } from "../../components/applicationCard";
-import { CreateApplicationModal } from "../../components/createApplicationModal/index";
+import { ApplicationCard } from "../../components/application_card";
+import { CreateModal } from "components/create_modal";
 import { Service } from "../../service";
 import { Endpoint } from "../../service/endpoint";
 import "./style.css";
@@ -75,11 +75,12 @@ export function Home() {
           ))}
 
           {isCreateModalOpen && (
-            <CreateApplicationModal
+            <CreateModal
               isModalOpen={isCreateModalOpen}
               onClose={() => setIsCreateModalOpen(false)}
               onOk={onAddApplication}
               isLoading={isLoading}
+              modelFor={"Application"}
             />
           )}
         </div>

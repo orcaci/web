@@ -4,9 +4,9 @@ import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { CreateModal } from "components/createmodel";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { PageHeader } from "components/pageHeader";
+import { CreateModal } from "components/create_modal";
+import { PlusOutlined } from "@ant-design/icons";
+import { PageHeader } from "components/page_header";
 
 interface DataType {
   key: string;
@@ -16,7 +16,7 @@ interface DataType {
   createdBy: string;
 }
 
-export const ActionGroupDashboard: React.FC = () => {
+export const TestSuiteDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [dataSource, setDataSource] = useState([] as any);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -37,43 +37,25 @@ export const ActionGroupDashboard: React.FC = () => {
       dataIndex: "description",
       key: "description"
     },
-    // {
-    //   title: "CreatedAt",
-    //   dataIndex: "createdAt",
-    //   key: "createdAt"
-    // },
-    // {
-    //   title: "CreatedBy",
-    //   key: "createdBy",
-    //   dataIndex: "createdBy"
-    // },
     {
       title: "Action",
       key: "action",
       render: (record) => {
         return (
           <Space size="middle">
-            <Button
-              type="primary"
-              onClick={() => onHandleClick(record)}
-              shape="round"
-              icon={<EditOutlined />}
-              size="small"
-            />
+            <Button type="primary" onClick={() => onHandleClick(record)}>
+              Edit
+            </Button>
             <Popconfirm
-              title="Delete the Action Group"
-              description="Are you sure to delete this Action Group?"
-              onConfirm={() => onDeleteActionGroup(record.id)}
+              title="Delete the Test Suite"
+              description="Are you sure to delete this Test Suite?"
+              onConfirm={() => onDeleteTestSuite(record.id)}
               okText="Yes"
               cancelText="No"
             >
-              <Button
-                danger
-                type="primary"
-                shape="round"
-                icon={<DeleteOutlined />}
-                size="small"
-              />
+              <Button danger type="primary">
+                Delete
+              </Button>
             </Popconfirm>
           </Space>
         );
@@ -84,7 +66,7 @@ export const ActionGroupDashboard: React.FC = () => {
   const { appId = "" } = useParams();
 
   useEffect(() => {
-    fetchActionGroups();
+    fetchTestSuites();
   }, []);
 
   /**
@@ -96,40 +78,40 @@ export const ActionGroupDashboard: React.FC = () => {
   };
 
   /**
-   * fetchActionGroups - fetch all Action group from the specify Application
+   * fetchTestSuites - fetch all Action group from the specify Application
    */
-  const fetchActionGroups = async () => {
-    await Service.get(`${Endpoint.v1.group.getList(appId)}`)
-      .then((actionGroups) => {
-        setDataSource(actionGroups);
+  const fetchTestSuites = async () => {
+    await Service.get(`${Endpoint.v1.suite.list(appId)}`)
+      .then((testSuits) => {
+        setDataSource(testSuits);
       })
       .finally(() => {});
   };
 
   /**
-   * onAddNewActionGroup - will create new Action Group and
-   * Update the existing grid of all the action group
+   * onAddNewSuite - will create new Test Suite and
+   * Update the existing grid of all the Test Suite
    * @param data
    */
-  const onAddNewActionGroup = async (data: any) => {
-    let payload = { ...data, type_field: "ActionGroup", app_id: appId };
-    await Service.post(`${Endpoint.v1.group.create(appId)}`, {
+  const onAddNewSuite = async (data: any) => {
+    let payload = { ...data, app_id: appId };
+    await Service.post(`${Endpoint.v1.suite.create(appId)}`, {
       body: payload
     })
       .then(() => {
-        fetchActionGroups();
+        fetchTestSuites();
       })
       .finally(() => {});
   };
 
   /**
-   * onDeleteActionGroup - Delete the Action Group with a confirmation
-   * @param groupId
+   * onDeleteTestSuit - Delete the Action Group with a confirmation
+   * @param suiteId
    */
-  const onDeleteActionGroup = async (groupId: any) => {
-    await Service.delete(`${Endpoint.v1.group.delete(appId, groupId)}`)
+  const onDeleteTestSuite = async (suiteId: any) => {
+    await Service.delete(`${Endpoint.v1.suite.delete(appId, suiteId)}`)
       .then(() => {
-        fetchActionGroups();
+        fetchTestSuites();
       })
       .finally(() => {});
   };
@@ -137,7 +119,7 @@ export const ActionGroupDashboard: React.FC = () => {
   return (
     <>
       <PageHeader
-        title="Action Group"
+        title="Test Suite"
         extra={
           <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
             <PlusOutlined />
@@ -150,9 +132,9 @@ export const ActionGroupDashboard: React.FC = () => {
           <CreateModal
             isModalOpen={isCreateModalOpen}
             onClose={() => setIsCreateModalOpen(false)}
-            onOk={onAddNewActionGroup}
+            onOk={onAddNewSuite}
             isLoading={false}
-            modelFor={"Action Group"}
+            modelFor={"Test Suite"}
           />
         )}
       </div>

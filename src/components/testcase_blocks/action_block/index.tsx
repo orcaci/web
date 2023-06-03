@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Service } from "../../../service";
 import { Endpoint } from "../../../service/endpoint";
 import "../style.css";
-import { useTestCaseStore } from "store/testCaseStore";
+import { useTestCaseStore } from "stores/testcase.store";
 
 interface ActionBlockProp {
   selected: string;

@@ -1,48 +1,59 @@
-import React from "react";
+import { SettingOutlined, UserOutlined } from "@ant-design/icons";
+import { Layout, Avatar, Button, Dropdown, MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
-import { Layout, Image, Dropdown } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import logo from "../../logo.svg";
-import type { MenuProps } from "antd";
+
 const { Header } = Layout;
 
-export const TopNav = () => {
+export function TopNav() {
+  const navigate = useNavigate();
+
   const menu: MenuProps["items"] = [
     {
       label: "Sign Out",
       key: "sign-out",
       onClick: async () => {
-        navigate("/signin");
+        navigate("/auth/login");
       }
     }
   ];
 
-  const navigate = useNavigate();
   return (
     <Header
-      className="header"
       style={{
         display: "flex",
-        gap: 10,
-        justifyContent: "space-between",
         alignItems: "center",
-        padding: "0 2rem"
+        justifyContent: "space-between"
       }}
     >
-      <Image
-        height={"100%"}
-        style={{ margin: "auto 0", padding: 10, cursor: "pointer" }}
-        src={logo}
-        preview={false}
-      />
-      <Dropdown menu={{ items: menu }} placement="bottomLeft">
-        <UserOutlined
-          style={{
-            fontSize: 20,
-            color: "white"
-          }}
+      <div className="leftRenderer">
+        <h2
+          className="logo"
+          style={{ color: "white", cursor: "pointer" }}
+          onClick={() => navigate("/")}
+        >
+          Orca
+        </h2>
+      </div>
+      <div
+        className="rightRenderer"
+        style={{
+          display: "flex",
+          gap: "1rem",
+          alignItems: "center"
+        }}
+      >
+        <Button
+          type="link"
+          shape="circle"
+          icon={<SettingOutlined />}
+          size={"large"}
+          onClick={() => navigate("/admin/usermanagement")}
         />
-      </Dropdown>
+
+        <Dropdown menu={{ items: menu }} placement="bottomLeft">
+          <Avatar size="large" icon={<UserOutlined />} />
+        </Dropdown>
+      </div>
     </Header>
   );
-};
+}
