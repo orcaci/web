@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input, Modal, Switch } from "antd";
-import "./index.css"
+import "./style.css";
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -42,9 +42,9 @@ export const AddColumnModal = (props: ModalProps) => {
             placeholder="Column name"
           />
           <Switch
-            style={{width:"fit-content"}}
-            checkedChildren="Editable"
-            unCheckedChildren="Fixed"
+            style={{ width: "fit-content" }}
+            checkedChildren="Edit"
+            unCheckedChildren="Edit"
             onChange={(value) =>
               setColumnConfig({ ...columnConfig, editable: value })
             }

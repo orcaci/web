@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Analytics } from '@vercel/analytics/react';
-import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
@@ -12,12 +11,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <React.StrictMode>
-      <BrowserRouter>
-        <App />
-        <Analytics />
-      </BrowserRouter>
-    </React.StrictMode>
+    <App />
+    <Analytics />
   </React.StrictMode>
 );
 
