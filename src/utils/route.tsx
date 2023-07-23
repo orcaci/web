@@ -90,6 +90,24 @@ export const ROUTES = [
               );
               return TestCasePage;
             }
+          },
+          {
+            path: ":appId/datatable",
+            component: () => {
+              const { Datatable } = lazily(
+                () => import("../pages/app/datatable")
+              );
+              return Datatable;
+            }
+          },
+          {
+            path: ":appId/datatable/:datatableId",
+            component: () => {
+              const { TestCasePage } = lazily(
+                () => import("../pages/app/test_case/testcase")
+              );
+              return TestCasePage;
+            }
           }
         ]
       },
