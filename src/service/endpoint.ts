@@ -36,9 +36,9 @@ export const Endpoint = {
       delete: (appId: string, caseId: string) =>
         `/api/v1/app/${appId}/case/${caseId}/`,
       itemList: (appId: string, caseId: string) =>
-        `/api/v1/app/${appId}/case/${caseId}/item/`,
+        `/api/v1/app/${appId}/case/${caseId}/detail/`,
       itemCreate: (appId: string, caseId: string) =>
-        `/api/v1/app/${appId}/case/${caseId}/item/`,
+        `/api/v1/app/${appId}/case/${caseId}/insert/`,
       batchUpdate: (appId: string, caseId: string) =>
         `/api/v1/app/${appId}/case/${caseId}/batch/`,
       updateCaseBlock: (appId: string, caseId: string, blockId: string) =>
