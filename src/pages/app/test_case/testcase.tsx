@@ -1,9 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Button } from "antd";
+import { PlayCircleOutlined } from "@ant-design/icons";
+import { shallow } from "zustand/shallow";
 import { useTestCaseStore } from "stores/testcase.store";
 import { PageHeader } from "components/page_header";
-import { shallow } from "zustand/shallow";
 import { TEST_CASE_BLOCKS, TestCaseBlock } from "components/testcase_blocks";
+import { Service } from "service";
+import { Endpoint } from "service/endpoint";
+
 import "./style.css";
 
 export interface TestCaseexecutionItem {
@@ -27,7 +32,12 @@ export interface TestCaseData {
 export function TestCasePage() {
   const { appId = "", testCaseId = "" } = useParams();
 
-  const name = useTestCaseStore((state) => state.name, shallow);
+  const { name, hasData } = useTestCaseStore(
+    (state) => ({ name: state.name, hasData: state.case_execution.length > 0 }),
+    shallow
+  );
+
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     useTestCaseStore.getState().loadData(appId, testCaseId);
@@ -35,7 +45,25 @@ export function TestCasePage() {
 
   return (
     <>
-      <PageHeader backIcon title={name} />
+      <PageHeader
+        backIcon
+        title={name}
+        extra={
+          <Button
+            disabled={!hasData}
+            loading={isRunning}
+            onClick={() => {
+              setIsRunning(true);
+              Service.post(
+                `${Endpoint.v1.case.run(appId, testCaseId)}`
+              ).finally(() => setIsRunning(false));
+            }}
+            type="primary"
+          >
+            Run <PlayCircleOutlined />
+          </Button>
+        }
+      />
       <TestCase />
     </>
   );
