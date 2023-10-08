@@ -43,6 +43,13 @@ export function TestCasePage() {
     useTestCaseStore.getState().loadData(appId, testCaseId);
   }, [appId, testCaseId]);
 
+  const handleRun =() => {
+    setIsRunning(true);
+    Service.post(
+      `${Endpoint.v1.case.run(appId, testCaseId)}`
+    ).finally(() => setIsRunning(false));
+  }
+
   return (
     <>
       <PageHeader
@@ -52,12 +59,7 @@ export function TestCasePage() {
           <Button
             disabled={!hasData}
             loading={isRunning}
-            onClick={() => {
-              setIsRunning(true);
-              Service.post(
-                `${Endpoint.v1.case.run(appId, testCaseId)}`
-              ).finally(() => setIsRunning(false));
-            }}
+            onClick={handleRun}
             type="primary"
           >
             Run <PlayCircleOutlined />
