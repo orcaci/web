@@ -46,7 +46,9 @@ export const Endpoint = {
       insertBlock: (appId: string, caseId: string, index?: number) =>
         index
           ? `/api/v1/app/${appId}/case/${caseId}/insert/?index=${index}`
-          : `/api/v1/app/${appId}/case/${caseId}/insert/`
+          : `/api/v1/app/${appId}/case/${caseId}/insert/`,
+      run: (appId: string, caseId: string) =>
+        `/api/v1/app/${appId}/case/${caseId}/run/`
     },
     group: {
       getList: (appId: string) => `/api/v1/app/${appId}/group/`,
