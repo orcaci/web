@@ -38,7 +38,6 @@ export const TestSuite: React.FC = () => {
         // all the fallback code will come here
       });
   };
-  
 
   useEffect(() => {
     fetchTestSuiteItemList();
@@ -56,7 +55,9 @@ export const TestSuite: React.FC = () => {
           onChange={handleChange}
           id="command"
           key="command"
-          options={ActionKind.map((x)=>{ return { key: x.value, label: x.value }})}
+          options={ActionKind.map((x) => {
+            return { key: x.value, label: x.value };
+          })}
         />
       )
     },
@@ -137,4 +138,3 @@ export const TestSuite: React.FC = () => {
     </div>
   );
 };
-
