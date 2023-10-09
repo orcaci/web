@@ -49,10 +49,10 @@ export const ROUTES = [
           {
             path: ":appId/testsuite/:testSuiteId",
             component: () => {
-              const { TestSuiteDashboard } = lazily(
-                () => import("../pages/app/test_suite")
+              const { TestSuite } = lazily(
+                () => import("../pages/app/test_suite/testsuite")
               );
-              return TestSuiteDashboard;
+              return TestSuite;
             }
           },
           {

@@ -190,3 +190,8 @@ export const ActionGroup: React.FC = () => {
     </div>
   );
 };
+
+
+// #d2daff
+
+// background-image: linear-gradient(to top left, #cba9d7, #1a87eb);
