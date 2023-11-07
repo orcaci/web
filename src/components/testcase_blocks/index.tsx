@@ -16,7 +16,7 @@ interface TestCaseBlockProp {
 }
 
 export function TestCaseBlock(props: TestCaseBlockProp) {
-  let Component = TEST_CASE_BLOCK_COMPONENT_MAPPING[props.type];
+  const Component = TEST_CASE_BLOCK_COMPONENT_MAPPING[props.type];
 
   if (props.type === TEST_CASE_BLOCKS.ADD) {
     return (

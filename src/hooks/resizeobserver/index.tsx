@@ -6,10 +6,10 @@ export const useResizerObserver = (elementSelector: string) => {
 
   useEffect(
     function heightObserveEffect() {
-      let element = document.querySelector(elementSelector);
+      const element = document.querySelector(elementSelector);
       const observer = new ResizeObserver((entries) => {
-        let _height = entries[0].target.clientHeight;
-        let _width = entries[0].target.clientWidth;
+        const _height = entries[0].target.clientHeight;
+        const _width = entries[0].target.clientWidth;
         setClientHeight(_height);
         setClientWidth(_width);
       });

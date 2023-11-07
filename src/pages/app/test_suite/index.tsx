@@ -94,7 +94,7 @@ export const TestSuiteDashboard: React.FC = () => {
    * @param data
    */
   const onAddNewSuite = async (data: any) => {
-    let payload = { ...data, app_id: appId };
+    const payload = { ...data, app_id: appId };
     await Service.post(`${Endpoint.v1.suite.create(appId)}`, {
       body: payload
     })

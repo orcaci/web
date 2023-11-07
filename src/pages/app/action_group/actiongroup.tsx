@@ -45,9 +45,9 @@ export const ActionGroup: React.FC = () => {
   };
 
   const addNewRow = async () => {
-    let _uuid = uuidv4();
-    let dataSourceLength = dataSource.length + 1;
-    let action = {
+    const _uuid = uuidv4();
+    const dataSourceLength = dataSource.length + 1;
+    const action = {
       id: _uuid,
       execution_order: dataSourceLength,
       description: "",
@@ -131,7 +131,7 @@ export const ActionGroup: React.FC = () => {
       row = updateData[row.id];
     }
     row[field] = value;
-    let up: any = {};
+    const up: any = {};
     up[row.id] = row;
 
     setupdateData(up);

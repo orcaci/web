@@ -112,7 +112,7 @@ export const Datatable: React.FC = () => {
    * @param data
    */
   const onAddNewActionGroup = async (data: any) => {
-    let payload = { ...data, type_field: "ActionGroup", app_id: appId };
+    const payload = { ...data, type_field: "ActionGroup", app_id: appId };
     await Service.post(`${Endpoint.v1.group.create(appId)}`, {
       body: payload
     })

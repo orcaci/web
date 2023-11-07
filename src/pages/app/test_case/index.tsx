@@ -115,7 +115,7 @@ export const TestCaseDashboard: React.FC = () => {
    * @param data
    */
   const onAddNewCase = async (data: any) => {
-    let payload = { ...data, app_id: appId };
+    const payload = { ...data, app_id: appId };
     await Service.post(`${Endpoint.v1.case.create(appId)}`, {
       body: payload
     })

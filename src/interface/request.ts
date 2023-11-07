@@ -1,6 +1,6 @@
 export interface RequestParams {
-  url: String;
-  method: String;
+  url: string;
+  method: string;
   headers?: Object;
   body?: any;
 }
