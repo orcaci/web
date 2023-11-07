@@ -39,7 +39,7 @@ export function ActionBlock(props: ActionBlockProp) {
 
   useEffect(() => {
     fetchActionGroups();
-  }, []);
+  }, [fetchActionGroups]);
 
   const handleChange = (val: string) => {
     setSelectedAction(val);
