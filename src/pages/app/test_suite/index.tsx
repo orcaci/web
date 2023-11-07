@@ -65,18 +65,6 @@ export const TestSuiteDashboard: React.FC = () => {
 
   const { appId = "" } = useParams();
 
-  useEffect(() => {
-    fetchTestSuites();
-  }, []);
-
-  /**
-   * onHandleClick - Handle the Action redirect
-   * @param record
-   */
-  const onHandleClick = (record: any) => {
-    navigate(record.id);
-  };
-
   /**
    * fetchTestSuites - fetch all Action group from the specify Application
    */
@@ -86,6 +74,18 @@ export const TestSuiteDashboard: React.FC = () => {
         setDataSource(testSuits);
       })
       .finally(() => {});
+  };
+
+  useEffect(() => {
+    fetchTestSuites();
+  }, [fetchTestSuites]);
+
+  /**
+   * onHandleClick - Handle the Action redirect
+   * @param record
+   */
+  const onHandleClick = (record: any) => {
+    navigate(record.id);
   };
 
   /**

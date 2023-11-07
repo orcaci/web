@@ -86,18 +86,6 @@ export const TestCaseDashboard: React.FC = () => {
 
   const { appId = "" } = useParams();
 
-  useEffect(() => {
-    fetchTestCases();
-  }, []);
-
-  /**
-   * onHandleClick - Handle the Action redirect
-   * @param record
-   */
-  const onHandleClick = (record: any) => {
-    navigate(record.id);
-  };
-
   /**
    * fetchTestCases - fetch all Action group from the specify Application
    */
@@ -107,6 +95,18 @@ export const TestCaseDashboard: React.FC = () => {
         setDataSource(testCases);
       })
       .finally(() => {});
+  };
+
+  useEffect(() => {
+    fetchTestCases();
+  }, [fetchTestCases]);
+
+  /**
+   * onHandleClick - Handle the Action redirect
+   * @param record
+   */
+  const onHandleClick = (record: any) => {
+    navigate(record.id);
   };
 
   /**

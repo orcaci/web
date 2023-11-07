@@ -40,20 +40,20 @@ const createAction = async (appId, actionGroup) => {
   );
 };
 
-function insertObjectinArray(arr, newObj) {
-  const index = arr.findIndex(
-    (obj) => newObj.execution_order <= obj.execution_order
-  );
-  if (index === -1) {
-    arr.push(newObj);
-  } else {
-    arr.splice(index, 0, newObj);
-    for (let i = index + 1; i < arr.length; i++) {
-      arr[i].execution_order++;
-    }
-  }
-  return arr;
-}
+// function insertObjectinArray(arr, newObj) {
+//   const index = arr.findIndex(
+//     (obj) => newObj.execution_order <= obj.execution_order
+//   );
+//   if (index === -1) {
+//     arr.push(newObj);
+//   } else {
+//     arr.splice(index, 0, newObj);
+//     for (let i = index + 1; i < arr.length; i++) {
+//       arr[i].execution_order++;
+//     }
+//   }
+//   return arr;
+// }
 
 const createWithImmer = (storeCreator) =>
   create((originalSet, originalGet) =>
