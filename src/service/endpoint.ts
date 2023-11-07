@@ -24,9 +24,9 @@ export const Endpoint = {
       delete: (appId: string, suiteId: string) =>
         `/api/v1/app/${appId}/suite/${suiteId}/`,
       itemList: (appId: string, suiteId: string) =>
-        `/api/v1/app/${appId}/suite/${suiteId}/item/`,
+        `/api/v1/app/${appId}/suite/${suiteId}/detail/`,
       itemCreate: (appId: string, suiteId: string) =>
-        `/api/v1/app/${appId}/suite/${suiteId}/item/`
+        `/api/v1/app/${appId}/suite/${suiteId}/detail/`
     },
     case: {
       list: (appId: string) => `/api/v1/app/${appId}/case/`,
