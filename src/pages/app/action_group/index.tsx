@@ -83,18 +83,6 @@ export const ActionGroupDashboard: React.FC = () => {
 
   const { appId = "" } = useParams();
 
-  useEffect(() => {
-    fetchActionGroups();
-  }, []);
-
-  /**
-   * onHandleClick - Handle the Action redirect
-   * @param record
-   */
-  const onHandleClick = (record: any) => {
-    navigate(record.id);
-  };
-
   /**
    * fetchActionGroups - fetch all Action group from the specify Application
    */
@@ -104,6 +92,18 @@ export const ActionGroupDashboard: React.FC = () => {
         setDataSource(actionGroups);
       })
       .finally(() => {});
+  };
+
+  useEffect(() => {
+    fetchActionGroups();
+  }, [fetchActionGroups]);
+
+  /**
+   * onHandleClick - Handle the Action redirect
+   * @param record
+   */
+  const onHandleClick = (record: any) => {
+    navigate(record.id);
   };
 
   /**

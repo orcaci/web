@@ -41,7 +41,7 @@ export const TestSuite: React.FC = () => {
 
   useEffect(() => {
     fetchTestSuiteItemList();
-  }, []);
+  }, [fetchTestSuiteItemList]);
 
   const columns: ColumnsType<DataType> = [
     {
