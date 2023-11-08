@@ -78,7 +78,7 @@ export const TestSuiteDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchTestSuites();
-  }, [fetchTestSuites]);
+  }, []);
 
   /**
    * onHandleClick - Handle the Action redirect

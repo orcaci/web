@@ -41,14 +41,14 @@ export function TestCasePage() {
 
   useEffect(() => {
     useTestCaseStore.getState().loadData(appId, testCaseId);
-  }, [appId, testCaseId]);
+  }, [appId]);
 
-  const handleRun =() => {
+  const handleRun = () => {
     setIsRunning(true);
-    Service.post(
-      `${Endpoint.v1.case.run(appId, testCaseId)}`
-    ).finally(() => setIsRunning(false));
-  }
+    Service.post(`${Endpoint.v1.case.run(appId, testCaseId)}`).finally(() =>
+      setIsRunning(false)
+    );
+  };
 
   return (
     <>

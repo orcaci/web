@@ -1,9 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { ConfigProvider, Skeleton } from "antd";
 import { ROUTES } from "./utils/route";
 
 function App() {
+  useEffect(() => {
+    import("preline");
+  }, []);
+
   return (
     <ConfigProvider>
       <BrowserRouter>

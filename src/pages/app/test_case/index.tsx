@@ -99,7 +99,7 @@ export const TestCaseDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchTestCases();
-  }, [fetchTestCases]);
+  }, []);
 
   /**
    * onHandleClick - Handle the Action redirect

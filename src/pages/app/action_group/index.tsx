@@ -96,7 +96,7 @@ export const ActionGroupDashboard: React.FC = () => {
 
   useEffect(() => {
     fetchActionGroups();
-  }, [fetchActionGroups]);
+  }, []);
 
   /**
    * onHandleClick - Handle the Action redirect

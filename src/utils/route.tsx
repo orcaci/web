@@ -8,7 +8,7 @@ export const ROUTES = [
     key: "authenticated",
     path: "",
     component: () => {
-      const { HomeLayout } = lazily(() => import("../layouts/home"));
+      const { HomeLayout } = lazily(() => import("../layouts/home/index"));
       return HomeLayout;
     },
     nestedRoute: [

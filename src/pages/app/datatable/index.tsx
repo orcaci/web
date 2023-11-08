@@ -96,7 +96,7 @@ export const Datatable: React.FC = () => {
 
   useEffect(() => {
     fetchActionGroups();
-  }, [fetchActionGroups]);
+  }, []);
 
   /**
    * onHandleClick - Handle the Action redirect
