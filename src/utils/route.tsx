@@ -103,10 +103,10 @@ export const ROUTES = [
           {
             path: ":appId/datatable/:datatableId",
             component: () => {
-              const { TestCasePage } = lazily(
-                () => import("../pages/app/test_case/testcase")
+              const { DatatableView } = lazily(
+                () => import("../pages/app/datatable/view")
               );
-              return TestCasePage;
+              return DatatableView;
             }
           }
         ]

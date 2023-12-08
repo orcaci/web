@@ -1,12 +1,15 @@
+import {
+  PencilIcon,
+  TrashIcon
+} from "@heroicons/react/24/outline";
+import { Flex, IconButton, Link } from "@radix-ui/themes";
+import { CreateModal } from "components/create_modal";
+import { AppHeader } from "components/header";
+import { ColumnField, ReadOnlyTable } from "components/table";
 import React, { useEffect, useState } from "react";
-import { Space, Table, Button, Popconfirm } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { CreateModal } from "components/create_modal";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { PageHeader } from "components/page_header";
 
 interface DataType {
   key: string;
@@ -21,69 +24,47 @@ export const TestCaseDashboard: React.FC = () => {
   const [dataSource, setDataSource] = useState([] as any);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const columns: ColumnsType<DataType> = [
+  const columns: Array<ColumnField> = [
     {
-      title: "Name",
-      dataIndex: "name",
       key: "name",
+      label: "Name",
       render: (text, record) => (
-        <Button type="link" onClick={() => onHandleClick(record)}>
-          {text}
-        </Button>
+        <Link onClick={() => onHandleClick(record)}>{text}</Link>
       )
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description"
+      key: "description",
+      label: "Description"
     },
     {
-      title: "Action",
       key: "action",
-      render: (record) => {
+      label: "Action",
+      render: (text, record) => {
         return (
-          // <Space size="middle">
-          //   <Button type="primary" onClick={() => onHandleClick(record)}>Edit</Button>
-          //   <Popconfirm
-          //       title="Delete the Test Case"
-          //       description="Are you sure to delete this Test Case?"
-          //       onConfirm={() => onDeleteTestCase(record.id)}
-          //       okText="Yes"
-          //       cancelText="No"
-          //   >
-          //       <Button danger type="primary">Delete</Button>
-          //   </Popconfirm>
-          // </Space>
-
-          <Space size="middle">
-            <Button
-              type="primary"
+          <Flex align="center" gap="3">
+            <IconButton
+              color="indigo"
+              size="1"
+              variant="soft"
+              className="cursor-pointer"
               onClick={() => onHandleClick(record)}
-              shape="round"
-              icon={<EditOutlined />}
-              size="small"
-            />
-            <Popconfirm
-              title="Delete the Action Group"
-              description="Are you sure to delete this Action Group?"
-              onConfirm={() => onDeleteTestCase(record.id)}
-              okText="Yes"
-              cancelText="No"
             >
-              <Button
-                danger
-                type="primary"
-                shape="round"
-                icon={<DeleteOutlined />}
-                size="small"
-              />
-            </Popconfirm>
-          </Space>
+              <PencilIcon width="18" height="18" />
+            </IconButton>
+            <IconButton
+              color="crimson"
+              size="1"
+              variant="soft"
+              className="cursor-pointer"
+              onClick={() => onDeleteTestCase(record.id)}
+            >
+              <TrashIcon width="18" height="18" />
+            </IconButton>
+          </Flex>
         );
       }
     }
   ];
-
   const { appId = "" } = useParams();
 
   /**
@@ -139,15 +120,11 @@ export const TestCaseDashboard: React.FC = () => {
 
   return (
     <>
-      <PageHeader
-        title="Test Case"
-        extra={
-          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
-            <PlusOutlined />
-          </Button>
-        }
+      <AppHeader
+        title={"Test Case"}
+        onCreate={() => setIsCreateModalOpen(true)}
       />
-      <Table columns={columns} dataSource={dataSource} rowKey="name" />
+      <ReadOnlyTable column={columns} data={dataSource} />
       <div>
         {isCreateModalOpen && (
           <CreateModal

@@ -1,17 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import "@radix-ui/themes/styles.css";
 // import { Analytics } from "@vercel/analytics/react";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { HomeLayout } from "layouts/home/index old";
+import { Theme } from "@radix-ui/themes";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Theme>
+      <App />
+    </Theme>
     {/* <HomeLayout /> */}
     {/* <Analytics /> */}
   </React.StrictMode>

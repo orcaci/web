@@ -58,6 +58,18 @@ export const Endpoint = {
       delete: (appId: string, groupId: string) =>
         `/api/v1/app/${appId}/group/${groupId}/`
     },
+    datatable: {
+      create: (appId: string) => `/api/v1/app/${appId}/datatable/`,
+      getList: (appId: string) => `/api/v1/app/${appId}/datatable/`,
+      view: {
+        getDetail: (appId: string, datatableId: string) =>
+          `/api/v1/app/${appId}/datatable/${datatableId}/meta`,
+        createField: (appId: string, datatableId: string) =>
+          `/api/v1/app/${appId}/datatable/${datatableId}/field`,
+        getItemList: (appId: string, datatableId: string) =>
+          `/api/v1/app/${appId}/datatable/${datatableId}/item/`
+      }
+    },
     action: {
       batch: (appId: string, groupId: string) =>
         `/api/v1/app/${appId}/group/${groupId}/action/batch/`,

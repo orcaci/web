@@ -1,29 +1,14 @@
 import React from "react";
 import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
-import { Layout, Menu } from "antd";
-import type { MenuProps } from "antd";
-import {
-  PlayCircleOutlined,
-  ExperimentOutlined,
-  GroupOutlined,
-  DatabaseOutlined,
-  DashboardOutlined,
-  ReconciliationOutlined,
-  TransactionOutlined,
-  InteractionOutlined
-} from "@ant-design/icons";
-import "../layout.css";
 import {
   ChartPieIcon,
-  PresentationChartLineIcon,
   RectangleGroupIcon,
   FunnelIcon,
   TableCellsIcon,
   BookOpenIcon,
-  BriefcaseIcon
+  BriefcaseIcon,
+  ChevronDownIcon
 } from "@heroicons/react/24/outline";
-
-const { Content, Sider } = Layout;
 
 export function AppLayout() {
   const navigate = useNavigate();
@@ -63,12 +48,12 @@ export function AppLayout() {
         {
           key: "execution",
           label: "Exectution log",
-          icon: <TransactionOutlined />
+          icon: BookOpenIcon
         },
         {
           key: "activity",
           label: "Activity log",
-          icon: <InteractionOutlined />
+          icon: BookOpenIcon
         }
       ]
     }
@@ -81,23 +66,22 @@ export function AppLayout() {
     <>
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        className="fixed h-full w-0 top-0 start-0 sm:flex sm:w-60 sm:top-12 hidden left-0 pt-5 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div className="h-full w-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             {menuItems.map((menu: any) => {
               let cls = "flex-1 ml-3 whitespace-nowrap";
               let prCls =
-                "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ";
+                "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ";
               if (menu.isActive) {
                 cls = cls + " text-indigo-600";
                 prCls = prCls + " bg-gray-100";
               }
               return (
-                <li>
+                <li key={menu.key}>
                   <a
-                    href="#"
                     onClick={() => navigate(`${appId}/${menu.key}`)}
                     className={prCls}
                   >
@@ -107,10 +91,53 @@ export function AppLayout() {
                 </li>
               );
             })}
+            <li>
+              <button
+                type="button"
+                className="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                aria-controls="dropdown-sales"
+                // data-collapse-toggle="dropdown-sales"
+                // aria-expanded="true"
+                data-target="dropdown-sales"
+                data-toggle="hidden"
+              >
+                <TableCellsIcon className="h-6 w-6 text-indigo-600" />
+                <span className="flex-1 ml-3 text-left whitespace-nowrap">
+                  Sales
+                </span>
+                <ChevronDownIcon className="h-6 w-6 text-indigo-600" />
+              </button>
+              <ul id="dropdown-sales" className="hidden py-2 space-y-2">
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Billing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Invoice
+                  </a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </div>
       </aside>
-      <div className="mx-auto max-w-7xl pt-20 py-6 sm:px-6 lg:px-8">
+      <div className="relative p-0 m-0 w-full sm:w-[calc(100%_-_15rem)] sm:left-60 overflow-auto">
         <Outlet />
       </div>
     </>

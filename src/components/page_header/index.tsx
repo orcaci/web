@@ -27,10 +27,16 @@ export function PageHeader(props: PageHeaderProps) {
           margin: 0,
           display: "flex",
           alignItems: "center",
-          gap:"0.5rem"
+          gap: "0.5rem"
         }}
       >
-        {props.backIcon && <Button onClick={() => navigate(-1)} type="text" icon={<ArrowLeftOutlined />} />}
+        {props.backIcon && (
+          <Button
+            onClick={() => navigate(-1)}
+            type="text"
+            icon={<ArrowLeftOutlined />}
+          />
+        )}
         {props.title}
       </p>
       <div className="extra">{props.extra}</div>
