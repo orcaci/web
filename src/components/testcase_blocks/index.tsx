@@ -1,11 +1,12 @@
+import { Collapse } from "antd";
 import { ActionBlock } from "./action_block";
 import { AssertBlock } from "./assert_block";
 import { AddBlock } from "./add_block";
-//import { IFBlock } from "./ifBlock";
-import "./style.css";
-//import { IterationBlock } from "./iterationBlock";
+import { IFBlock } from "./if_block";
+import { IterationBlock } from "./iteration_block";
 import { MenuClickEventHandler } from "rc-menu/lib/interface";
-import { Collapse } from "antd";
+
+import "./style.css";
 const { Panel } = Collapse;
 
 interface TestCaseBlockProp {
@@ -18,7 +19,11 @@ interface TestCaseBlockProp {
 export function TestCaseBlock(props: TestCaseBlockProp) {
   let Component = TEST_CASE_BLOCK_COMPONENT_MAPPING[props.type];
 
-  if (props.type === TEST_CASE_BLOCKS.ADD) {
+  if (
+    props.type === TEST_CASE_BLOCKS.ADD ||
+    props.type === TEST_CASE_BLOCKS.IF ||
+    props.type === TEST_CASE_BLOCKS.FOR_LOOP
+  ) {
     return (
       <Component
         id={props.id || ""}
@@ -54,9 +59,9 @@ export const TEST_CASE_BLOCKS = {
 export const TEST_CASE_BLOCK_COMPONENT_MAPPING = {
   [TEST_CASE_BLOCKS.ACTION]: ActionBlock,
   [TEST_CASE_BLOCKS.ASSERT]: AssertBlock,
-  [TEST_CASE_BLOCKS.ADD]: AddBlock
-  // [TEST_CASE_BLOCKS.IF]: IFBlock,
-  // [TEST_CASE_BLOCKS.FOR_LOOP]: IterationBlock
+  [TEST_CASE_BLOCKS.ADD]: AddBlock,
+  [TEST_CASE_BLOCKS.IF]: IFBlock,
+  [TEST_CASE_BLOCKS.FOR_LOOP]: IterationBlock
 };
 
 export const TEST_CASE_BLOCK_VISUAL_MAPPING = {
@@ -68,12 +73,4 @@ export const TEST_CASE_BLOCK_VISUAL_MAPPING = {
     header: "Assert",
     color: "rgb(228 244 198)"
   }
-  // [TEST_CASE_BLOCKS.IF]: {
-  //   header: "Assert",
-  //   color: "rgb(228 244 198)"
-  // },
-  // [TEST_CASE_BLOCKS.FOR_LOOP]: {
-  //   header: "Assert",
-  //   color: "rgb(228 244 198)"
-  // }
 };
