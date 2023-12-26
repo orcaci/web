@@ -29,17 +29,16 @@ export function ActionBlock(props: ActionBlockProp) {
       .updateActionBlock({ groupId, actionId: props.id });
   };
 
-  const fetchActionGroups = async () => {
-    await Service.get(Endpoint.v1.group.getList(appId))
-      .then((data) => {
-        setActionGroups(data);
-      })
-      .finally(() => {});
-  };
-
   useEffect(() => {
+    const fetchActionGroups = async () => {
+      await Service.get(Endpoint.v1.group.getList(appId))
+        .then((data) => {
+          setActionGroups(data);
+        })
+        .finally(() => {});
+    };
     fetchActionGroups();
-  }, [fetchActionGroups]);
+  }, []);
 
   const handleChange = (val: string) => {
     setSelectedAction(val);
