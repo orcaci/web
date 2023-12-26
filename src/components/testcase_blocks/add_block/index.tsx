@@ -19,15 +19,15 @@ export function AddBlock(props: AddBlockProps) {
     {
       label: "Assert",
       key: TEST_CASE_BLOCKS.ASSERT
+    },
+    {
+      label: "If Block",
+      key: TEST_CASE_BLOCKS.IF
+    },
+    {
+      label: "Iteration",
+      key: TEST_CASE_BLOCKS.FOR_LOOP
     }
-    // {
-    //   label: "If Block",
-    //   key: TEST_CASE_BLOCKS.IF
-    // },
-    // {
-    //   label: "Iteration",
-    //   key: TEST_CASE_BLOCKS.FOR_LOOP
-    // }
   ];
 
   const menuProps = {

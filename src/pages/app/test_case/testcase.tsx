@@ -43,12 +43,12 @@ export function TestCasePage() {
     useTestCaseStore.getState().loadData(appId, testCaseId);
   }, [appId, testCaseId]);
 
-  const handleRun =() => {
+  const handleRun = () => {
     setIsRunning(true);
-    Service.post(
-      `${Endpoint.v1.case.run(appId, testCaseId)}`
-    ).finally(() => setIsRunning(false));
-  }
+    Service.post(`${Endpoint.v1.case.run(appId, testCaseId)}`).finally(() =>
+      setIsRunning(false)
+    );
+  };
 
   return (
     <>
@@ -69,6 +69,11 @@ export function TestCasePage() {
       <TestCase />
     </>
   );
+}
+
+function insert(i: number, arr: any, ...rest: any) {
+  arr.splice(i, 0, ...rest);
+  return arr;
 }
 
 export function TestCase() {
@@ -110,7 +115,22 @@ export function TestCase() {
             key={`${data.case_id}-add`}
             id={`${data.id}-add`}
             handleMenuClick={(val: any) => {
-              useTestCaseStore.getState().addBlock(index + 1, val.key);
+              if (
+                val.key === TEST_CASE_BLOCKS.IF ||
+                val.key === TEST_CASE_BLOCKS.FOR_LOOP
+              ) {
+                const currentValue = useTestCaseStore.getState();
+                useTestCaseStore.setState({
+                  ...currentValue,
+                  case_execution: insert(index + 1, [...testcaseData], {
+                    type_field: val.key
+                  })
+                });
+              }
+              else{
+                useTestCaseStore.getState().addBlock(index + 1, val.key);
+
+              }
             }}
             type={TEST_CASE_BLOCKS.ADD}
           />
