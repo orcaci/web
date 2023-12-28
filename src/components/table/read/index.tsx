@@ -3,6 +3,8 @@
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Flex, IconButton, Table } from "@radix-ui/themes";
 import { NotFound } from "assert/svg";
+import { Pagination } from "components";
+import PagenationExample from "components/pagination";
 
 export interface ColumnField {
   key: string;
@@ -20,51 +22,72 @@ export interface ReadOnlyTableProps {
   actions?: Array<any>;
   isEditable?: boolean;
   addColumn?: boolean;
-  footer?: boolean;
+  footer?: React.ReactNode;
 }
+
+const defaultFooter = (span: number) => {
+  return (
+    <Table.Row>
+      <Table.Cell colSpan={span}>
+        {/* <div className="flex"> */}
+        {/* <button
+            onClick={() => {}}
+            className="p-2 text-green-500 bg-green-200 hover:bg-green-300 rounded"
+          >
+            Add Row
+          </button>
+          <Pagination active={1} size={2}></Pagination> */}
+        <PagenationExample></PagenationExample>
+        {/* </div> */}
+      </Table.Cell>
+    </Table.Row>
+  );
+};
 
 export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
   column,
   data,
+  footer,
+  addColumn,
   ...restProps
 }) => {
+  if (!footer) {
+    footer = defaultFooter(column.length);
+  }
   return (
     <>
       <div className="flex">
         <Table.Root variant="surface" className="w-full">
           <Table.Header>
             <Table.Row>
-              {column.map((item: ColumnField) => {
+              {column.map((item: ColumnField, index: number) => {
                 return (
-                  <Table.ColumnHeaderCell>{item.label}</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell
+                    key={`tableheaderRowColumn${index}`}
+                    className={item.className}
+                  >
+                    {item.label}
+                  </Table.ColumnHeaderCell>
                 );
               })}
-
-              {/* <th className="text-center align-middle justify-center items-center mx-auto mb-8">
-                <IconButton
-                  color="indigo"
-                  size="1"
-                  className="cursor-pointer"
-                  onClick={() => console.log("click")}
-                >
-                  <PlusIcon width="18" height="18" />
-                </IconButton>
-              </th> */}
             </Table.Row>
           </Table.Header>
 
           <Table.Body>
             {data.length > 0 ? (
-              data.map((row: any) => {
+              data.map((row: any, index: number) => {
                 return (
-                  <Table.Row>
-                    {column.map((item: ColumnField) => {
+                  <Table.Row key={`tableDataRow${index}`}>
+                    {column.map((item: ColumnField, index: number) => {
                       let childRender = row[item.key];
                       if (item.render) {
                         childRender = item.render(row[item.key], row);
                       }
                       return (
-                        <Table.Cell className={item.className}>
+                        <Table.Cell
+                          key={`tableDataRowColumn${index}`}
+                          className={item.className}
+                        >
                           {childRender}
                         </Table.Cell>
                       );
@@ -75,9 +98,6 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
             ) : (
               <Table.Row>
                 <Table.Cell colSpan={column.length}>
-                  {/* <div className="bg-gray-200 p-4">
-                  <p className="text-red-500">Data not found.</p>
-                </div> */}
                   <div className="max-w-4xl mx-auto px-4 py-16 text-center">
                     <div className="flex justify-center items-center mx-auto mb-8">
                       <NotFound width={250} height={250} />
@@ -91,41 +111,28 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
                       We couldn't find any data for your request. Please try
                       again later or contact support for assistance.
                     </p>
-                    {/* <a
-                    href="#"
-                    className="inline-flex items-center px-4 py-2 rounded-md bg-blue-500 text-white font-bold hover:bg-blue-600"
-                  >
-                    Try again
-                  </a> */}
                   </div>
                 </Table.Cell>
               </Table.Row>
             )}
-            <Table.Row>
-              <Table.Cell colSpan={column.length}>
-                <div className="flex">
-                  <button
-                    onClick={() => {}}
-                    className="p-2 text-green-500 bg-green-200 hover:bg-green-300 rounded"
-                  >
-                    Add Row
-                  </button>
-                </div>
-              </Table.Cell>
-            </Table.Row>
+            {footer}
           </Table.Body>
         </Table.Root>
-        <div className="p-3">
-          <IconButton
-            title="Add Column"
-            color="indigo"
-            size="1"
-            className="cursor-pointer"
-            onClick={() => console.log("click")}
-          >
-            <PlusIcon width="18" height="18" />
-          </IconButton>
-        </div>
+        {addColumn ? (
+          <div className="p-3">
+            <IconButton
+              title="Add Column"
+              color="indigo"
+              size="1"
+              className="cursor-pointer"
+              onClick={() => console.log("click")}
+            >
+              <PlusIcon width="18" height="18" />
+            </IconButton>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

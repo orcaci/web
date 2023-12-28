@@ -1,81 +1,112 @@
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Link,
+  Popover,
+  Text,
+  TextArea,
+  TextField
+} from "@radix-ui/themes";
+import { AppHeader } from "components/header";
+import { ColumnField, ReadOnlyTable } from "components/table";
 import React, { useEffect, useState } from "react";
-import { Space, Table, Button, Popconfirm } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { CreateModal } from "components/create_modal";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { PageHeader } from "components/page_header";
-
-interface DataType {
-  key: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  createdBy: string;
-}
 
 export const ActionGroupDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [dataSource, setDataSource] = useState([] as any);
+  const [groupAction, setgroupAction] = useState({} as any);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const columns: ColumnsType<DataType> = [
+  const extra: Array<React.ReactNode> = [
+    <Popover.Root>
+      <Popover.Trigger>
+        <button
+          type="button"
+          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => setgroupAction({})}
+        >
+          <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
+          New
+        </button>
+      </Popover.Trigger>
+      <Popover.Content style={{ width: 360 }}>
+        <Flex gap="3">
+          <Box grow="1">
+            <Text>Create New</Text>
+            <TextField.Input
+              variant="soft"
+              placeholder="Name of Group Action"
+              onChange={(e) => setCreateGroupAction("name", e.target.value)}
+            />
+            <TextArea
+              variant="soft"
+              placeholder="Write a description…"
+              style={{ height: 80 }}
+              onChange={(e) =>
+                setCreateGroupAction("description", e.target.value)
+              }
+            />
+            <Flex gap="3" mt="3" justify="end">
+              <Popover.Close>
+                <Button size="1" onClick={() => onCreateNewActionGroup()}>
+                  Create
+                </Button>
+              </Popover.Close>
+            </Flex>
+          </Box>
+        </Flex>
+      </Popover.Content>
+    </Popover.Root>
+  ];
+
+  const columns: Array<ColumnField> = [
     {
-      title: "Name",
-      dataIndex: "name",
       key: "name",
+      label: "Name",
+      className: "flex-auto ",
       render: (text, record) => (
-        <Button type="link" onClick={() => onHandleClick(record)}>
+        <Link className="ms-16" onClick={() => onHandleClick(record)}>
           {text}
-        </Button>
+        </Link>
       )
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description"
+      key: "description",
+      label: "Description",
+      className: "flex-auto "
     },
-    // {
-    //   title: "CreatedAt",
-    //   dataIndex: "createdAt",
-    //   key: "createdAt"
-    // },
-    // {
-    //   title: "CreatedBy",
-    //   key: "createdBy",
-    //   dataIndex: "createdBy"
-    // },
     {
-      title: "Action",
       key: "action",
-      render: (record) => {
+      label: "Action",
+      className: "flex-initial w-48",
+      render: (text, record) => {
         return (
-          <Space size="middle">
-            <Button
-              type="primary"
+          <Flex align="center" gap="3">
+            <IconButton
+              color="indigo"
+              size="1"
+              variant="soft"
+              className="cursor-pointer"
               onClick={() => onHandleClick(record)}
-              shape="round"
-              icon={<EditOutlined />}
-              size="small"
-            />
-            <Popconfirm
-              title="Delete the Action Group"
-              description="Are you sure to delete this Action Group?"
-              onConfirm={() => onDeleteActionGroup(record.id)}
-              okText="Yes"
-              cancelText="No"
             >
-              <Button
-                danger
-                type="primary"
-                shape="round"
-                icon={<DeleteOutlined />}
-                size="small"
-              />
-            </Popconfirm>
-          </Space>
+              <PencilIcon width="18" height="18" />
+            </IconButton>
+            <IconButton
+              color="crimson"
+              size="1"
+              variant="soft"
+              className="cursor-pointer"
+              onClick={() => onDelete(record.id)}
+            >
+              <TrashIcon width="18" height="18" />
+            </IconButton>
+          </Flex>
         );
       }
     }
@@ -83,13 +114,21 @@ export const ActionGroupDashboard: React.FC = () => {
 
   const { appId = "" } = useParams();
 
+  const setCreateGroupAction = (field_id: string, value: any) => {
+    let _data = { ...groupAction };
+    _data[field_id] = value;
+    setgroupAction(_data);
+  };
+
+  const updateTableInfo = (event: EventSource, field_id: string) => {};
+
   /**
-   * fetchActionGroups - fetch all Action group from the specify Application
+   * fetchActionGroups - fetch all ActionGroup from the specify Application
    */
   const fetchActionGroups = async () => {
     await Service.get(`${Endpoint.v1.group.getList(appId)}`)
-      .then((actionGroups) => {
-        setDataSource(actionGroups);
+      .then((groups) => {
+        setDataSource(groups);
       })
       .finally(() => {});
   };
@@ -103,30 +142,34 @@ export const ActionGroupDashboard: React.FC = () => {
    * @param record
    */
   const onHandleClick = (record: any) => {
-    navigate(record.id);
+    navigate(`${record.id}`);
   };
 
   /**
-   * onAddNewActionGroup - will create new Action Group and
-   * Update the existing grid of all the action group
+   * onCreateNewActionGroup - will create new Action Group
    * @param data
    */
-  const onAddNewActionGroup = async (data: any) => {
-    let payload = { ...data, type_field: "ActionGroup", app_id: appId };
+  const onCreateNewActionGroup = async () => {
+    let payload = {
+      ...groupAction,
+      app_id: appId,
+      type_field: "ActionGroup"
+    };
     await Service.post(`${Endpoint.v1.group.create(appId)}`, {
       body: payload
     })
-      .then(() => {
+      .then((record: any) => {
+        // onHandleClick(`${record.id}`);
         fetchActionGroups();
       })
       .finally(() => {});
   };
 
   /**
-   * onDeleteActionGroup - Delete the Action Group with a confirmation
+   * onDelete - Delete the Action Group with a confirmation
    * @param groupId
    */
-  const onDeleteActionGroup = async (groupId: any) => {
+  const onDelete = async (groupId: any) => {
     await Service.delete(`${Endpoint.v1.group.delete(appId, groupId)}`)
       .then(() => {
         fetchActionGroups();
@@ -136,26 +179,9 @@ export const ActionGroupDashboard: React.FC = () => {
 
   return (
     <>
-      <PageHeader
-        title="Action Group"
-        extra={
-          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
-            <PlusOutlined />
-          </Button>
-        }
-      />
-      <Table columns={columns} dataSource={dataSource} rowKey="name" />
-      <div>
-        {isCreateModalOpen && (
-          <CreateModal
-            isModalOpen={isCreateModalOpen}
-            onClose={() => setIsCreateModalOpen(false)}
-            onOk={onAddNewActionGroup}
-            isLoading={false}
-            modelFor={"Action Group"}
-          />
-        )}
-      </div>
+      <AppHeader title="Action Group" extra={extra} />
+
+      <ReadOnlyTable column={columns} data={dataSource} />
     </>
   );
 };

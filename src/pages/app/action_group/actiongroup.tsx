@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Matrix } from "components/matrix";
+import { PlusOutlined } from "@ant-design/icons";
+import { ArrowsPointingInIcon } from "@heroicons/react/20/solid";
+import { CommandLineIcon } from "@heroicons/react/24/outline";
+import { Button, Input, Select } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { Select, Input, Button } from "antd";
+import { InputGroup } from "components/input";
+import { PageHeader } from "components/page_header";
+import { Select as OSelect } from "components/select";
+import EditableTable from "components/table/edit";
+import { ActionKind, ActionKindV2 } from "constant/action_kind";
+import { TargetV2, Targets } from "constant/target";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { useParams } from "react-router-dom";
-import { ActionKind } from "constant/action_kind";
-import { Targets } from "constant/target";
 import { v4 as uuidv4 } from "uuid";
-import { PageHeader } from "components/page_header";
-import { PlusOutlined } from "@ant-design/icons";
 import "./style.css";
 
 export const ActionGroup: React.FC = () => {
@@ -34,7 +38,6 @@ export const ActionGroup: React.FC = () => {
    * fetchActions - will get all the Action for specific action group
    */
   const fetchActions = async () => {
-    console.log(appId, "    - ", actionGroupId);
     await Service.get(`${Endpoint.v1.action.list(appId, actionGroupId)}`)
       .then((actions) => {
         setDataSource(actions);
@@ -165,7 +168,7 @@ export const ActionGroup: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="h-full">
       <PageHeader
         backIcon
         title={""}
@@ -180,18 +183,87 @@ export const ActionGroup: React.FC = () => {
           </div>
         }
       />
-      <Matrix
+      <EditableTable
+        column={[
+          {
+            key: "Command",
+            label: "Command",
+            className: "w-1/6",
+            render: () => {
+              return (
+                <OSelect
+                  buttonClassName="relative w-full cursor-default bg-transparent py-1.5 pl-3 pr-10 text-left text-gray-900  ring-inset  focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  options={ActionKindV2}
+                  dataIndex="key"
+                  onSelect={(value: any) => {
+                    console.log(value);
+                  }}
+                  render={(row: any) => {
+                    return (
+                      <>
+                        <CommandLineIcon className="h-5 w-5 text-gray-400"></CommandLineIcon>
+                        <span className="ml-3 block truncate">
+                          {row["label"]}
+                        </span>
+                      </>
+                    );
+                  }}
+                ></OSelect>
+              );
+            }
+          },
+          {
+            key: "kind",
+            label: "Kind",
+            className: "w-1/6",
+            render: () => {
+              return (
+                <OSelect
+                  buttonClassName="relative w-full cursor-default bg-transparent py-1.5 pl-3 pr-10 text-left text-gray-900  ring-inset  focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                  options={TargetV2}
+                  onSelect={(value: any) => {
+                    console.log(value);
+                  }}
+                  render={(row: any) => {
+                    return (
+                      <>
+                        {/* <CursorArrowRippleIcon className="h-5 w-5 text-gray-400"></CursorArrowRippleIcon> */}
+                        <ArrowsPointingInIcon className="h-5 w-5 text-gray-400"></ArrowsPointingInIcon>
+                        <span className="ml-3 block truncate">
+                          {row["label"]}
+                        </span>
+                      </>
+                    );
+                  }}
+                ></OSelect>
+              );
+            }
+          },
+          {
+            key: "Target",
+            label: "Target",
+            render: (_, row: any) => {
+              return <InputGroup.Text key={row["id"]}></InputGroup.Text>;
+            }
+          },
+          {
+            key: "Value",
+            label: "Value",
+            render: (_, row: any) => {
+              return <InputGroup.Text key={row["id"]}></InputGroup.Text>;
+            }
+          }
+        ]}
+        data={[[], [], [], [], []]}
+        addRow={addNewRow}
+      ></EditableTable>
+      {/* <Matrix
         dataSource={dataSource}
         defaultColumns={columns}
         onAddColumn={null}
         onAddRow={null}
         rowKey="id"
-      />
+      /> */}
     </div>
   );
 };
-
-
-// #d2daff
-
-// background-image: linear-gradient(to top left, #cba9d7, #1a87eb);

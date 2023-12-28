@@ -1,12 +1,13 @@
+// prettier-ignore
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "@radix-ui/themes/styles.css";
 // import { Analytics } from "@vercel/analytics/react";
+import { Theme } from "@radix-ui/themes";
 import App from "./App";
 import "./index.css";
+import "@radix-ui/themes/styles.css";
+
 import reportWebVitals from "./reportWebVitals";
-import { HomeLayout } from "layouts/home/index old";
-import { Theme } from "@radix-ui/themes";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,6 +16,8 @@ root.render(
   <React.StrictMode>
     <Theme>
       <App />
+
+      {/* <ThemePanel /> */}
     </Theme>
     {/* <HomeLayout /> */}
     {/* <Analytics /> */}
