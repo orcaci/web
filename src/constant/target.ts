@@ -5,7 +5,7 @@ export const Targets = [
 ];
 
 export const TargetV2 = [
-  { label: "Id", key: "relative" },
-  { label: "Xpath", key: "xpath" },
-  { label: "Css", key: "index" }
+  { label: "Id", key: "Id" },
+  { label: "Xpath", key: "Xpath" },
+  { label: "Css", key: "Index" }
 ];

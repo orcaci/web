@@ -1,17 +1,17 @@
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
-  Box,
   Button,
-  Flex,
   IconButton,
-  Link,
+  Input,
   Popover,
-  Text,
-  TextArea,
-  TextField
-} from "@radix-ui/themes";
-import { AppHeader } from "components/header";
-import { ColumnField, ReadOnlyTable } from "components/table";
+  PopoverContent,
+  PopoverHandler,
+  Textarea,
+  Tooltip,
+  Typography
+} from "@material-tailwind/react";
+import { ColumnField } from "components/table";
+import { ReadOnlyTableV2 } from "components/table/read";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
@@ -24,43 +24,52 @@ export const TestCaseDashboard: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const extra: Array<React.ReactNode> = [
-    <Popover.Root>
-      <Popover.Trigger>
+    <Popover
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 }
+      }}
+      open={isCreateModalOpen}
+      handler={setIsCreateModalOpen}
+    >
+      <PopoverHandler>
         <button
           type="button"
           className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={() => setTestcase({})}
+          onClick={() => {
+            setTestcase({});
+            setIsCreateModalOpen(true);
+          }}
         >
           <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
           New
         </button>
-      </Popover.Trigger>
-      <Popover.Content style={{ width: 360 }}>
-        <Flex gap="3">
-          <Box grow="1">
-            <Text>Create New</Text>
-            <TextField.Input
-              variant="soft"
-              placeholder="Name of Test Case"
-              onChange={(e) => setCreateTestCase("name", e.target.value)}
-            />
-            <TextArea
-              variant="soft"
-              placeholder="Write a description…"
-              style={{ height: 80 }}
-              onChange={(e) => setCreateTestCase("description", e.target.value)}
-            />
-            <Flex gap="3" mt="3" justify="end">
-              <Popover.Close>
-                <Button size="1" onClick={() => onCreateTestCase()}>
-                  Create
-                </Button>
-              </Popover.Close>
-            </Flex>
-          </Box>
-        </Flex>
-      </Popover.Content>
-    </Popover.Root>
+      </PopoverHandler>
+      <PopoverContent className="w-96">
+        <Typography variant="h6" color="blue-gray" className="mb-6">
+          Create New Action group
+        </Typography>
+        <Input
+          color="indigo"
+          variant="standard"
+          label="Name"
+          placeholder="Name of the Action group"
+          onChange={(e) => setCreateTestCase("name", e.target.value)}
+        />
+        <Textarea
+          label="Description"
+          onChange={(e) => setCreateTestCase("description", e.target.value)}
+        />
+        <Button
+          color="indigo"
+          variant="filled"
+          className="flex-shrink-0"
+          onClick={() => onCreateTestCase()}
+        >
+          Create
+        </Button>
+      </PopoverContent>
+    </Popover>
   ];
 
   const columns: Array<ColumnField> = [
@@ -69,9 +78,14 @@ export const TestCaseDashboard: React.FC = () => {
       label: "Name",
       className: "flex-auto ",
       render: (text, record) => (
-        <Link className="ms-16" onClick={() => onHandleClick(record)}>
+        <Button
+          variant="text"
+          color="indigo"
+          className="hover:bg-transparent"
+          onClick={() => onHandleClick(record)}
+        >
           {text}
-        </Link>
+        </Button>
       )
     },
     {
@@ -85,26 +99,27 @@ export const TestCaseDashboard: React.FC = () => {
       className: "flex-initial w-48",
       render: (text, record) => {
         return (
-          <Flex align="center" gap="3">
-            <IconButton
-              color="indigo"
-              size="1"
-              variant="soft"
-              className="cursor-pointer"
-              onClick={() => onHandleClick(record)}
-            >
-              <PencilIcon width="18" height="18" />
-            </IconButton>
-            <IconButton
-              color="crimson"
-              size="1"
-              variant="soft"
-              className="cursor-pointer"
-              onClick={() => onDelete(record.id)}
-            >
-              <TrashIcon width="18" height="18" />
-            </IconButton>
-          </Flex>
+          <>
+            <Tooltip content="Edit">
+              <IconButton
+                className=" hover:bg-transparent"
+                variant="text"
+                onClick={() => onHandleClick(record)}
+              >
+                <PencilIcon className="size-4" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip content="Delete">
+              <IconButton
+                className=" hover:bg-transparent"
+                variant="text"
+                onClick={() => onDelete(record.id)}
+              >
+                <TrashIcon className="size-4" />
+              </IconButton>
+            </Tooltip>
+          </>
         );
       }
     }
@@ -174,10 +189,11 @@ export const TestCaseDashboard: React.FC = () => {
   };
 
   return (
-    <>
-      <AppHeader title="Test Case" extra={extra} />
-
-      <ReadOnlyTable column={columns} data={dataSource} />
-    </>
+    <ReadOnlyTableV2
+      title="Test Case"
+      column={columns}
+      data={dataSource}
+      extra={extra}
+    />
   );
 };

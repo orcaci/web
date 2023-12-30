@@ -6,8 +6,8 @@ export const ActionKind = [
 ];
 
 export const ActionKindV2 = [
-  { label: "Enter", key: "enter" },
-  { label: "Click", key: "click" },
-  { label: "Open", key: "open" },
-  { label: "Double Click", key: "doubleClick" }
+  { label: "Enter", key: "Enter" },
+  { label: "Click", key: "Click" },
+  { label: "Open", key: "Open" },
+  { label: "Double Click", key: "DoubleClick" }
 ];

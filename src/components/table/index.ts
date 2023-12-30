@@ -1,7 +1,4 @@
-export { ReadOnlyTable } from "./read/index";
+export { ReadOnlyTable } from "./read";
+export type { ReadOnlyTableProps } from "./read";
 
-export type {
-  ReadOnlyTableProps,
-  ColumnField,
-  ActionParam
-} from "./read/index";
+export type { ColumnField } from "./read";

@@ -1,17 +1,18 @@
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
   Button,
+  IconButton,
   Input,
   Popover,
   PopoverContent,
   PopoverHandler,
   Textarea,
+  Tooltip,
   Typography
 } from "@material-tailwind/react";
 
-import { Flex, IconButton, Link } from "@radix-ui/themes";
-import { AppHeader } from "components/header";
-import { ColumnField, ReadOnlyTable } from "components/table";
+import { ColumnField } from "components/table";
+import { ReadOnlyTableV2 } from "components/table/read";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
@@ -78,9 +79,14 @@ export const ActionGroupDashboard: React.FC = () => {
       label: "Name",
       className: "flex-auto ",
       render: (text, record) => (
-        <Link className="ms-16" onClick={() => onHandleClick(record)}>
+        <Button
+          variant="text"
+          color="indigo"
+          className="hover:bg-transparent"
+          onClick={() => onHandleClick(record)}
+        >
           {text}
-        </Link>
+        </Button>
       )
     },
     {
@@ -94,26 +100,27 @@ export const ActionGroupDashboard: React.FC = () => {
       className: "flex-initial w-48",
       render: (text, record) => {
         return (
-          <Flex align="center" gap="3">
-            <IconButton
-              color="indigo"
-              size="1"
-              variant="soft"
-              className="cursor-pointer"
-              onClick={() => onHandleClick(record)}
-            >
-              <PencilIcon width="18" height="18" />
-            </IconButton>
-            <IconButton
-              color="crimson"
-              size="1"
-              variant="soft"
-              className="cursor-pointer"
-              onClick={() => onDelete(record.id)}
-            >
-              <TrashIcon width="18" height="18" />
-            </IconButton>
-          </Flex>
+          <>
+            <Tooltip content="Edit">
+              <IconButton
+                className=" hover:bg-transparent"
+                variant="text"
+                onClick={() => onHandleClick(record)}
+              >
+                <PencilIcon className="size-4" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip content="Delete">
+              <IconButton
+                className=" hover:bg-transparent"
+                variant="text"
+                onClick={() => onDelete(record.id)}
+              >
+                <TrashIcon className="size-4" />
+              </IconButton>
+            </Tooltip>
+          </>
         );
       }
     }
@@ -187,9 +194,16 @@ export const ActionGroupDashboard: React.FC = () => {
 
   return (
     <>
-      <AppHeader title="Action Group" extra={extra} />
+      {/* <AppHeader title="Action Group" extra={extra} />
 
-      <ReadOnlyTable column={columns} data={dataSource} />
+      <ReadOnlyTable column={columns} data={dataSource} /> */}
+
+      <ReadOnlyTableV2
+        title="Action Group"
+        column={columns}
+        data={dataSource}
+        extra={extra}
+      />
     </>
   );
 };
