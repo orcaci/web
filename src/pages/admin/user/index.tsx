@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import RFlow from "components/flow/flow";
 
 export function UserManagement() {
   return (
     <div>
       <h1>Test Suite page coming soon</h1>
-      <Link to="/suit/login/testcase">Navigate to test Suite</Link>
+      <RFlow></RFlow>
     </div>
   );
 }

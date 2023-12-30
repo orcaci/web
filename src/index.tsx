@@ -2,11 +2,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 // import { Analytics } from "@vercel/analytics/react";
-import { Theme } from "@radix-ui/themes";
 import App from "./App";
-import "./index.css";
-import "@radix-ui/themes/styles.css";
 
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
@@ -14,11 +12,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Theme>
-      <App />
+    <App />
 
-      {/* <ThemePanel /> */}
-    </Theme>
+    {/* <ThemePanel /> */}
     {/* <HomeLayout /> */}
     {/* <Analytics /> */}
   </React.StrictMode>

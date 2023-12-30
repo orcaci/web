@@ -1,5 +1,5 @@
 import { PencilIcon } from "@heroicons/react/24/outline";
-import { Flex, IconButton } from "@radix-ui/themes";
+import { IconButton } from "@material-tailwind/react";
 import React from "react";
 
 export interface ColumnField {
@@ -38,17 +38,14 @@ const EditableTable: React.FC<TableProps> = ({
             ))}
             {addColumn != undefined ? (
               <th className="p-2 border">
-                <Flex align="center" gap="3">
+                <div className="flex gap-4">
                   <IconButton
-                    color="indigo"
-                    size="1"
-                    variant="soft"
-                    className="cursor-pointer"
+                    className="cursor-pointer bg-transparent"
                     onClick={() => addColumn()}
                   >
                     <PencilIcon width="18" height="18" />
                   </IconButton>
-                </Flex>
+                </div>
               </th>
             ) : (
               ""

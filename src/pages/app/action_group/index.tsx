@@ -1,15 +1,15 @@
 import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
-  Box,
   Button,
-  Flex,
-  IconButton,
-  Link,
+  Input,
   Popover,
-  Text,
-  TextArea,
-  TextField
-} from "@radix-ui/themes";
+  PopoverContent,
+  PopoverHandler,
+  Textarea,
+  Typography
+} from "@material-tailwind/react";
+
+import { Flex, IconButton, Link } from "@radix-ui/themes";
 import { AppHeader } from "components/header";
 import { ColumnField, ReadOnlyTable } from "components/table";
 import React, { useEffect, useState } from "react";
@@ -24,45 +24,52 @@ export const ActionGroupDashboard: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const extra: Array<React.ReactNode> = [
-    <Popover.Root>
-      <Popover.Trigger>
+    <Popover
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 }
+      }}
+      open={isCreateModalOpen}
+      handler={setIsCreateModalOpen}
+    >
+      <PopoverHandler>
         <button
           type="button"
           className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={() => setgroupAction({})}
+          onClick={() => {
+            setgroupAction({});
+            setIsCreateModalOpen(true);
+          }}
         >
           <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
           New
         </button>
-      </Popover.Trigger>
-      <Popover.Content style={{ width: 360 }}>
-        <Flex gap="3">
-          <Box grow="1">
-            <Text>Create New</Text>
-            <TextField.Input
-              variant="soft"
-              placeholder="Name of Group Action"
-              onChange={(e) => setCreateGroupAction("name", e.target.value)}
-            />
-            <TextArea
-              variant="soft"
-              placeholder="Write a description…"
-              style={{ height: 80 }}
-              onChange={(e) =>
-                setCreateGroupAction("description", e.target.value)
-              }
-            />
-            <Flex gap="3" mt="3" justify="end">
-              <Popover.Close>
-                <Button size="1" onClick={() => onCreateNewActionGroup()}>
-                  Create
-                </Button>
-              </Popover.Close>
-            </Flex>
-          </Box>
-        </Flex>
-      </Popover.Content>
-    </Popover.Root>
+      </PopoverHandler>
+      <PopoverContent className="w-96">
+        <Typography variant="h6" color="blue-gray" className="mb-6">
+          Create New Action group
+        </Typography>
+        <Input
+          color="indigo"
+          variant="standard"
+          label="Name"
+          placeholder="Name of the Action group"
+          onChange={(e) => setCreateGroupAction("name", e.target.value)}
+        />
+        <Textarea
+          label="Description"
+          onChange={(e) => setCreateGroupAction("description", e.target.value)}
+        />
+        <Button
+          color="indigo"
+          variant="filled"
+          className="flex-shrink-0"
+          onClick={() => onCreateNewActionGroup()}
+        >
+          Create
+        </Button>
+      </PopoverContent>
+    </Popover>
   ];
 
   const columns: Array<ColumnField> = [
@@ -155,6 +162,7 @@ export const ActionGroupDashboard: React.FC = () => {
       app_id: appId,
       type_field: "ActionGroup"
     };
+    setIsCreateModalOpen(false);
     await Service.post(`${Endpoint.v1.group.create(appId)}`, {
       body: payload
     })

@@ -1,9 +1,9 @@
 /// Readonly table from Orca
 
-import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Flex, IconButton, Table } from "@radix-ui/themes";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { IconButton } from "@material-tailwind/react";
+import { Table } from "@radix-ui/themes";
 import { NotFound } from "assert/svg";
-import { Pagination } from "components";
 import PagenationExample from "components/pagination";
 
 export interface ColumnField {
@@ -29,16 +29,7 @@ const defaultFooter = (span: number) => {
   return (
     <Table.Row>
       <Table.Cell colSpan={span}>
-        {/* <div className="flex"> */}
-        {/* <button
-            onClick={() => {}}
-            className="p-2 text-green-500 bg-green-200 hover:bg-green-300 rounded"
-          >
-            Add Row
-          </button>
-          <Pagination active={1} size={2}></Pagination> */}
         <PagenationExample></PagenationExample>
-        {/* </div> */}
       </Table.Cell>
     </Table.Row>
   );
@@ -120,15 +111,14 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
         </Table.Root>
         {addColumn ? (
           <div className="p-3">
-            <IconButton
-              title="Add Column"
-              color="indigo"
-              size="1"
-              className="cursor-pointer"
-              onClick={() => console.log("click")}
-            >
-              <PlusIcon width="18" height="18" />
-            </IconButton>
+            <div className="flex gap-4">
+              <IconButton
+                className="cursor-pointer bg-transparent"
+                onClick={() => console.log("click")}
+              >
+                <PlusIcon width="18" height="18" />
+              </IconButton>
+            </div>
           </div>
         ) : (
           ""
