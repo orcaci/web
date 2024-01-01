@@ -17,9 +17,9 @@ export const ActionNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
         isConnectable={true}
         isConnectableStart={false}
       />
-      <div className="h-14 w-96 border-1 border-white bg-indigo-400 rounded-lg shadow-sm hover:shadow-md flex items-stretch">
-        <div className="self-center p-3 align-middle">
-          [ {data?.payload?.type_field} ] {nodeId}
+      <div className="h-10 w-44 border-white bg-indigo-400 rounded-lg shadow-sm hover:shadow-md">
+        <div className="self-center p-2 align-middle text-center">
+          [ {data?.payload?.type_field} ]
         </div>
       </div>
 

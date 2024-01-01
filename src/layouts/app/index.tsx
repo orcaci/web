@@ -1,14 +1,12 @@
-import React from "react";
-import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
 import {
-  ChartPieIcon,
-  RectangleGroupIcon,
-  FunnelIcon,
-  TableCellsIcon,
   BookOpenIcon,
   BriefcaseIcon,
-  ChevronDownIcon
+  ChartPieIcon,
+  FunnelIcon,
+  RectangleGroupIcon,
+  TableCellsIcon
 } from "@heroicons/react/24/outline";
+import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
 
 export function AppLayout() {
   const navigate = useNavigate();
@@ -41,8 +39,13 @@ export function AppLayout() {
       icon: TableCellsIcon
     },
     {
+      key: "history",
+      label: "History",
+      icon: TableCellsIcon
+    },
+    {
       key: "log",
-      label: "Log",
+      label: "log",
       icon: BookOpenIcon,
       children: [
         {
@@ -91,49 +94,6 @@ export function AppLayout() {
                 </li>
               );
             })}
-            <li>
-              <button
-                type="button"
-                className="flex items-center p-2 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                aria-controls="dropdown-sales"
-                // data-collapse-toggle="dropdown-sales"
-                // aria-expanded="true"
-                data-target="dropdown-sales"
-                data-toggle="hidden"
-              >
-                <TableCellsIcon className="h-6 w-6 text-indigo-600" />
-                <span className="flex-1 ml-3 text-left whitespace-nowrap">
-                  Sales
-                </span>
-                <ChevronDownIcon className="h-6 w-6 text-indigo-600" />
-              </button>
-              <ul id="dropdown-sales" className="hidden py-2 space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Products
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Billing
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-11 w-full text-base font-normal text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Invoice
-                  </a>
-                </li>
-              </ul>
-            </li>
           </ul>
         </div>
       </aside>

@@ -37,40 +37,30 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
           </div>
         </div>
       </CardHeader>
-      <CardBody className="overflow-scroll px-0">
+      <CardBody className="overflow-scroll px-0 py-0">
         <table className="w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              {/* {TABLE_HEAD.map((head) => (
-                <th
-                  key={head}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
+          {column ? (
+            <thead>
+              <tr>
+                {column.map((item) => (
+                  <th
+                    key={item["key"]}
+                    className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                   >
-                    {head}
-                  </Typography>
-                </th>
-              ))} */}
-              {column.map((item) => (
-                <th
-                  key={item["key"]}
-                  className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
-                >
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal leading-none opacity-70"
-                  >
-                    {item["label"]}
-                  </Typography>
-                </th>
-              ))}
-            </tr>
-          </thead>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal leading-none opacity-70"
+                    >
+                      {item["label"]}
+                    </Typography>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+          ) : (
+            ""
+          )}
           <tbody>
             {data.length > 0 ? (
               data.map((rowItem: any, index: number) => {
@@ -102,11 +92,11 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
               <tr>
                 <td
                   colSpan={column.length}
-                  className="p-2 border-b border-blue-gray-50"
+                  className="p-0 border-b border-blue-gray-50"
                 >
-                  <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+                  <div className="max-w-4xl mx-auto px-4 py-0 text-center">
                     <div className="flex justify-center items-center mx-auto mb-8">
-                      <NotFound width={250} height={250} />
+                      <NotFound width={150} height={150} />
                     </div>
 
                     <h2 className="text-xl font-bold mb-4">

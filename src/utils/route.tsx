@@ -108,6 +108,13 @@ export const ROUTES = [
               );
               return DatatableView;
             }
+          },
+          {
+            path: ":appId/history",
+            component: () => {
+              const { History } = lazily(() => import("../pages/app/history"));
+              return History;
+            }
           }
         ]
       },

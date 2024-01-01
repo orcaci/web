@@ -10,7 +10,6 @@ import { useTestCaseStore } from "stores/testcase.store";
 import { shallow } from "zustand/shallow";
 
 import { Workflow } from "components/flow";
-import "./style.css";
 
 export interface TestCaseexecutionItem {
   case_id: string;

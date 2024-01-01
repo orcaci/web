@@ -15,7 +15,7 @@ const selector = (s: any) => ({
   edges: s.edges
 });
 
-export const NewNode: React.FC<NodeProps> = () => {
+export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   let options = [
     {
       key: "loop",

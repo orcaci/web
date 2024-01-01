@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@material-tailwind/react";
-import { Skeleton } from "antd";
+import { Spinner } from "components/spinner";
 import { Suspense, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ROUTES } from "./utils/route";
@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <Suspense fallback={<Skeleton active={true} />}>
+        <Suspense fallback={<Spinner />}>
           <Routes>
             {ROUTES.map((route) => {
               const Component = route.component();
