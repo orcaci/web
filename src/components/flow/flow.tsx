@@ -9,6 +9,7 @@ import { graphlib, layout } from "@dagrejs/dagre";
 import { useEffect } from "react";
 import "reactflow/dist/style.css";
 import { DefaultEdge } from "./edge";
+import { NoEdge } from "./edge/no";
 import { YesEdge } from "./edge/yes";
 import { StartNode } from "./node";
 import { ActionNode } from "./node/action";
@@ -185,7 +186,7 @@ let initEdge = [
   },
   {
     id: "edge1->3",
-    type: "defaultE",
+    type: "no",
     sourceHandle: "no",
 
     target: "3",
@@ -202,7 +203,8 @@ const nodeTypes = {
 
 const edgeTypes = {
   defaultE: DefaultEdge,
-  yes: YesEdge
+  yes: YesEdge,
+  no: NoEdge
 };
 
 export default function RFlow() {

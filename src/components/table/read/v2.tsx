@@ -16,27 +16,31 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
   footer,
   addColumn,
   extra,
-  title,
-  desc,
+  title = "",
+  desc = "",
   ...restProps
 }) => {
   return (
     <Card className="h-full w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
-          <div>
-            <Typography variant="h3" color="blue-gray">
-              {title}
-            </Typography>
-            <Typography color="gray" className="mt-1 font-normal">
-              {desc}
-            </Typography>
+      {title || desc || extra ? (
+        <CardHeader floated={false} shadow={false} className="rounded-none">
+          <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+            <div>
+              <Typography variant="h3" color="blue-gray">
+                {title}
+              </Typography>
+              <Typography color="gray" className="mt-1 font-normal">
+                {desc}
+              </Typography>
+            </div>
+            <div className="flex w-full shrink-0 gap-2 md:w-max">
+              {extra ? extra.map((item) => item) : ""}
+            </div>
           </div>
-          <div className="flex w-full shrink-0 gap-2 md:w-max">
-            {extra ? extra.map((item) => item) : ""}
-          </div>
-        </div>
-      </CardHeader>
+        </CardHeader>
+      ) : (
+        ""
+      )}
       <CardBody className="overflow-scroll px-0 py-0">
         <table className="w-full min-w-max table-auto text-left">
           {column ? (
@@ -48,6 +52,7 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
                     className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                   >
                     <Typography
+                      key={`topogrpy${item["key"]}`}
                       variant="small"
                       color="blue-gray"
                       className="font-normal leading-none opacity-70"
@@ -78,7 +83,7 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
                       }
                       return (
                         <td
-                          key={index}
+                          key={`${id}-${index}`}
                           className={`${classes} ${colItem.className}`}
                         >
                           {childRender}
@@ -91,6 +96,7 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
             ) : (
               <tr>
                 <td
+                  key="nodata"
                   colSpan={column.length}
                   className="p-0 border-b border-blue-gray-50"
                 >

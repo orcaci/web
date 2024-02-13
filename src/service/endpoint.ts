@@ -97,6 +97,9 @@ export const Endpoint = {
         `/api/v1/app/${appId}/group/${groupId}/action/${actionId}`,
       delete: (appId: string, groupId: string, actionId: string) =>
         `/api/v1/app/${appId}/group/${groupId}/action/${actionId}`
+    },
+    history: {
+      list: (appId: string) => `/api/v1/app/${appId}/history`
     }
   }
 };

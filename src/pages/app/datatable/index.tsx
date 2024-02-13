@@ -51,6 +51,7 @@ export const Datatable: React.FC = () => {
 
   const extra: Array<React.ReactNode> = [
     <Popover
+      key="createNewDT"
       animate={{
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0, y: 25 }
@@ -104,14 +105,23 @@ export const Datatable: React.FC = () => {
       label: "Name",
       className: "flex-auto ",
       render: (text, record) => (
-        <Button
-          variant="text"
-          color="indigo"
-          className="flex items-center gap-2 hover:bg-transparent"
+        // <Button
+        //   variant="text"
+        //   color="indigo"
+        //   className="flex items-center gap-2 hover:bg-transparent"
+        //   onClick={() => onHandleClick(record)}
+        // >
+        //   {text}
+        // </Button>
+        <Typography
+          as="a"
+          href="#"
           onClick={() => onHandleClick(record)}
+          color="indigo"
+          className="py-1.5 font-normal transition-colors hover:text-blue-gray-900"
         >
           {text}
-        </Button>
+        </Typography>
       )
     },
     {

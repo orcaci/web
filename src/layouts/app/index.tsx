@@ -2,11 +2,13 @@ import {
   BookOpenIcon,
   BriefcaseIcon,
   ChartPieIcon,
+  DocumentCheckIcon,
   FunnelIcon,
   RectangleGroupIcon,
   TableCellsIcon
 } from "@heroicons/react/24/outline";
 import { Outlet, useMatch, useNavigate, useParams } from "react-router-dom";
+import { orcaStore } from "stores/route.store";
 
 export function AppLayout() {
   const navigate = useNavigate();
@@ -40,8 +42,8 @@ export function AppLayout() {
     },
     {
       key: "history",
-      label: "History",
-      icon: TableCellsIcon
+      label: "Execution log",
+      icon: DocumentCheckIcon
     },
     {
       key: "log",
@@ -64,6 +66,12 @@ export function AppLayout() {
   const { appId } = useParams();
   const match = useMatch({ path: "/app/:appId/*" });
   const selectedRoute = match?.params["*"]?.split("/")[0] || "dashboard";
+  const setActiveMenu = orcaStore((state: any) => state.setAppActiveMenu);
+  const activeMenu = orcaStore((state: any) => state.appActiveMenu);
+  const handleClick = (menu: string) => {
+    setActiveMenu(menu);
+    navigate(`${appId}/${menu}`);
+  };
 
   return (
     <>
@@ -78,16 +86,13 @@ export function AppLayout() {
               let cls = "flex-1 ml-3 whitespace-nowrap";
               let prCls =
                 "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer ";
-              if (menu.isActive) {
+              if (menu.key == activeMenu) {
                 cls = cls + " text-indigo-600";
                 prCls = prCls + " bg-gray-100";
               }
               return (
                 <li key={menu.key}>
-                  <a
-                    onClick={() => navigate(`${appId}/${menu.key}`)}
-                    className={prCls}
-                  >
+                  <a onClick={() => handleClick(menu.key)} className={prCls}>
                     <menu.icon className="h-6 w-6 text-indigo-600" />
                     <span className={cls}>{menu.label}</span>
                   </a>

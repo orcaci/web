@@ -61,7 +61,7 @@ export const Select: React.FC<SelectProps> = ({
 
           <div className={className}>
             <Listbox.Button className={buttonClassName}>
-              <span className="flex items-center">
+              <span className="flex items-center min-h-7">
                 {render ? (
                   render(selected)
                 ) : (

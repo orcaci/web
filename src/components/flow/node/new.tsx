@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
 import { NodeProps, Position, useEdges, useNodeId, useStore } from "reactflow";
-import { classNames } from "..";
 import CustomHandle from "../handler/test";
 
 const selector = (s: any) => ({
@@ -93,10 +92,8 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
                 value={item}
               >
                 <div className="flex items-center">
-                  {item["icon"]}
-                  <span className={classNames("ml-3 block truncate")}>
-                    {item["label"]}
-                  </span>
+                  {/* {item["icon"]} */}
+                  <span className="ml-3 block truncate">{item.label}</span>
                 </div>
               </Listbox.Option>
             ))}

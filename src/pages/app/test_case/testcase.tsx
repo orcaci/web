@@ -1,7 +1,4 @@
-import { PlayCircleOutlined } from "@ant-design/icons";
-import { Button } from "antd";
 import { PageHeader } from "components/page_header";
-import { TEST_CASE_BLOCKS, TestCaseBlock } from "components/testcase_blocks";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Service } from "service";
@@ -9,6 +6,8 @@ import { Endpoint } from "service/endpoint";
 import { useTestCaseStore } from "stores/testcase.store";
 import { shallow } from "zustand/shallow";
 
+import { PlayCircleIcon } from "@heroicons/react/24/outline";
+import { Button } from "@material-tailwind/react";
 import { Workflow } from "components/flow";
 
 export interface TestCaseexecutionItem {
@@ -54,7 +53,7 @@ export function TestCasePage() {
       if (currentEdge != undefined) {
         edge.push({
           ...currentEdge,
-          id: `${currentEdge?.id}actionNode${item.id}`,
+          id: `${currentEdge?.id}_to_actionNode${item.id}`,
           target: `actionNode${item.id}`
         });
       }
@@ -64,22 +63,22 @@ export function TestCasePage() {
         position: { x: 0, y: 300 * index },
         data: { payload: item }
       });
-      edge.push({
-        id: `actionNode${item.id}_to_addNew${item.id}`,
-        type: "defaultE",
-        source: `actionNode${item.id}`,
-        target: `addNew${item.id}`
-      });
-      node.push({
-        id: `addNew${item["id"]}`,
-        type: "newNode",
-        position: { x: 178, y: 300 * index + 150 },
-        data: {}
-      });
+      // edge.push({
+      //   id: `actionNode${item.id}_to_addNew${item.id}`,
+      //   type: "defaultE",
+      //   source: `actionNode${item.id}`,
+      //   target: `addNew${item.id}`
+      // });
+      // node.push({
+      //   id: `addNew${item["id"]}`,
+      //   type: "newNode",
+      //   position: { x: 178, y: 300 * index + 150 },
+      //   data: {}
+      // });
       currentEdge = {
-        id: `actionNode${item.id}_to_`,
+        id: `actionNode${item.id}`,
         type: "defaultE",
-        source: `addNew${item.id}`
+        source: `actionNode${item.id}`
       };
     });
     console.log("edge", edge);
@@ -112,43 +111,19 @@ export function TestCasePage() {
         backIcon
         title={name}
         extra={
-          <Button
-            disabled={!hasData}
-            loading={isRunning}
-            onClick={handleRun}
-            type="primary"
-          >
-            Run <PlayCircleOutlined />
-          </Button>
+          <div className=" flex items-center gap-3">
+            <Button
+              variant="gradient"
+              className="flex items-center gap-3"
+              onClick={handleRun}
+              color="indigo"
+            >
+              <PlayCircleIcon className="size-4" /> Dry Run
+            </Button>
+          </div>
         }
       />
       <Workflow nodes={nodes} edges={edges}></Workflow>
     </>
   );
-}
-
-export function TestCase() {
-  const { case_execution: testcaseData } = useTestCaseStore(
-    (state: TestCaseData) => ({
-      case_execution: state.case_execution
-    }),
-    shallow
-  );
-
-  if (!testcaseData?.length) {
-    return (
-      <div className="testCaseContainer">
-        No data found
-        <TestCaseBlock
-          id="empty"
-          handleMenuClick={(val: any) => {
-            useTestCaseStore.getState().addBlock(1, val.key);
-          }}
-          type={TEST_CASE_BLOCKS.ADD}
-        />
-      </div>
-    );
-  }
-
-  return <div></div>;
 }

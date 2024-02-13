@@ -25,6 +25,7 @@ export const TestCaseDashboard: React.FC = () => {
 
   const extra: Array<React.ReactNode> = [
     <Popover
+      key="newitem"
       animate={{
         mount: { scale: 1, y: 0 },
         unmount: { scale: 0, y: 25 }

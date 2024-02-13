@@ -1,5 +1,5 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { BackspaceIcon } from "@heroicons/react/24/outline";
+import { IconButton } from "@material-tailwind/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ export function PageHeader(props: PageHeaderProps) {
   const navigate = useNavigate();
   return (
     <div
-      className="page-header"
+      className="pt-4"
       style={{
         display: "flex",
         alignItems: "center",
@@ -31,11 +31,9 @@ export function PageHeader(props: PageHeaderProps) {
         }}
       >
         {props.backIcon && (
-          <Button
-            onClick={() => navigate(-1)}
-            type="text"
-            icon={<ArrowLeftOutlined />}
-          />
+          <IconButton variant="text" onClick={() => navigate(-1)}>
+            <BackspaceIcon className="size-6" />
+          </IconButton>
         )}
         {props.title}
       </p>

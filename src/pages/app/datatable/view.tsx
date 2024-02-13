@@ -1,5 +1,15 @@
 import { IdentificationIcon } from "@heroicons/react/20/solid";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  Input,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  Typography
+} from "@material-tailwind/react";
 import { AppHeader } from "components/header";
+import { Select } from "components/select";
 import EditableTable, { ColumnField } from "components/table/edit";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,13 +32,7 @@ export const DatatableView: React.FC = () => {
   ] as any);
   const [field, setField] = useState([] as Array<ColumnField>);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  const subMenu = [
-    {
-      icon: IdentificationIcon,
-      name: tableMeta.table_name
-    }
-  ];
+  const [tableColumnMeta, setTableColumnMeta] = useState([] as any);
 
   const { appId = "", datatableId = "" } = useParams();
 
@@ -41,6 +45,91 @@ export const DatatableView: React.FC = () => {
       })
       .finally(() => {});
   };
+
+  const setCreateDTColumn = (field_id: string, value: any) => {
+    let _data = { ...tableColumnMeta };
+    _data[field_id] = value;
+    setTableColumnMeta(_data);
+  };
+
+  /**
+   * onCreateNewDataTable - will create new Datatable
+   * @param data
+   */
+  const onCreateNewDTColumn = async () => {
+    let payload = {
+      ...tableColumnMeta,
+      table_id: parseInt(datatableId)
+    };
+    setIsCreateModalOpen(false);
+    await Service.post(
+      `${Endpoint.v1.datatable.view.createField(appId, datatableId)}`,
+      {
+        body: payload
+      }
+    )
+      .then((record: any) => {
+        fetchDatatableMeta();
+      })
+      .finally(() => {});
+  };
+
+  const extra: Array<React.ReactNode> = [
+    <Popover
+      key="createNewDT"
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 }
+      }}
+      open={isCreateModalOpen}
+      handler={setIsCreateModalOpen}
+    >
+      <PopoverHandler>
+        <button
+          type="button"
+          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => {
+            setTableColumnMeta({});
+            setIsCreateModalOpen(true);
+          }}
+        >
+          <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
+          New
+        </button>
+      </PopoverHandler>
+      <PopoverContent className="w-96">
+        <Typography variant="h6" color="blue-gray" className="mb-6">
+          Create New Datatable
+        </Typography>
+        <Input
+          color="indigo"
+          variant="standard"
+          label="Name"
+          placeholder="Name of the Datatable"
+          onChange={(e) => setCreateDTColumn("name", e.target.value)}
+        />
+        <Select
+          options={[{ key: "S", label: "String" }]}
+          onSelect={(e) => setCreateDTColumn("kind", e.key)}
+        ></Select>
+        <Button
+          color="indigo"
+          variant="filled"
+          className="flex-shrink-0"
+          onClick={() => onCreateNewDTColumn()}
+        >
+          Create
+        </Button>
+      </PopoverContent>
+    </Popover>
+  ];
+
+  const subMenu = [
+    {
+      icon: IdentificationIcon,
+      name: tableMeta.table_name
+    }
+  ];
 
   const updateData = async (
     e: ChangeEvent,
@@ -131,23 +220,7 @@ export const DatatableView: React.FC = () => {
    * Update the existing grid of all the Data table
    * @param data
    */
-  const addNewColumn = async () => {
-    let payload = {
-      name: "New Column",
-      kind: "S",
-      table_id: parseInt(datatableId)
-    };
-    await Service.post(
-      `${Endpoint.v1.datatable.view.createField(appId, datatableId)}`,
-      {
-        body: payload
-      }
-    )
-      .then((record: any) => {
-        fetchDatatableMeta();
-      })
-      .finally(() => {});
-  };
+  const addNewColumn = async () => {};
   /**
    * createData - Create new Row and data for the table
    * Update the existing grid of all the Data table
@@ -174,13 +247,11 @@ export const DatatableView: React.FC = () => {
         title={tableMeta.name}
         subTitle={tableMeta.description}
         subMenu={subMenu}
-        createBtnName={"Create Column"}
-        onCreate={() => addNewColumn()}
+        extra={extra}
       />
       <EditableTable
         column={field}
         data={dataSource}
-        addColumn={addNewColumn}
         addRow={createData}
       ></EditableTable>
     </>

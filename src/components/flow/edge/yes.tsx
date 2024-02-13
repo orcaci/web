@@ -20,7 +20,7 @@ export const getSpecialPath = (
   const centerX = (sourceX + targetX) / 2;
   const centerY = (sourceY + targetY) / 2;
 
-  return `M ${sourceX} ${sourceY} Q ${targetX} ${sourceY} ${targetX} ${targetY}`;
+  return `M ${sourceX} ${sourceY} L ${targetX} ${sourceY} ${targetX} ${targetY}`;
 };
 
 // export default function CustomEdge() {
@@ -55,12 +55,14 @@ export const YesEdge: React.FC<EdgeProps> = ({
 
   return (
     <>
-      <BaseEdge id={id} path={res} style={{ backgroundColor: "black" }} />
+      <BaseEdge id={id} path={edgePath} style={{ backgroundColor: "black" }} />
       <EdgeLabelRenderer>
         <div
           style={{
             position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            transform: `translate(-50%, -50%) translate(${targetX}px,${
+              sourceY + 40
+            }px)`,
             fontSize: 12,
             // everything inside EdgeLabelRenderer has no pointer events by default
             // if you have an interactive element, set pointer-events: all
