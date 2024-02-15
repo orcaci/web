@@ -10,7 +10,7 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   EdgeProps,
-  getSmoothStepPath
+  getStraightPath
 } from "reactflow";
 
 // export default function CustomEdge() {
@@ -41,16 +41,14 @@ export const DefaultEdge: React.FC<EdgeProps> = ({
     }
   ];
   const [open, setOpen] = useState(false);
-  const [edgePath, labelX, labelY] = getSmoothStepPath({
+  const [edgePath, labelX, labelY] = getStraightPath({
     sourceX,
     sourceY,
     targetX,
-    targetY,
-    sourcePosition,
-    targetPosition
+    targetY
+    // sourcePosition,
+    // targetPosition
   });
-  console.log("edgePath", edgePath);
-  console.log("edgePath", `M`);
 
   return (
     <>

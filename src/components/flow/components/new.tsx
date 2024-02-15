@@ -23,6 +23,11 @@ export const New: React.FC<any> = () => {
       key: "block",
       label: "Block",
       icon: <CodeBracketSquareIcon className="h-5 w-5 text-gray-400" />
+    },
+    {
+      key: "action_group",
+      label: "Action group",
+      icon: <CodeBracketSquareIcon className="h-5 w-5 text-gray-400" />
     }
   ];
   const [open, setOpen] = useState(false);
@@ -47,7 +52,7 @@ export const New: React.FC<any> = () => {
           onMouseOver={() => setOpen(true)}
           onMouseOut={() => setOpen(false)}
           className={
-            "absolute z-10000 mt-1 max-h-56 w-40 -left-16 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            "absolute z-50 mt-1 max-h-56 w-40 -left-16 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
           }
         >
           {options.map((item) => (

@@ -13,6 +13,34 @@ export const ROUTES = [
     },
     nestedRoute: [
       {
+        key: "admin",
+        path: "/admin",
+        component: () => {
+          const { AdminLayout } = lazily(() => import("../layouts/admin"));
+          return AdminLayout;
+        },
+        nestedRoute: [
+          {
+            path: "usermanagement",
+            component: () => {
+              const { UserManagement } = lazily(
+                () => import("../pages/admin/user")
+              );
+              return UserManagement;
+            }
+          },
+          {
+            path: "rolemanagement",
+            component: () => {
+              const { RoleManagement } = lazily(
+                () => import("../pages/admin/role")
+              );
+              return RoleManagement;
+            }
+          }
+        ]
+      },
+      {
         path: "/app",
         component: () => {
           const { AppLayout } = lazily(() => import("../layouts/app"));
@@ -141,34 +169,6 @@ export const ROUTES = [
         component: () => {
           const { Login } = lazily(() => import("../pages/auth/login/login"));
           return Login;
-        }
-      }
-    ]
-  },
-  {
-    key: "admin",
-    path: "/admin",
-    component: () => {
-      const { AdminLayout } = lazily(() => import("../layouts/admin"));
-      return AdminLayout;
-    },
-    nestedRoute: [
-      {
-        path: "usermanagement",
-        component: () => {
-          const { UserManagement } = lazily(
-            () => import("../pages/admin/user")
-          );
-          return UserManagement;
-        }
-      },
-      {
-        path: "rolemanagement",
-        component: () => {
-          const { RoleManagement } = lazily(
-            () => import("../pages/admin/role")
-          );
-          return RoleManagement;
         }
       }
     ]

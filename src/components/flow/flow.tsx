@@ -154,7 +154,7 @@ let initNode = [
   },
   {
     id: "2",
-    // type: "actionNode",
+    type: "actionNode",
     position: {
       x: 0,
       y: 0
@@ -165,13 +165,46 @@ let initNode = [
   },
   {
     id: "3",
-    // type: "actionNode",
+    type: "actionNode",
     position: {
       x: 0,
       y: 0
     },
     data: {
       label: "actionNode 3"
+    }
+  },
+  {
+    id: "4",
+    type: "conditionalNode",
+    position: {
+      x: 0,
+      y: 0
+    },
+    data: {
+      label: "actionNode 4"
+    }
+  },
+  {
+    id: "5",
+    type: "actionNode",
+    position: {
+      x: 0,
+      y: 0
+    },
+    data: {
+      label: "actionNode 5"
+    }
+  },
+  {
+    id: "6",
+    type: "actionNode",
+    position: {
+      x: 0,
+      y: 0
+    },
+    data: {
+      label: "actionNode 6 he how are you"
     }
   }
 ];
@@ -191,6 +224,28 @@ let initEdge = [
 
     target: "3",
     source: "1"
+  },
+  {
+    id: "3->4",
+    type: "defaultE",
+
+    target: "4",
+    source: "3"
+  },
+  {
+    id: "4->5",
+    type: "yes",
+    target: "5",
+    sourceHandle: "yes",
+    source: "4"
+  },
+  {
+    id: "4->6",
+    type: "no",
+    sourceHandle: "no",
+
+    target: "6",
+    source: "4"
   }
 ];
 
@@ -216,10 +271,7 @@ export default function RFlow() {
       rankdir: "TB",
       ranker: "network-simplex",
       marginx: 30,
-      marginy: 30
-      //   height: 2000,
-      //   width: 2000,
-      //   align: "UL"
+      marginy: 20
     });
 
     const nodeWidth = 400;
@@ -230,10 +282,11 @@ export default function RFlow() {
     };
 
     nodes.forEach((node) => {
-      //   let t: string = node["type"];
-      //   let s: any = sizeMatrix[t] || { width: 172, height: 36 };
-      //   console.log("result", s);
-      dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+      let t: string = node["type"];
+      let s: any = sizeMatrix[t] || { width: 172, height: 36 };
+      console.log("currect value of the width and height ", t, " - ", s);
+      s = { width: nodeWidth, height: nodeHeight };
+      dagreGraph.setNode(node.id, s);
     });
 
     edges.forEach((edge) => {

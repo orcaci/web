@@ -19,7 +19,7 @@ export const ActionNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
       />
       <div className="h-10 w-44 border-white bg-indigo-400 rounded-lg shadow-sm hover:shadow-md">
         <div className="self-center p-2 align-middle text-center">
-          [ {data?.payload?.type_field} ]
+          [ {data.label} ]{/* [ {data?.payload?.type_field} ] */}
         </div>
       </div>
 

@@ -7,7 +7,6 @@ import {
 } from "reactflow";
 import { New } from "../components";
 
-// export default function CustomEdge() {
 export const NoEdge: React.FC<EdgeProps> = ({
   id,
   sourceX,
@@ -34,9 +33,8 @@ export const NoEdge: React.FC<EdgeProps> = ({
         <div
           style={{
             position: "absolute",
-            transform: `translate(-50%, -50%) translate(${targetX}px,${
-              sourceY + 40
-            }px)`,
+            transform: `translate(-50%, -50%) translate(${targetX}px,${sourceY + 40
+              }px)`,
             fontSize: 12,
             // everything inside EdgeLabelRenderer has no pointer events by default
             // if you have an interactive element, set pointer-events: all

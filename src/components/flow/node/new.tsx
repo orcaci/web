@@ -30,6 +30,11 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
       key: "block",
       label: "Block",
       icon: <CodeBracketSquareIcon className="h-5 w-5 text-gray-400" />
+    },
+    {
+      key: "action_group",
+      label: "Action group",
+      icon: <CodeBracketSquareIcon className="h-5 w-5 text-gray-400" />
     }
   ];
   const [selected, setValueSelected] = useState({} as any);

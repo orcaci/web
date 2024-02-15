@@ -42,49 +42,63 @@ export function TestCasePage() {
       })
       .finally(() => {});
   };
-  const constructWorkflow = (caseblock: any) => {
-    let node: Array<any> = [];
-    let edge: Array<any> = [];
-    let currentEdge: any = undefined;
-    // dataSource.forEach((element: { [x: string]: any }) => {
-    //   node.push({ id: element["id"] });
-    // });
-    (caseblock.case_execution || []).map((item: any, index: number) => {
-      if (currentEdge != undefined) {
-        edge.push({
-          ...currentEdge,
-          id: `${currentEdge?.id}_to_actionNode${item.id}`,
-          target: `actionNode${item.id}`
+  const generateNodeAndEdge = (
+    input: Array<any>,
+    nodes: Array<any>,
+    edges: Array<any>,
+    derivedEdge: any = undefined
+  ) => {
+    input.map((item: any, index: number) => {
+      let current_item = item[0];
+      if (derivedEdge != undefined) {
+        edges.push({
+          ...derivedEdge,
+          id: `${derivedEdge?.id}_to_actionNode${current_item.id}`,
+          target: `actionNode${current_item.id}`
         });
       }
-      node.push({
-        id: `actionNode${item.id}`,
+      nodes.push({
+        id: `actionNode${current_item.id}`,
         type: "actionNode",
         position: { x: 0, y: 300 * index },
-        data: { payload: item }
+        data: { payload: current_item }
       });
-      // edge.push({
-      //   id: `actionNode${item.id}_to_addNew${item.id}`,
-      //   type: "defaultE",
-      //   source: `actionNode${item.id}`,
-      //   target: `addNew${item.id}`
-      // });
-      // node.push({
-      //   id: `addNew${item["id"]}`,
-      //   type: "newNode",
-      //   position: { x: 178, y: 300 * index + 150 },
-      //   data: {}
-      // });
-      currentEdge = {
-        id: `actionNode${item.id}`,
+      derivedEdge = {
+        id: `actionNode${current_item.id}`,
         type: "defaultE",
-        source: `actionNode${item.id}`
+        source: `actionNode${current_item.id}`
       };
+      let child = item[1];
+      if (child != undefined && child.length > 0) {
+        // generateNodeAndEdge(child, )
+      }
     });
-    console.log("edge", edge);
-    console.log("node", node);
-    setNode(node);
-    setEdges(edge);
+  };
+  /**
+   * Added the Only the new node here for the New Workflow
+   */
+  const addNewNode = (nodes: Array<any>) => {
+    nodes.push({
+      id: "addNode",
+      type: "newNode",
+      position: { x: 0, y: 300 },
+      data: {}
+    });
+  };
+
+  const constructWorkflow = (caseblock: any) => {
+    let nodes: Array<any> = [];
+    let edges: Array<any> = [];
+    let currentEdge: any = undefined;
+    generateNodeAndEdge(caseblock.case_execution || [], nodes, edges);
+    if (nodes.length == 0) {
+      addNewNode(nodes);
+    }
+
+    console.log("edge", edges);
+    console.log("node", nodes);
+    setNode(nodes);
+    setEdges(edges);
   };
 
   useEffect(() => {
