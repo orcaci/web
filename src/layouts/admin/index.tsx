@@ -1,5 +1,5 @@
 import { TagsOutlined, UserSwitchOutlined } from "@ant-design/icons";
-import { AcademicCapIcon, UserIcon } from "@heroicons/react/outline";
+import { AcademicCapIcon, UserIcon } from "@heroicons/react/24/outline";
 import { Layout, Menu, MenuProps } from "antd";
 import { Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";

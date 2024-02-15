@@ -1,8 +1,8 @@
-import { create } from "zustand";
 import { produce } from "immer";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
 import { v4 as uuidv4 } from "uuid";
+import { create } from "zustand";
 
 const initStore = {
   case_execution: []
@@ -84,7 +84,7 @@ export const useTestCaseStore = createWithImmer((setState, getState) => ({
       reference = actionGroup.id;
     }
 
-     Service.post(`${Endpoint.v1.case.insertBlock(appId, caseId, execution_order)}`, {
+     Service.post(`${Endpoint.v1.case.block.create(appId, caseId, execution_order)}`, {
       body: {
         type_field: type_field,
         case_id: caseId,

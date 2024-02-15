@@ -1,84 +1,126 @@
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  IconButton,
+  Input,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  Textarea,
+  Tooltip,
+  Typography
+} from "@material-tailwind/react";
+import { ColumnField } from "components/table";
+import { ReadOnlyTableV2 } from "components/table/read";
 import React, { useEffect, useState } from "react";
-import { Space, Table, Button, Popconfirm } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { CreateModal } from "components/create_modal";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { PageHeader } from "components/page_header";
-
-interface DataType {
-  key: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  createdBy: string;
-}
 
 export const TestCaseDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [dataSource, setDataSource] = useState([] as any);
+  const [testcase, setTestcase] = useState({} as any);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const columns: ColumnsType<DataType> = [
+  const extra: Array<React.ReactNode> = [
+    <Popover
+      key="newitem"
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 }
+      }}
+      open={isCreateModalOpen}
+      handler={setIsCreateModalOpen}
+    >
+      <PopoverHandler>
+        <button
+          type="button"
+          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => {
+            setTestcase({});
+            setIsCreateModalOpen(true);
+          }}
+        >
+          <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
+          New
+        </button>
+      </PopoverHandler>
+      <PopoverContent className="w-96">
+        <Typography variant="h6" color="blue-gray" className="mb-6">
+          Create New Action group
+        </Typography>
+        <Input
+          color="indigo"
+          variant="standard"
+          label="Name"
+          placeholder="Name of the Action group"
+          onChange={(e) => setCreateTestCase("name", e.target.value)}
+        />
+        <Textarea
+          label="Description"
+          onChange={(e) => setCreateTestCase("description", e.target.value)}
+        />
+        <Button
+          color="indigo"
+          variant="filled"
+          className="flex-shrink-0"
+          onClick={() => onCreateTestCase()}
+        >
+          Create
+        </Button>
+      </PopoverContent>
+    </Popover>
+  ];
+
+  const columns: Array<ColumnField> = [
     {
-      title: "Name",
-      dataIndex: "name",
       key: "name",
+      label: "Name",
+      className: "flex-auto ",
       render: (text, record) => (
-        <Button type="link" onClick={() => onHandleClick(record)}>
+        <Button
+          variant="text"
+          color="indigo"
+          className="hover:bg-transparent"
+          onClick={() => onHandleClick(record)}
+        >
           {text}
         </Button>
       )
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description"
+      key: "description",
+      label: "Description",
+      className: "flex-auto "
     },
     {
-      title: "Action",
       key: "action",
-      render: (record) => {
+      label: "Action",
+      className: "flex-initial w-48",
+      render: (text, record) => {
         return (
-          // <Space size="middle">
-          //   <Button type="primary" onClick={() => onHandleClick(record)}>Edit</Button>
-          //   <Popconfirm
-          //       title="Delete the Test Case"
-          //       description="Are you sure to delete this Test Case?"
-          //       onConfirm={() => onDeleteTestCase(record.id)}
-          //       okText="Yes"
-          //       cancelText="No"
-          //   >
-          //       <Button danger type="primary">Delete</Button>
-          //   </Popconfirm>
-          // </Space>
+          <>
+            <Tooltip content="Edit">
+              <IconButton
+                className=" hover:bg-transparent"
+                variant="text"
+                onClick={() => onHandleClick(record)}
+              >
+                <PencilIcon className="size-4" />
+              </IconButton>
+            </Tooltip>
 
-          <Space size="middle">
-            <Button
-              type="primary"
-              onClick={() => onHandleClick(record)}
-              shape="round"
-              icon={<EditOutlined />}
-              size="small"
-            />
-            <Popconfirm
-              title="Delete the Action Group"
-              description="Are you sure to delete this Action Group?"
-              onConfirm={() => onDeleteTestCase(record.id)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button
-                danger
-                type="primary"
-                shape="round"
-                icon={<DeleteOutlined />}
-                size="small"
-              />
-            </Popconfirm>
-          </Space>
+            <Tooltip content="Delete">
+              <IconButton
+                className=" hover:bg-transparent"
+                variant="text"
+                onClick={() => onDelete(record.id)}
+              >
+                <TrashIcon className="size-4" />
+              </IconButton>
+            </Tooltip>
+          </>
         );
       }
     }
@@ -86,79 +128,73 @@ export const TestCaseDashboard: React.FC = () => {
 
   const { appId = "" } = useParams();
 
+  const setCreateTestCase = (field_id: string, value: any) => {
+    let _data = { ...testcase };
+    _data[field_id] = value;
+    setTestcase(_data);
+  };
+
+  const updateTableInfo = (event: EventSource, field_id: string) => {};
+
   /**
-   * fetchTestCases - fetch all Action group from the specify Application
+   * fetchTestCase - fetch all Test case from the specify Application
    */
-  const fetchTestCases = async () => {
+  const fetchTestCase = async () => {
     await Service.get(`${Endpoint.v1.case.list(appId)}`)
-      .then((testCases) => {
-        setDataSource(testCases);
+      .then((cases) => {
+        setDataSource(cases);
       })
       .finally(() => {});
   };
 
   useEffect(() => {
-    fetchTestCases();
-  }, [fetchTestCases]);
+    fetchTestCase();
+  }, []);
 
   /**
-   * onHandleClick - Handle the Action redirect
+   * onHandleClick - Handle the Test case redirect
    * @param record
    */
   const onHandleClick = (record: any) => {
-    navigate(record.id);
+    navigate(`${record.id}`);
   };
 
   /**
-   * onAddNewCase - will create new Test Case and
-   * Update the existing grid of all the Test Case
+   * onCreateTestCase - will create new Test Case
    * @param data
    */
-  const onAddNewCase = async (data: any) => {
-    let payload = { ...data, app_id: appId };
+  const onCreateTestCase = async () => {
+    let payload = {
+      ...testcase,
+      app_id: appId
+    };
     await Service.post(`${Endpoint.v1.case.create(appId)}`, {
       body: payload
     })
-      .then(() => {
-        fetchTestCases();
+      .then((record: any) => {
+        fetchTestCase();
       })
       .finally(() => {});
   };
 
   /**
-   * onDeleteTestCase - Delete the Action Group with a confirmation
+   * onDelete - Delete theTest Case with a confirmation
    * @param caseId
    */
-  const onDeleteTestCase = async (caseId: any) => {
+  const onDelete = async (caseId: any) => {
     await Service.delete(`${Endpoint.v1.case.delete(appId, caseId)}`)
       .then(() => {
-        fetchTestCases();
+        fetchTestCase();
       })
       .finally(() => {});
   };
 
   return (
-    <>
-      <PageHeader
-        title="Test Case"
-        extra={
-          <Button type="primary" onClick={() => setIsCreateModalOpen(true)}>
-            <PlusOutlined />
-          </Button>
-        }
-      />
-      <Table columns={columns} dataSource={dataSource} rowKey="name" />
-      <div>
-        {isCreateModalOpen && (
-          <CreateModal
-            isModalOpen={isCreateModalOpen}
-            onClose={() => setIsCreateModalOpen(false)}
-            onOk={onAddNewCase}
-            isLoading={false}
-            modelFor={"Test Case"}
-          />
-        )}
-      </div>
-    </>
+    <ReadOnlyTableV2
+      title="Test Case"
+      column={columns}
+      data={dataSource}
+      extra={extra}
+    />
   );
 };

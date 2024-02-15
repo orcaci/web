@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Input, Modal, Switch } from "antd";
-import "./style.css";
+import { useState } from "react";
 
 interface ModalProps {
   isModalOpen: boolean;
