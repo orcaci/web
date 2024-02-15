@@ -47,7 +47,7 @@ export const DatatableView: React.FC = () => {
   };
 
   const setCreateDTColumn = (field_id: string, value: any) => {
-    let _data = { ...tableColumnMeta };
+    const _data = { ...tableColumnMeta };
     _data[field_id] = value;
     setTableColumnMeta(_data);
   };
@@ -57,7 +57,7 @@ export const DatatableView: React.FC = () => {
    * @param data
    */
   const onCreateNewDTColumn = async () => {
-    let payload = {
+    const payload = {
       ...tableColumnMeta,
       table_id: parseInt(datatableId)
     };
@@ -140,7 +140,7 @@ export const DatatableView: React.FC = () => {
   ) => {
     e.target.classList.add("border-amber-700");
     if (orginalData != data) {
-      let payload = {
+      const payload = {
         row_id: row_id,
         field_id: field_id,
         data: data
@@ -167,8 +167,8 @@ export const DatatableView: React.FC = () => {
   };
   const processColumn = (headers: Array<any>) => {
     const columns: Array<ColumnField> = headers.map((item: any) => {
-      let field_id = item["field_id"];
-      let itemResponse: ColumnField = { key: field_id, label: item["name"] };
+      const field_id = item["field_id"];
+      const itemResponse: ColumnField = { key: field_id, label: item["name"] };
       if (!item["is_system"]) {
         itemResponse["render"] = (_, record: any) => (
           <input
@@ -227,7 +227,7 @@ export const DatatableView: React.FC = () => {
    * @param data
    */
   const createData = async () => {
-    let payload = {};
+    const payload = {};
     await Service.post(
       `${Endpoint.v1.datatable.view.createNewRow(appId, datatableId)}`,
       {

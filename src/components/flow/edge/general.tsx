@@ -23,7 +23,7 @@ export const DefaultEdge: React.FC<EdgeProps> = ({
   sourcePosition,
   targetPosition
 }) => {
-  let options = [
+  const options = [
     {
       key: "loop",
       label: "Loop",

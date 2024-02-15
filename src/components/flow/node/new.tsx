@@ -15,7 +15,7 @@ const selector = (s: any) => ({
 });
 
 export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
-  let options = [
+  const options = [
     {
       key: "loop",
       label: "Loop",
@@ -49,7 +49,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   console.log("Edes", edges, useedges);
 
   const addNode = () => {
-    let node = {};
+    const node = {};
     // setNodes();
   };
 

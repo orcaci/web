@@ -200,8 +200,8 @@ const items = [
  * ["1", "..", "5", 6, "7", "..", "10"]
  */
 export default function PagenationExample() {
-  let size = 13;
-  let index = 13;
+  const size = 13;
+  const index = 13;
   let defaultList: Array<number | string>;
   useEffect(() => {
     console.log("useEffect ran");

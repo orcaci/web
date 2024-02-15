@@ -129,7 +129,7 @@ export const ActionGroupDashboard: React.FC = () => {
   const { appId = "" } = useParams();
 
   const setCreateGroupAction = (field_id: string, value: any) => {
-    let _data = { ...groupAction };
+    const _data = { ...groupAction };
     _data[field_id] = value;
     setgroupAction(_data);
   };
@@ -164,7 +164,7 @@ export const ActionGroupDashboard: React.FC = () => {
    * @param data
    */
   const onCreateNewActionGroup = async () => {
-    let payload = {
+    const payload = {
       ...groupAction,
       app_id: appId,
       type_field: "ActionGroup"

@@ -129,7 +129,7 @@ export const TestCaseDashboard: React.FC = () => {
   const { appId = "" } = useParams();
 
   const setCreateTestCase = (field_id: string, value: any) => {
-    let _data = { ...testcase };
+    const _data = { ...testcase };
     _data[field_id] = value;
     setTestcase(_data);
   };
@@ -164,7 +164,7 @@ export const TestCaseDashboard: React.FC = () => {
    * @param data
    */
   const onCreateTestCase = async () => {
-    let payload = {
+    const payload = {
       ...testcase,
       app_id: appId
     };

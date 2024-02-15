@@ -8,7 +8,7 @@ import {
 import { Fragment, useState } from "react";
 
 export const New: React.FC<any> = () => {
-  let options = [
+  const options = [
     {
       key: "loop",
       label: "Loop",

@@ -73,7 +73,7 @@ export const ReadOnlyTable: React.FC<ReadOnlyTableProps> = ({
                 const classes = isLast
                   ? "p-2"
                   : "p-2 border-b border-blue-gray-50";
-                let id = rowItem["id"];
+                const id = rowItem["id"];
                 return (
                   <tr key={id}>
                     {column.map((colItem: ColumnField, index: number) => {

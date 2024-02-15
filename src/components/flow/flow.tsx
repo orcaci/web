@@ -140,7 +140,7 @@ const initialEdges = [
   //   }
 ];
 
-let initNode = [
+const initNode = [
   {
     id: "1",
     type: "conditionalNode",
@@ -209,7 +209,7 @@ let initNode = [
   }
 ];
 
-let initEdge = [
+const initEdge = [
   {
     id: "edge1->2",
     type: "yes",
@@ -276,13 +276,13 @@ export default function RFlow() {
 
     const nodeWidth = 400;
     const nodeHeight = 100;
-    let sizeMatrix: any = {
+    const sizeMatrix: any = {
       newNode: { width: 28, height: 28 },
       actionNode: { width: 74, height: 69 }
     };
 
     nodes.forEach((node) => {
-      let t: string = node["type"];
+      const t: string = node["type"];
       let s: any = sizeMatrix[t] || { width: 172, height: 36 };
       console.log("currect value of the width and height ", t, " - ", s);
       s = { width: nodeWidth, height: nodeHeight };
@@ -299,7 +299,7 @@ export default function RFlow() {
 
     console.log("result", "graph", dagreGraph.graph());
 
-    let n: Array<any> = [];
+    const n: Array<any> = [];
     nodes.forEach((node) => {
       const nodeWithPosition = dagreGraph.node(node.id);
       console.log("result", node.id, nodeWithPosition);
@@ -325,7 +325,7 @@ export default function RFlow() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   useEffect(() => {
-    let result = getLayoutedElements(initNode, initEdge);
+    const result = getLayoutedElements(initNode, initEdge);
     console.log("result", result);
     setNodes(result["nodes"]);
     setEdges(result["edges"]);

@@ -49,7 +49,7 @@ export function TestCasePage() {
     derivedEdge: any = undefined
   ) => {
     input.map((item: any, index: number) => {
-      let current_item = item[0];
+      const current_item = item[0];
       if (derivedEdge != undefined) {
         edges.push({
           ...derivedEdge,
@@ -68,7 +68,7 @@ export function TestCasePage() {
         type: "defaultE",
         source: `actionNode${current_item.id}`
       };
-      let child = item[1];
+      const child = item[1];
       if (child != undefined && child.length > 0) {
         // generateNodeAndEdge(child, )
       }
@@ -87,9 +87,9 @@ export function TestCasePage() {
   };
 
   const constructWorkflow = (caseblock: any) => {
-    let nodes: Array<any> = [];
-    let edges: Array<any> = [];
-    let currentEdge: any = undefined;
+    const nodes: Array<any> = [];
+    const edges: Array<any> = [];
+    const currentEdge: any = undefined;
     generateNodeAndEdge(caseblock.case_execution || [], nodes, edges);
     if (nodes.length == 0) {
       addNewNode(nodes);
