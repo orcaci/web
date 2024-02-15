@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
-    "@dnd-kit/core": "^6.0.8",
-    "@dnd-kit/sortable": "^7.0.2",
+    "@dagrejs/dagre": "^1.0.4",
     "@headlessui/react": "^1.6.6",
-    "@heroicons/react": "^1.0.6",
-    "@primer/react": "^35.31.0",
+    "@heroicons/react": "^2.0.18",
+    "@material-tailwind/html": "^2.1.2",
+    "@material-tailwind/react": "^2.1.8",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -18,12 +18,14 @@
     "@types/react-dom": "^18.0.10",
     "@vercel/analytics": "^0.1.8",
     "antd": "^5.1.7",
+    "dagre": "latest",
     "immer": "^10.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-lazily": "^0.9.1",
     "react-router-dom": "^6.8.1",
     "react-scripts": "^5.0.1",
+    "reactflow": "^11.10.1",
     "typescript": "^4.9.5",
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4",
@@ -36,6 +38,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
@@ -50,9 +53,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.1",
     "postcss": "^8.4.14",
+    "preline": "^2.0.0",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
-    "tailwindcss": "^3.1.6",
+    "tailwindcss": "^3.4.0",
     "webpack": "^5.74.0"
   },
   "browserslist": {
@@ -67,5 +71,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:10000/"
+  "proxy": "http://127.0.0.1:8080/"
 }

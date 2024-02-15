@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
-import "../layout.css";
 
 const { Content } = Layout;
 

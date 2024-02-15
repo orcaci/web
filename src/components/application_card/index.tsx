@@ -1,7 +1,7 @@
 import { Card } from "antd";
+import { Application } from "pages/home";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
-import { Application } from "pages/home";
 
 interface ApplicationCardProps {
   appDetails: Application;
