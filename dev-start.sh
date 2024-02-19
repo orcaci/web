@@ -1,2 +1,2 @@
 npm install
-npm startgit c
+npm start
