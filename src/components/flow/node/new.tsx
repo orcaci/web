@@ -18,7 +18,7 @@ const selector = (s: any) => ({
 });
 
 export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
-  let options = [
+  const options = [
     {
       key: "loop",
       label: "Loop",
@@ -72,7 +72,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
     } else {
       graph.forEach((item) => {
         if (item.children != undefined && item.children.length >= 0) {
-          let result = findAddNode(
+          const result = findAddNode(
             item.children,
             node,
             execution_order,
@@ -99,7 +99,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
     },
 
     ifcondition: () => {
-      let condition_id = uuidv4();
+      const condition_id = uuidv4();
       return {
         id: condition_id,
         execution_order: data.execution_order,
@@ -135,7 +135,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   };
 
   const addNode = (option: any) => {
-    let newNode: any = getNewNode.ifcondition();
+    const newNode: any = getNewNode.ifcondition();
     findAddNode(graph, newNode, data.execution_order);
     setGraph(graph);
     console.log(graph);
