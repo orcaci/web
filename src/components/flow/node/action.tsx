@@ -7,7 +7,7 @@ export const ActionNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   const [selected, setValueSelected] = useState({} as any);
   const [open, setOpen] = useState(false);
   const nodeId = useNodeId();
-  let bgColor =
+  const bgColor =
     data?.payload?.type_field == "Assertion" ? "bg-red-100" : "bg-indigo-100";
 
   useEffect(() => {

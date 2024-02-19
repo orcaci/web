@@ -49,8 +49,8 @@ export const useFlowStore = create<RFState>((set, get) => ({
 
   setGraph: (graph: any[]) => {
     set({ graph });
-    let nodes: Array<any> = [];
-    let edges: Array<any> = [];
+    const nodes: Array<any> = [];
+    const edges: Array<any> = [];
     generateNodeAndEdge(graph || [], nodes, edges);
     set({ nodes, edges });
     get().rearrangeNodePosition();
@@ -81,8 +81,8 @@ export const useFlowStore = create<RFState>((set, get) => ({
   rearrangeNodePosition: () => {
     const dagreGraph = new graphlib.Graph();
     dagreGraph.setDefaultEdgeLabel(() => ({}));
-    let nodes = get().nodes;
-    let edges = get().edges;
+    const nodes = get().nodes;
+    const edges = get().edges;
     // console.log(edges);
     if (nodes.length == 0) return;
     dagreGraph.setGraph({
@@ -94,15 +94,15 @@ export const useFlowStore = create<RFState>((set, get) => ({
       marginy: 20
     });
 
-    let sizeMatrix: any = {
+    const sizeMatrix: any = {
       newNode: { width: 28, height: 30 },
       actionNode: { width: 176, height: 40 },
       conditionalNode: { width: 384, height: 40 }
     };
 
     nodes.forEach((node: any) => {
-      let nodeType: string = node["type"];
-      let wxh: any = {};
+      const nodeType: string = node["type"];
+      const wxh: any = {};
       Object.assign(wxh, sizeMatrix[nodeType] || { width: 400, height: 100 });
       dagreGraph.setNode(node.id, wxh);
     });
@@ -117,7 +117,7 @@ export const useFlowStore = create<RFState>((set, get) => ({
 
     // console.log("result", "graph", );
 
-    let resultNode: Array<any> = [];
+    const resultNode: Array<any> = [];
     nodes.forEach((node: any) => {
       const nodeWithPosition = dagreGraph.node(node.id);
       // console.log("result", node.id, nodeWithPosition);
@@ -165,7 +165,7 @@ const processNode = (
   derivedEdge: any = undefined,
   parentID: any = undefined
 ) => {
-  let _blockType = blockType[item.type_field] || "actionNode";
+  const _blockType = blockType[item.type_field] || "actionNode";
   if (derivedEdge != undefined) {
     edges.push({
       ...derivedEdge,
@@ -204,11 +204,11 @@ const processNode = (
     };
   } else if (_blockType == blockType.Condition) {
     // looping child action
-    let child = item.children;
+    const child = item.children;
     if (child != undefined && child.length > 0) {
       // generateNodeAndEdge(child, )
       child.map((child_item: any, _child_index: number) => {
-        let field_type = blockType[child_item.type_field] || "actionNode";
+        const field_type = blockType[child_item.type_field] || "actionNode";
 
         nodes.push({
           id: `addBlock${field_type}${child_item.id}`,
@@ -239,7 +239,7 @@ const processNode = (
         //   sourceHandle: blockType[field_type],
         //   source: `addBlock${item.id}`
         // };
-        let _derivedEdge = generateNodeAndEdge(
+        const _derivedEdge = generateNodeAndEdge(
           child_item.children,
           nodes,
           edges,
@@ -273,7 +273,7 @@ const processNode = (
     };
   }
 
-  let child = item.children;
+  const child = item.children;
   if (child != undefined && child.length > 0) {
     // generateNodeAndEdge(child, )
   }
