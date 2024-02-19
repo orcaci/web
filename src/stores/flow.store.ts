@@ -24,7 +24,8 @@ export const flowStateSelector = (state: RFState) => ({
   onConnect: state.onConnect,
   setNodes: state.setNodes,
   setEdges: state.setEdges,
-  rearrangeNodePosition: state.rearrangeNodePosition
+  rearrangeNodePosition: state.rearrangeNodePosition,
+  reset: state.reset
 });
 
 export type RFState = {
@@ -39,13 +40,21 @@ export type RFState = {
   setGraph: (graph: any[]) => void;
   rearrangeNodePosition: () => void;
   addNewNode: (nodes: Node[]) => void;
+  reset: () => void;
+};
+const intialStoreValue = {
+  graph: [],
+  nodes: [],
+  edges: []
 };
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 export const useFlowStore = create<RFState>((set, get) => ({
-  graph: [],
-  nodes: [],
-  edges: [],
+  ...intialStoreValue,
+
+  reset: () => {
+    set({ ...intialStoreValue });
+  },
 
   setGraph: (graph: any[]) => {
     set({ graph });
@@ -97,7 +106,9 @@ export const useFlowStore = create<RFState>((set, get) => ({
     let sizeMatrix: any = {
       newNode: { width: 28, height: 30 },
       actionNode: { width: 176, height: 40 },
-      conditionalNode: { width: 384, height: 40 }
+      conditionalNode: { width: 384, height: 40 },
+      endloop: { width: 28, height: 30 },
+      loop: { width: 384, height: 40 }
     };
 
     nodes.forEach((node: any) => {
@@ -154,6 +165,7 @@ export const useFlowStore = create<RFState>((set, get) => ({
 const blockType: any = {
   Assertion: "actionNode",
   Condition: "conditionalNode",
+  Loop: "loop",
   YesCase: "yes",
   NoCase: "no"
 };
@@ -187,6 +199,78 @@ const processNode = (
       source: `${_blockType}${item.id}`,
       target: `addBlock${item.id}`
     });
+    nodes.push({
+      id: `addBlock${item.id}`,
+      type: "newNode",
+      position: { x: 0, y: 0 },
+      data: {
+        execution_order: item.execution_order + 1,
+        parent_id: parentID,
+        case_id: item.case_id
+      }
+    });
+    derivedEdge = {
+      id: `edge_newNode_${_blockType}_${item.id}`,
+      type: "defaultE",
+      source: `addBlock${item.id}`
+    };
+  } else if (_blockType == blockType.Loop) {
+    let child = item.children;
+
+    derivedEdge = {
+      id: `edge_child_${_blockType}_${item.id}`,
+      type: "defaultE",
+      source: `${_blockType}${item.id}`
+    };
+
+    let _derivedEdge = generateNodeAndEdge(
+      child,
+      nodes,
+      edges,
+      derivedEdge,
+      item.id
+    );
+
+    edges.push({
+      ..._derivedEdge,
+      id: `${_derivedEdge?.id}_to_${_blockType}${item.id}`,
+      type: "defaultE",
+      target: `addBlock_endloop${item.id}`
+    });
+    nodes.push({
+      id: `addBlock_endloop${item.id}`,
+      type: "endloop",
+      position: { x: 0, y: 0 },
+      data: {
+        execution_order: item.execution_order + 1,
+        parent_id: parentID,
+        case_id: item.case_id
+      }
+    });
+
+    edges.push({
+      id: `edge_continue_${_blockType}_${item.id}`,
+      type: "defaultE",
+      sourceHandle: "continue",
+      targetHandle: "continue",
+      source: `addBlock_endloop${item.id}`,
+      target: `${_blockType}${item.id}`
+    });
+
+    edges.push({
+      id: `edge_end_${_blockType}_${item.id}`,
+      type: "defaultE",
+      sourceHandle: "end",
+      source: `addBlock_endloop${item.id}`,
+      target: `addBlock${item.id}`
+    });
+
+    // edges.push({
+    //   id: `edge_${_blockType}_${item.id}`,
+    //   type: "defaultE",
+    //   source: `${_blockType}${item.id}`,
+    //   target: `addBlock${item.id}`
+    // });
     nodes.push({
       id: `addBlock${item.id}`,
       type: "newNode",
@@ -272,11 +356,6 @@ const processNode = (
       source: `addBlock_endBlockConstion_${item.id}`
     };
   }
-
-  let child = item.children;
-  if (child != undefined && child.length > 0) {
-    // generateNodeAndEdge(child, )
-  }
   return derivedEdge;
 };
 const generateNodeAndEdge = (
@@ -289,5 +368,18 @@ const generateNodeAndEdge = (
   input.map((item: any, index: number) => {
     derivedEdge = processNode(item, nodes, edges, derivedEdge, parentID);
   });
+
+  if (parentID == undefined && nodes.length == 0) {
+    nodes.push({
+      id: `addBlock_start`,
+      type: "newNode",
+      position: { x: 0, y: 0 },
+      data: {
+        execution_order: 1,
+        parent_id: parentID,
+        case_id: "case_id"
+      }
+    });
+  }
   return derivedEdge;
 };

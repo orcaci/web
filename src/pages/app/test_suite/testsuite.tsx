@@ -1,140 +1,201 @@
+import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  Button,
+  IconButton,
+  Input,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  Textarea,
+  Tooltip,
+  Typography
+} from "@material-tailwind/react";
+import { ColumnField } from "components/table";
+import { ReadOnlyTableV2 } from "components/table/read";
 import React, { useEffect, useState } from "react";
-import { Matrix } from "components/matrix";
-import type { ColumnsType } from "antd/es/table";
-import { Select, Input, Button } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
 import { Service } from "service";
 import { Endpoint } from "service/endpoint";
-import { useParams } from "react-router-dom";
-import { ActionKind } from "constant/action_kind";
-import { Targets } from "constant/target";
 
 export const TestSuite: React.FC = () => {
+  const navigate = useNavigate();
+  const [newTestSuit, setNewTestSuit] = useState({} as any);
   const [dataSource, setDataSource] = useState([] as any);
-  const [savedData, setSavedData] = useState({ data_kind: "Static" } as object);
-  const { appId = "", testSuiteId = "" } = useParams();
+  const [datatable, setDataTable] = useState({} as any);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  interface DataType {
-    key: string;
-    id: string;
-    description: string;
-    execution_order: string;
-    kind: string;
-    target_value: string;
-    target_kind: string;
-    data_value: string;
-    data_kind: string;
-  }
+  const setCreateDataTable = (field_id: string, value: any) => {
+    let _data = { ...datatable };
+    _data[field_id] = value;
+    setDataTable(_data);
+  };
 
   /**
-   * fetchTestSuiteItemList - will get all the Action for specific action group
+   * onCreateNewDataTable - will create new Datatable
+   * @param data
    */
-  const fetchTestSuiteItemList = async () => {
-    console.log(appId, "    - ", testSuiteId);
-    await Service.get(`${Endpoint.v1.suite.itemList(appId, testSuiteId)}`)
-      .then((actions) => {
-        setDataSource(actions);
-      })
-      .finally(() => {
-        // all the fallback code will come here
-      });
-  };
-
-  useEffect(() => {
-    fetchTestSuiteItemList();
-  }, []);
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "Command",
-      dataIndex: "command",
-      key: "kind",
-      render: (text, record) => (
-        <Select
-          showSearch
-          defaultValue={record.kind}
-          onChange={handleChange}
-          id="command"
-          key="command"
-          options={ActionKind.map((x) => {
-            return { key: x.value, label: x.value };
-          })}
-        />
-      )
-    },
-    {
-      title: "Target",
-      dataIndex: "target",
-      key: "target",
-      render: (text, record) => (
-        <div className="targetContainer">
-          <Select
-            onChange={handleChange}
-            options={Targets}
-            defaultValue={record.target_kind}
-          />
-          <Input
-            placeholder="Please enter target"
-            onChange={onHandleInputChange}
-            id="target_value"
-            defaultValue={record.target_value}
-          />
-        </div>
-      )
-    },
-    {
-      title: "Value",
-      dataIndex: "value",
-      key: "data_value",
-      render: (text, record) => (
-        <Input
-          placeholder="Please enter value"
-          onChange={onHandleInputChange}
-          id="data_value"
-          defaultValue={record.data_value}
-        />
-      )
-    }
-  ];
-
-  const handleChange = (value: string, valueobj: any) => {
-    setSavedData({ ...savedData, [valueobj.id]: value, execution_order: 1 });
-  };
-
-  const handleAddRows = () => {
-    setDataSource([
-      ...dataSource,
-      {
-        key: "1",
-        command: "click",
-        target: "Kissflow First Action Group",
-        value: "on click data need to load"
-      }
-    ]);
-  };
-
-  const onHandleInputChange = (event: any) => {
-    setSavedData({ ...savedData, [event.target.id]: event.target.value });
-  };
-
-  const onBatchSave = async () => {
-    await Service.post(`${Endpoint.v1.suite.itemCreate(appId, testSuiteId)}`, {
-      body: savedData
+  const onCreateNewDataTable = async () => {
+    let payload = {
+      ...datatable,
+      app_id: appId
+    };
+    setIsCreateModalOpen(false);
+    await Service.post(`${Endpoint.v1.datatable.create(appId)}`, {
+      body: payload
     })
-      .then(() => {})
+      .then((record: any) => {
+        fetchDatatables();
+        navigate(`${record.id}`);
+      })
       .finally(() => {});
   };
 
+  const extra: Array<React.ReactNode> = [
+    <Popover
+      key="createNewDT"
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0, y: 25 }
+      }}
+      open={isCreateModalOpen}
+      handler={setIsCreateModalOpen}
+    >
+      <PopoverHandler>
+        <button
+          type="button"
+          className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => {
+            setDataTable({});
+            setIsCreateModalOpen(true);
+          }}
+        >
+          <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
+          New
+        </button>
+      </PopoverHandler>
+      <PopoverContent className="w-96">
+        <Typography variant="h6" color="blue-gray" className="mb-6">
+          Create New Datatable
+        </Typography>
+        <Input
+          color="indigo"
+          variant="standard"
+          label="Name"
+          placeholder="Name of the Datatable"
+          onChange={(e) => setCreateDataTable("name", e.target.value)}
+        />
+        <Textarea
+          label="Description"
+          onChange={(e) => setCreateDataTable("description", e.target.value)}
+        />
+        <Button
+          color="indigo"
+          variant="filled"
+          className="flex-shrink-0"
+          onClick={() => onCreateNewDataTable()}
+        >
+          Create
+        </Button>
+      </PopoverContent>
+    </Popover>
+  ];
+
+  const columns: Array<ColumnField> = [
+    {
+      key: "name",
+      label: "Name",
+      className: "flex-auto ",
+      render: (text, record) => (
+        // <Button
+        //   variant="text"
+        //   color="indigo"
+        //   className="flex items-center gap-2 hover:bg-transparent"
+        //   onClick={() => onHandleClick(record)}
+        // >
+        //   {text}
+        // </Button>
+        <Typography
+          as="a"
+          href="#"
+          onClick={() => onHandleClick(record)}
+          color="indigo"
+          className="py-1.5 font-normal transition-colors hover:text-blue-gray-900"
+        >
+          {text}
+        </Typography>
+      )
+    },
+    {
+      key: "description",
+      label: "Description",
+      className: "flex-auto "
+    },
+    {
+      key: "action",
+      label: "Action",
+      className: "flex-initial w-48",
+      render: (text, record) => {
+        return (
+          <Tooltip content="Edit table">
+            <IconButton variant="text" onClick={() => onHandleClick(record)}>
+              <PencilIcon className="h-4 w-4" />
+            </IconButton>
+          </Tooltip>
+        );
+      }
+    }
+  ];
+
+  const { appId = "" } = useParams();
+
+  const updateTableInfo = (event: EventSource, field_id: string) => {};
+
+  /**
+   * fetchDatatables - fetch all Datatable from the specify Application
+   */
+  const fetchDatatables = async () => {
+    await Service.get(`${Endpoint.v1.datatable.getList(appId)}`)
+      .then((datatables) => {
+        setDataSource(datatables);
+      })
+      .finally(() => {});
+  };
+
+  useEffect(() => {
+    fetchDatatables();
+  }, []);
+
+  /**
+   * onHandleClick - Handle the Action redirect
+   * @param record
+   */
+  const onHandleClick = (record: any) => {
+    navigate(`${record.id}`);
+  };
+
+  /**
+   * onDeleteActionGroup - Delete the Action Group with a confirmation
+   * @param groupId
+   */
+  const onDeleteDatatable = async (groupId: any) => {
+    await Service.delete(`${Endpoint.v1.datatable.delete(appId, groupId)}`)
+      .then(() => {
+        fetchDatatables();
+      })
+      .finally(() => {});
+  };
+
+  const toggleModal = async (s: boolean) => {
+    setIsCreateModalOpen(s);
+  };
+
   return (
-    <div>
-      <Button onClick={handleAddRows}>Add Row</Button>
-      <Matrix
-        dataSource={dataSource}
-        defaultColumns={columns}
-        onAddColumn={null}
-        onAddRow={null}
-        rowKey="id"
-      />
-      <Button onClick={onBatchSave}>Save</Button>
-    </div>
+    <ReadOnlyTableV2
+      title="Datatable"
+      onCreate={() => toggleModal(true)}
+      column={columns}
+      data={dataSource}
+      extra={extra}
+    />
   );
 };

@@ -17,8 +17,16 @@ const selector = (s: any) => ({
   edges: s.edges
 });
 
+interface Option {
+  key: string;
+  label: string;
+  icon: any;
+}
+
+type MyObject = { [key: string]: () => any };
+
 export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
-  let options = [
+  let options: Array<Option> = [
     {
       key: "loop",
       label: "Loop",
@@ -30,8 +38,8 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
       icon: <HashtagIcon className="h-5 w-5 text-gray-400" />
     },
     {
-      key: "block",
-      label: "Block",
+      key: "assertion",
+      label: "Assertion",
       icon: <CodeBracketSquareIcon className="h-5 w-5 text-gray-400" />
     },
     {
@@ -84,7 +92,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
     }
     return false;
   };
-  const getNewNode = {
+  const getNewNode: MyObject = {
     action_group: () => {
       return {
         id: uuidv4(),
@@ -92,6 +100,32 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
         kind: "Reference",
         type_field: "ActionGroup",
         reference: uuidv4(),
+        parent_id: data.parent_id,
+        case_id: data.case_id,
+        children: []
+      };
+    },
+
+    assertion: () => {
+      return {
+        id: uuidv4(),
+        execution_order: data.execution_order,
+        kind: "Reference",
+        type_field: "Assertion",
+        reference: uuidv4(),
+        parent_id: data.parent_id,
+        case_id: data.case_id,
+        children: []
+      };
+    },
+
+    loop: () => {
+      return {
+        id: uuidv4(),
+        execution_order: data.execution_order,
+        kind: "SelfReference",
+        type_field: "Loop",
+        reference: null,
         parent_id: data.parent_id,
         case_id: data.case_id,
         children: []
@@ -106,7 +140,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
         kind: "SelfReference",
         type_field: "Condition",
         reference: null,
-        parent_id: null,
+        parent_id: data.parent_id,
         case_id: data.case_id,
         children: [
           {
@@ -134,8 +168,8 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
     }
   };
 
-  const addNode = (option: any) => {
-    let newNode: any = getNewNode.ifcondition();
+  const addNode = (option: Option) => {
+    let newNode: any = getNewNode[option.key]();
     findAddNode(graph, newNode, data.execution_order);
     setGraph(graph);
     console.log(graph);
