@@ -1,17 +1,10 @@
-import { Listbox, Transition } from "@headlessui/react";
 import {
   ArrowPathRoundedSquareIcon,
   CodeBracketSquareIcon,
-  HashtagIcon,
-  PlusIcon
+  HashtagIcon
 } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  getStraightPath
-} from "reactflow";
+import { useState } from "react";
+import { BaseEdge, EdgeProps, getSmoothStepPath } from "reactflow";
 
 // export default function CustomEdge() {
 export const DefaultEdge: React.FC<EdgeProps> = ({
@@ -41,7 +34,7 @@ export const DefaultEdge: React.FC<EdgeProps> = ({
     }
   ];
   const [open, setOpen] = useState(false);
-  const [edgePath, labelX, labelY] = getStraightPath({
+  const [edgePath, labelX, labelY] = getSmoothStepPath({
     sourceX,
     sourceY,
     targetX,
@@ -53,7 +46,7 @@ export const DefaultEdge: React.FC<EdgeProps> = ({
   return (
     <>
       <BaseEdge id={id} path={edgePath} style={{ backgroundColor: "black" }} />
-      <EdgeLabelRenderer>
+      {/* <EdgeLabelRenderer>
         <div
           style={{
             position: "absolute",
@@ -65,12 +58,6 @@ export const DefaultEdge: React.FC<EdgeProps> = ({
           }}
           className="nodrag nopan"
         >
-          {/* <button
-            className="edgebutton"
-            onClick={() => console.log("Got click")}
-          >
-            ×
-          </button> */}
           <Listbox>
             <Listbox.Button
               className="relative rounded-full p-1 text-blue-600 shadow-sm hover:shadow-md bg-white font-bold"
@@ -118,7 +105,7 @@ export const DefaultEdge: React.FC<EdgeProps> = ({
             </Transition>
           </Listbox>
         </div>
-      </EdgeLabelRenderer>
+      </EdgeLabelRenderer> */}
     </>
   );
 };
