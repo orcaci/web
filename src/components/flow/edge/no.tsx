@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  getSmoothStepPath
-} from "reactflow";
-import { New } from "../components";
+import { BaseEdge, EdgeProps, getSmoothStepPath } from "reactflow";
 
 export const NoEdge: React.FC<EdgeProps> = ({
   id,
@@ -29,7 +23,7 @@ export const NoEdge: React.FC<EdgeProps> = ({
   return (
     <>
       <BaseEdge id={id} path={edgePath} style={{ backgroundColor: "black" }} />
-      <EdgeLabelRenderer>
+      {/* <EdgeLabelRenderer>
         <div
           style={{
             position: "absolute",
@@ -44,7 +38,7 @@ export const NoEdge: React.FC<EdgeProps> = ({
         >
           <New></New>
         </div>
-      </EdgeLabelRenderer>
+      </EdgeLabelRenderer> */}
     </>
   );
 };

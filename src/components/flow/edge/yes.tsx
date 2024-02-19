@@ -1,10 +1,4 @@
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  getSmoothStepPath
-} from "reactflow";
-import { New } from "../components";
+import { BaseEdge, EdgeProps, getSmoothStepPath } from "reactflow";
 
 export type GetSpecialPathParams = {
   sourceX: number;
@@ -56,7 +50,7 @@ export const YesEdge: React.FC<EdgeProps> = ({
   return (
     <>
       <BaseEdge id={id} path={edgePath} style={{ backgroundColor: "black" }} />
-      <EdgeLabelRenderer>
+      {/* <EdgeLabelRenderer>
         <div
           style={{
             position: "absolute",
@@ -70,16 +64,9 @@ export const YesEdge: React.FC<EdgeProps> = ({
           }}
           className="nodrag nopan"
         >
-          {/* <button
-            className="edgebutton"
-            onClick={() => console.log("Got click")}
-          >
-            ×
-          </button> */}
-
           <New></New>
         </div>
-      </EdgeLabelRenderer>
+      </EdgeLabelRenderer> */}
     </>
   );
 };

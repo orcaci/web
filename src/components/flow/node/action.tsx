@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NodeProps, Position, useNodeId } from "reactflow";
+import { classNames } from "..";
 import CustomHandle from "../handler/test";
 
 export const ActionNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   const [selected, setValueSelected] = useState({} as any);
   const [open, setOpen] = useState(false);
   const nodeId = useNodeId();
-  console.log("x - ", xPos, ", y -", yPos);
+  let bgColor =
+    data?.payload?.type_field == "Assertion" ? "bg-red-100" : "bg-indigo-100";
+
+  useEffect(() => {
+    classNames;
+  }, [data]);
   return (
     <>
       <CustomHandle
@@ -17,9 +23,14 @@ export const ActionNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
         isConnectable={true}
         isConnectableStart={false}
       />
-      <div className="h-10 w-44 border-white bg-indigo-400 rounded-lg shadow-sm hover:shadow-md">
-        <div className="self-center p-2 align-middle text-center">
-          [ {data.label} ]{/* [ {data?.payload?.type_field} ] */}
+      <div
+        className={classNames(
+          "h-10 w-44 border-white rounded-lg shadow-sm hover:shadow-md",
+          bgColor
+        )}
+      >
+        <div className="self-center p-2 align-middle text-center ">
+          [ {data?.payload?.type_field} ] - {data?.payload?.name}
         </div>
       </div>
 

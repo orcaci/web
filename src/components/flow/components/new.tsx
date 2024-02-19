@@ -6,6 +6,8 @@ import {
   PlusIcon
 } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
+import { RFState, useFlowStore } from "stores/flow.store";
+import { shallow } from "zustand/shallow";
 
 export const New: React.FC<any> = () => {
   let options = [
@@ -31,6 +33,13 @@ export const New: React.FC<any> = () => {
     }
   ];
   const [open, setOpen] = useState(false);
+  const { addNewNode, nodes } = useFlowStore(
+    (state: RFState) => ({
+      addNewNode: state.addNewNode,
+      nodes: state.nodes
+    }),
+    shallow
+  );
   return (
     <Listbox>
       <Listbox.Button
@@ -62,6 +71,7 @@ export const New: React.FC<any> = () => {
                 "text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white"
               }
               value={item}
+              onClick={() => addNewNode([])}
             >
               <div className="flex items-center">
                 {item["icon"]}

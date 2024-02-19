@@ -7,6 +7,9 @@ import {
 } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
 import { NodeProps, Position, useEdges, useNodeId, useStore } from "reactflow";
+import { flowStateSelector, useFlowStore } from "stores/flow.store";
+import { v4 as uuidv4 } from "uuid";
+import { shallow } from "zustand/shallow";
 import CustomHandle from "../handler/test";
 
 const selector = (s: any) => ({
@@ -42,15 +45,100 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   const nodeId = useNodeId();
   const useedges = useEdges();
 
-  const { nodeInternals, edges } = useStore(selector);
+  // const store = useStoreApi();
+
+  // const { getNodes, setNodes } = store.getState();
+
+  const { nodeInternals } = useStore(selector);
+
+  const { graph, setGraph } = useFlowStore(flowStateSelector, shallow);
 
   const node = nodeInternals.get(nodeId);
-  console.log("Got Node", nodeId, node);
-  console.log("Edes", edges, useedges);
 
-  const addNode = () => {
-    let node = {};
-    // setNodes();
+  const findAddNode = (
+    graph: Array<any>,
+    node: any,
+    execution_order: number,
+    parent_id: any = undefined
+  ) => {
+    if (parent_id == data.parent_id) {
+      graph
+        .filter((x) => x.execution_order >= execution_order)
+        .forEach((item) => {
+          item.execution_order = item.execution_order + 1;
+        });
+      graph.splice(execution_order - 1, 0, node);
+      return true;
+    } else {
+      graph.forEach((item) => {
+        if (item.children != undefined && item.children.length >= 0) {
+          let result = findAddNode(
+            item.children,
+            node,
+            execution_order,
+            item.id
+          );
+          if (result) return true;
+        }
+      });
+    }
+    return false;
+  };
+  const getNewNode = {
+    action_group: () => {
+      return {
+        id: uuidv4(),
+        execution_order: data.execution_order,
+        kind: "Reference",
+        type_field: "ActionGroup",
+        reference: uuidv4(),
+        parent_id: data.parent_id,
+        case_id: data.case_id,
+        children: []
+      };
+    },
+
+    ifcondition: () => {
+      let condition_id = uuidv4();
+      return {
+        id: condition_id,
+        execution_order: data.execution_order,
+        kind: "SelfReference",
+        type_field: "Condition",
+        reference: null,
+        parent_id: null,
+        case_id: data.case_id,
+        children: [
+          {
+            id: uuidv4(),
+            execution_order: 1,
+            kind: "SelfReference",
+            type_field: "YesCase",
+            reference: null,
+            parent_id: condition_id,
+            case_id: data.case_id,
+            children: []
+          },
+          {
+            id: uuidv4(),
+            execution_order: 2,
+            kind: "SelfReference",
+            type_field: "NoCase",
+            reference: null,
+            parent_id: condition_id,
+            case_id: data.case_id,
+            children: []
+          }
+        ]
+      };
+    }
+  };
+
+  const addNode = (option: any) => {
+    let newNode: any = getNewNode.ifcondition();
+    findAddNode(graph, newNode, data.execution_order);
+    setGraph(graph);
+    console.log(graph);
   };
 
   return (
@@ -82,8 +170,6 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
           <Listbox.Options
             onMouseOver={() => setOpen(true)}
             onMouseOut={() => setOpen(false)}
-            // onMouseLeave={() => setOpen(false)}
-            // onMouseEnter={() => setOpen(true)}
             className={
               "absolute z-10 mt-1 max-h-56 w-40 -left-16 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             }
@@ -95,10 +181,10 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
                   "text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white"
                 }
                 value={item}
+                onClick={() => addNode(item)}
               >
                 <div className="flex items-center">
-                  {/* {item["icon"]} */}
-                  <span className="ml-3 block truncate">{item.label}</span>
+                  <span className="ml-3 block truncate ">{item.label}</span>
                 </div>
               </Listbox.Option>
             ))}
