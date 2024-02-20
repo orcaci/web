@@ -3,6 +3,7 @@ import {
   Connection,
   Edge,
   EdgeChange,
+  MarkerType,
   Node,
   NodeChange,
   OnConnect,
@@ -96,11 +97,12 @@ export const useFlowStore = create<RFState>((set, get) => ({
     if (nodes.length == 0) return;
     dagreGraph.setGraph({
       rankdir: "TB",
-      ranker: "network-simplex",
+      ranker: "longest-path",
       nodesep: 500,
-      edgesep: 100,
+      edgesep: 0,
       marginx: 30,
-      marginy: 20
+      marginy: 20,
+      ranksep: 60
     });
 
     let sizeMatrix: any = {
@@ -119,9 +121,11 @@ export const useFlowStore = create<RFState>((set, get) => ({
     });
     // console.log(nodes);
 
-    edges.forEach((edge) => {
-      dagreGraph.setEdge(edge.source, edge.target, { minlen: 1 });
-    });
+    edges
+      .filter((item) => !item.id.startsWith("edge_continue"))
+      .forEach((edge) => {
+        dagreGraph.setEdge(edge.source, edge.target, { minlen: 1 });
+      });
 
     layout(dagreGraph);
     dagreGraph.graph();
@@ -144,11 +148,7 @@ export const useFlowStore = create<RFState>((set, get) => ({
         x: nodeWithPosition.x - nodeWithPosition.width / 2,
         y: nodeWithPosition.y //- nodeWithPosition.height / 2
       };
-      // if (node["id"].startsWith("addBlockyes")) {
-      //   node.position.x = node.position.x - 100;
-      // } else if (node["id"].startsWith("addBlockno")) {
-      //   node.position.x = node.position.x + 100;
-      // }
+      // console.log("result", node.id, node.position);
       resultNode.push(node);
       return node;
     });
@@ -217,13 +217,33 @@ const processNode = (
   } else if (_blockType == blockType.Loop) {
     let child = item.children;
 
+    edges.push({
+      id: `edge_begin_${_blockType}_${item.id}`,
+      type: "no",
+      source: `${_blockType}${item.id}`,
+      target: `addBlock_${_blockType}${item.id}`,
+
+      markerEnd: { type: MarkerType.ArrowClosed }
+    });
+
+    nodes.push({
+      id: `addBlock_${_blockType}${item.id}`,
+      type: "newNode",
+      position: { x: 0, y: 0 },
+      data: {
+        execution_order: 1,
+        parent_id: item.id,
+        case_id: item.case_id
+      }
+    });
+
     derivedEdge = {
       id: `edge_child_${_blockType}_${item.id}`,
       type: "defaultE",
-      source: `${_blockType}${item.id}`
+      source: `addBlock_${_blockType}${item.id}`
     };
 
-    let _derivedEdge = generateNodeAndEdge(
+    derivedEdge = generateNodeAndEdge(
       child,
       nodes,
       edges,
@@ -232,13 +252,13 @@ const processNode = (
     );
 
     edges.push({
-      ..._derivedEdge,
-      id: `${_derivedEdge?.id}_to_${_blockType}${item.id}`,
+      ...derivedEdge,
+      id: `${derivedEdge?.id}_to_end_${_blockType}${item.id}`,
       type: "defaultE",
-      target: `addBlock_endloop${item.id}`
+      target: `endloop${item.id}`
     });
     nodes.push({
-      id: `addBlock_endloop${item.id}`,
+      id: `endloop${item.id}`,
       type: "endloop",
       position: { x: 0, y: 0 },
       data: {
@@ -250,18 +270,20 @@ const processNode = (
 
     edges.push({
       id: `edge_continue_${_blockType}_${item.id}`,
-      type: "defaultE",
+      type: "smoothstep",
       sourceHandle: "continue",
       targetHandle: "continue",
-      source: `addBlock_endloop${item.id}`,
-      target: `${_blockType}${item.id}`
+      source: `endloop${item.id}`,
+      target: `${_blockType}${item.id}`,
+
+      markerEnd: { type: MarkerType.ArrowClosed }
     });
 
     edges.push({
       id: `edge_end_${_blockType}_${item.id}`,
       type: "defaultE",
       sourceHandle: "end",
-      source: `addBlock_endloop${item.id}`,
+      source: `endloop${item.id}`,
       target: `addBlock${item.id}`
     });
 
@@ -317,12 +339,6 @@ const processNode = (
           type: "defaultE",
           source: `addBlock${field_type}${child_item.id}`
         };
-        // derivedEdge = {
-        //   id: `edge_newNode_${field_type}_${item.id}`,
-        //   type: blockType[field_type],
-        //   sourceHandle: blockType[field_type],
-        //   source: `addBlock${item.id}`
-        // };
         let _derivedEdge = generateNodeAndEdge(
           child_item.children,
           nodes,
@@ -381,5 +397,6 @@ const generateNodeAndEdge = (
       }
     });
   }
+  // if (parentID == undefined) console.log("Got result", nodes, edges);
   return derivedEdge;
 };

@@ -90,6 +90,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
         }
       });
     }
+    setOpen(false);
     return false;
   };
   const getNewNode: MyObject = {
