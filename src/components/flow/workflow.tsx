@@ -1,7 +1,8 @@
 import ReactFlow, { Background, BackgroundVariant } from "reactflow";
 
+import { useEffect } from "react";
 import "reactflow/dist/style.css";
-import { flowStateSelector, useFlowStore } from "stores/flow.store";
+import { RFState, useFlowStore } from "stores/flow.store";
 import { shallow } from "zustand/shallow";
 import { DefaultEdge } from "./edge";
 import { NoEdge } from "./edge/no";
@@ -10,13 +11,17 @@ import { WorkflowForm } from "./form";
 import { StartNode } from "./node";
 import { ActionNode } from "./node/action";
 import { ConditionalNode } from "./node/condition";
+import { EndLoopNode } from "./node/endloop";
+import { LoopNode } from "./node/loop";
 import { NewNode } from "./node/new";
 
 const nodeTypes = {
   newNode: NewNode,
   startNode: StartNode,
   actionNode: ActionNode,
-  conditionalNode: ConditionalNode
+  conditionalNode: ConditionalNode,
+  loop: LoopNode,
+  endloop: EndLoopNode
 };
 
 const edgeTypes = {
@@ -35,21 +40,20 @@ export const Workflow: React.FC<WorkflowParam> = ({
   ...restProps
 }) => {
   const getLayoutedElements = (nodes: Array<any>, edges: Array<any>): any => {};
-  const {
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-    setNodes,
-    setEdges,
-    rearrangeNodePosition
-  } = useFlowStore(flowStateSelector, shallow);
-  // useEffect(() => {
-  //   setNodes(nodes as any);
-  //   setEdges(edges as any);
-  // }, [nodes, edges]);
-  rearrangeNodePosition();
+  const { nodes, edges } = useFlowStore(
+    (state: RFState) => ({
+      nodes: state.nodes,
+      edges: state.edges
+    }),
+    shallow
+  );
+  // debugger;
+  useEffect(() => {
+    useFlowStore.getState().rearrangeNodePosition();
+    return () => {
+      useFlowStore.getState().reset();
+    };
+  }, []);
   return (
     <div className="flex h-dvh w-full flex-row">
       <div className="basis-3/4 border border-indigo-500/20">
