@@ -25,7 +25,7 @@ export const TestSuite: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const setCreateDataTable = (field_id: string, value: any) => {
-    let _data = { ...datatable };
+    const _data = { ...datatable };
     _data[field_id] = value;
     setDataTable(_data);
   };
@@ -35,7 +35,7 @@ export const TestSuite: React.FC = () => {
    * @param data
    */
   const onCreateNewDataTable = async () => {
-    let payload = {
+    const payload = {
       ...datatable,
       app_id: appId
     };

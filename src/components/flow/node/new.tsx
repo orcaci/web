@@ -26,7 +26,7 @@ interface Option {
 type MyObject = { [key: string]: () => any };
 
 export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
-  let options: Array<Option> = [
+  const options: Array<Option> = [
     {
       key: "loop",
       label: "Loop",
@@ -80,7 +80,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
     } else {
       graph.forEach((item) => {
         if (item.children != undefined && item.children.length >= 0) {
-          let result = findAddNode(
+          const result = findAddNode(
             item.children,
             node,
             execution_order,
@@ -134,7 +134,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
     },
 
     ifcondition: () => {
-      let condition_id = uuidv4();
+      const condition_id = uuidv4();
       return {
         id: condition_id,
         execution_order: data.execution_order,
@@ -170,7 +170,7 @@ export const NewNode: React.FC<NodeProps> = ({ data, xPos, yPos }) => {
   };
 
   const addNode = (option: Option) => {
-    let newNode: any = getNewNode[option.key]();
+    const newNode: any = getNewNode[option.key]();
     findAddNode(graph, newNode, data.execution_order);
     setGraph(graph);
     console.log(graph);
